@@ -93,7 +93,7 @@ const updateUserPassword = ({ password, id }) => {
 const deleteUser = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const query = "DELETE FROM users WHERE id = $1 RETURNING id,name,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender";
+      const query = "DELETE FROM users WHERE id = $1 RETURNING id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender";
       const result = await db.query(query, [id]);
       const response = { data: result.rows[0], message: "Successfully Deleted" };
       resolve(response);
