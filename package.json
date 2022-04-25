@@ -1,0 +1,27 @@
+{
+  "name": "juncoffee",
+  "version": "1.0.0",
+  "description": "Coffee Shop App",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "startDev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "achmad rasidi",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "bcrypt": "^5.0.1",
+    "eslint": "^8.13.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
+  }
+}
