@@ -4,14 +4,10 @@ const getProductById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const query =
-        "SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id";
-      const result = await db.query(query);
-      if (result.rowCount === 0) {
-        reject({ status: 404, error: "Products Not Found" });
-      }
+        "SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE id = $1";
+      const result = await db.query(query, [id]);
       const response = {
-        total: result.rowCount,
-        data: result.rows,
+        data: result.rows[0],
       };
       resolve(response);
     } catch (err) {
@@ -22,14 +18,14 @@ const getProductById = (id) => {
 
 const getProducts = (query) => {
   return new Promise(async (resolve, reject) => {
-    const { id, name, category, minPrice, maxPrice, order, sort } = query;
+    const { keyword, category, minPrice, maxPrice, order, sort } = query;
     try {
       let sqlQuery =
-        "SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE lower(c.name) = lower($1) OR lower(p.name) LIKE lower('%' || $2 || '%') OR p.id = $3 OR p.price > $4 AND p.price <= $5  ";
+        "SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE lower(c.name) like lower($2) OR lower(p.name) LIKE lower('%' || $1 || '%') OR p.price > $3 AND p.price <= $4  ";
       if (order) {
         sqlQuery += `order by ${sort} ${order}`;
       }
-      const result = await db.query(sqlQuery, [category, name, id, minPrice, maxPrice]);
+      const result = await db.query(sqlQuery, [keyword, category, minPrice, maxPrice]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Product Not Found" });
       }

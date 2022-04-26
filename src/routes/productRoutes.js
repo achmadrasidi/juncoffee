@@ -4,10 +4,11 @@ const productController = require("../controllers/productController.js");
 
 const { productPostValidator } = require("../middleware/postValidator.js");
 const { putValidator } = require("../middleware/putValidator.js");
+const getValidator = require("../middleware/getValidator");
 
-Router.get("/detail/:id", productController.getAllProducts);
+Router.get("/detail/:id", productController.getProductDetail);
 
-Router.get("/", productController.findProductByQueries);
+Router.get("/", getValidator, productController.searchProducts);
 
 Router.post("/", productPostValidator, productController.addProduct);
 

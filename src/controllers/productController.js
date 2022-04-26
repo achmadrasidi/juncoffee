@@ -2,9 +2,8 @@ const { getProducts, createProduct, updateProduct, deleteProduct, getProductById
 
 const getProductDetail = async (req, res) => {
   try {
-    const { total, data } = await getProductById(req.params.id);
+    const { data } = await getProductById(req.params.id);
     res.status(200).json({
-      total,
       data,
       error: null,
     });
@@ -17,7 +16,7 @@ const getProductDetail = async (req, res) => {
   }
 };
 
-const findProductByQueries = async (req, res) => {
+const searchProducts = async (req, res) => {
   try {
     const { total, data } = await getProducts(req.query);
     res.status(200).json({
@@ -85,4 +84,4 @@ const deleteProductById = async (req, res) => {
   }
 };
 
-module.exports = { getProductById, findProductByQueries, addProduct, editProduct, deleteProductById };
+module.exports = { searchProducts, getProductDetail, addProduct, editProduct, deleteProductById };
