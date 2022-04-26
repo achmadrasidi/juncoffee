@@ -2,18 +2,17 @@ const Router = require("express").Router();
 
 const productController = require("../controllers/productController.js");
 
-const { productPostValidator } = require("../middleware/postValidator.js");
-const { putValidator } = require("../middleware/putValidator.js");
-const getValidator = require("../middleware/getValidator");
+const { productValidator } = require("../middleware/fieldValidator.js");
+const inputFormatter = require("../middleware/valueValidator.js");
 
-Router.get("/detail/:id", productController.getProductDetail);
+Router.get("/detail/:id", inputFormatter, productValidator, productController.getProductDetail);
 
-Router.get("/", getValidator, productController.searchProducts);
+Router.get("/", inputFormatter, productValidator, productController.searchProducts);
 
-Router.post("/", productPostValidator, productController.addProduct);
+Router.post("/", inputFormatter, productValidator, productController.addProduct);
 
-Router.put("/", putValidator, productController.editProduct);
+Router.put("/", inputFormatter, productValidator, productController.editProduct);
 
-Router.delete("/:id", productController.deleteProductById);
+Router.delete("/:id", inputFormatter, productValidator, productController.deleteProductById);
 
 module.exports = Router;

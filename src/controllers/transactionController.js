@@ -1,8 +1,23 @@
-const { getTransactions, createTransaction, findTransaction, updateTransaction, deleteTransaction } = require("../models/transactionModel.js");
+const { getOrderById, createTransaction, findTransaction, updateTransaction, deleteTransaction } = require("../models/transactionModel.js");
 
-const getAllOrders = async (_req, res) => {
+const getDetailOrder = async (req, res) => {
   try {
-    const { total, data } = await getTransactions();
+    const { data } = await getOrderById(req.params.id);
+    res.status(200).json({
+      data,
+      error: null,
+    });
+  } catch (err) {
+    const { error, status } = err;
+    res.status(status).json({
+      error,
+    });
+  }
+};
+
+const findOrderByQueries = async (req, res) => {
+  try {
+    const { total, data } = await findTransaction(req.query);
     res.status(200).json({
       total,
       data,
@@ -11,23 +26,6 @@ const getAllOrders = async (_req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
-      error,
-    });
-  }
-};
-
-const findOrderByQueries = async (req, res) => {
-  try {
-    const { data } = await findTransaction(req.query);
-    res.status(200).json({
-      data,
-      error: null,
-    });
-  } catch (err) {
-    const { error, status } = err;
-    res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -45,7 +43,6 @@ const addTransaction = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -63,7 +60,6 @@ const editTransaction = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -81,10 +77,9 @@ const deleteOrderById = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
 };
 
-module.exports = { getAllOrders, addTransaction, findOrderByQueries, editTransaction, deleteOrderById };
+module.exports = { getDetailOrder, addTransaction, findOrderByQueries, editTransaction, deleteOrderById };

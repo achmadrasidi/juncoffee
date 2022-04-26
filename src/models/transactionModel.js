@@ -1,17 +1,16 @@
 const db = require("../config/db.js");
 
-const getTransactions = () => {
+const getOrderById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await db.query(
-        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(t.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id"
-      );
+      const query =
+        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(t.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id WHERE t.id = $1";
+      const result = await db.query(query, [id]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Transactions Not Found" });
       }
       const response = {
-        total: result.rowCount,
-        data: result.rows,
+        data: result.rows[0],
       };
       resolve(response);
     } catch (err) {
@@ -22,18 +21,19 @@ const getTransactions = () => {
 
 const findTransaction = (query) => {
   return new Promise(async (resolve, reject) => {
-    const { id, user_name, product_name, delivery_method, order, sort } = query;
+    const { keyword, delivery_method, order_status, order, sort } = query;
     try {
       let sqlQuery =
-        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(t.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id WHERE lower(u.name) LIKE lower('%' || $2 || '%') OR lower(p.name) LIKE lower('%' || $3 || '%') OR lower(d.method) = lower($4) OR t.id = $1";
+        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(t.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id WHERE lower(t.order_status) = lower($3) OR lower(u.name) LIKE lower('%' || $1 || '%') OR lower(p.name) LIKE lower('%' || $1 || '%') OR lower(d.method) = lower($2) OR lower(t.order_status) LIKE lower('%' || $1 || '%')";
       if (order) {
         sqlQuery += `order by ${sort} ${order}`;
       }
-      const result = await db.query(sqlQuery, [id, user_name, product_name, delivery_method]);
+      const result = await db.query(sqlQuery, [keyword, delivery_method, order_status]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Transaction Not Found" });
       }
       const response = {
+        total: result.rowCount,
         data: result.rows,
       };
       resolve(response);
@@ -93,19 +93,8 @@ const updateTransaction = (body) => {
   return new Promise(async (resolve, reject) => {
     const { id, order_status } = body;
     try {
-      let status;
-      switch (order_status) {
-        case "PAID":
-          status = "PAID";
-          break;
-        case "NOT PAID":
-          status = "NOT PAID";
-          break;
-        default:
-          reject({ status: 400, error: "Wrong input status" });
-      }
       const query = "UPDATE transactions SET order_status = $2, updated_at = now()  WHERE id = $1 RETURNING id,order_status,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at";
-      const result = await db.query(query, [id, status]);
+      const result = await db.query(query, [id, order_status.toUpperCase()]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "transaction Not Found" });
       }
@@ -134,4 +123,4 @@ const deleteTransaction = (id) => {
   });
 };
 
-module.exports = { getTransactions, createTransaction, findTransaction, updateTransaction, deleteTransaction };
+module.exports = { getOrderById, createTransaction, findTransaction, updateTransaction, deleteTransaction };

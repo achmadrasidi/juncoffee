@@ -11,7 +11,6 @@ const getUserDetail = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -19,16 +18,16 @@ const getUserDetail = async (req, res) => {
 
 const searchUsers = async (req, res) => {
   try {
-    const { data } = await getUsers(req.query);
+    const { total, data } = await getUsers(req.query);
 
     res.status(200).json({
+      total,
       data,
       err: null,
     });
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -45,7 +44,6 @@ const addUser = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -63,7 +61,6 @@ const editUser = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -80,7 +77,6 @@ const editUserPassword = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -97,7 +93,6 @@ const deleteUserById = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }

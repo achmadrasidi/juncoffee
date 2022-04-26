@@ -1,17 +1,17 @@
 const db = require("../config/db.js");
 
-const getPromos = () => {
+const getPromoById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const result = await db.query(
-        "SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,c.name AS category,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM promos p JOIN products prod ON p.product_id = prod.id JOIN category c ON p.category_id = c.id"
+        "SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,c.name AS category,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM promos p JOIN products prod ON p.product_id = prod.id JOIN category c ON p.category_id = c.id WHERE p.id = $1",
+        [id]
       );
       if (result.rowCount === 0) {
-        reject({ status: 404, error: "Promos Not Found" });
+        reject({ status: 404, error: "Promo Not Found" });
       }
       const response = {
-        total: result.rowCount,
-        data: result.rows,
+        data: result.rows[0],
       };
       resolve(response);
     } catch (err) {
@@ -20,20 +20,21 @@ const getPromos = () => {
   });
 };
 
-const findPromo = (query) => {
+const getPromos = (query) => {
   return new Promise(async (resolve, reject) => {
-    const { id, name, product_name, coupon_code, category, order, sort } = query;
+    const { keyword, product_name, coupon_code, category, order, sort } = query;
     try {
       let sqlQuery =
-        "SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id WHERE lower(c.name) = lower($1) OR lower(p.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) LIKE lower('%' || $3 || '%') OR p.id = $4 OR lower(p.coupon_code) LIKE lower('%' || $5 || '%') ";
+        "SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id WHERE lower(c.name) = lower($1) OR lower(p.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) = $3 OR lower(p.coupon_code) = $4 ";
       if (order) {
         sqlQuery += `order by ${sort} ${order}`;
       }
-      const result = await db.query(sqlQuery, [category, name, product_name, id, coupon_code]);
+      const result = await db.query(sqlQuery, [category, keyword, product_name, coupon_code]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Promo Not Found" });
       }
       const response = {
+        total: result.rowCount,
         data: result.rows,
       };
       resolve(response);
@@ -61,11 +62,11 @@ const createPromo = (body) => {
 
 const updatePromo = (body) => {
   return new Promise(async (resolve, reject) => {
-    const { name, description, discount, expired_date, coupon_code, id } = body;
+    const { name, description, discount, expired_date, coupon_code, id, category_id, product_id } = body;
     try {
       const query =
-        "UPDATE promos SET name = $1 , description = $2 , discount = $3 , expired_date = $4 , coupon_code = $5 , category_id,product_id, updated_at = now()  WHERE id = $6 RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
-      const result = await db.query(query, [name, description, discount, expired_date, coupon_code, id]);
+        "UPDATE promos SET name = COALESCE(NULLIF($1, ''), name) , description = COALESCE(NULLIF($2, ''), description) , discount = COALESCE(NULLIF($3, '')::integer, discount) , expired_date = COALESCE(NULLIF($4, '')::date, expired_date) , coupon_code = COALESCE(NULLIF($5, ''), coupon_code),category_id = COALESCE(NULLIF($7, '')::integer, category_id),product_id = COALESCE(NULLIF($8, '')::integer, product_id), updated_at = now()  WHERE id = $6 RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
+      const result = await db.query(query, [name, description, discount, expired_date, coupon_code, id, category_id, product_id]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Promo Not Found" });
       }
@@ -93,4 +94,4 @@ const deletePromo = (id) => {
   });
 };
 
-module.exports = { getPromos, createPromo, findPromo, updatePromo, deletePromo };
+module.exports = { getPromos, createPromo, getPromoById, updatePromo, deletePromo };

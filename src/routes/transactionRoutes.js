@@ -1,17 +1,18 @@
 const Router = require("express").Router();
 
-const { getAllOrders, addTransaction, findOrderByQueries, editTransaction, deleteOrderById } = require("../controllers/transactionController.js");
+const { addTransaction, findOrderByQueries, editTransaction, deleteOrderById, getDetailOrder } = require("../controllers/transactionController.js");
 
-const { orderPostValidator } = require("../middleware/postValidator.js");
+const { orderValidator } = require("../middleware/fieldValidator.js");
+const inputFormatter = require("../middleware/valueValidator.js");
 
-Router.get("/all", getAllOrders);
+Router.get("/detail/:id", inputFormatter, orderValidator, getDetailOrder);
 
-Router.get("/", findOrderByQueries);
+Router.get("/", inputFormatter, orderValidator, findOrderByQueries);
 
-Router.post("/", orderPostValidator, addTransaction);
+Router.post("/", inputFormatter, orderValidator, addTransaction);
 
-Router.patch("/", editTransaction);
+Router.patch("/", inputFormatter, orderValidator, editTransaction);
 
-Router.delete("/:id", deleteOrderById);
+Router.delete("/:id", inputFormatter, orderValidator, deleteOrderById);
 
 module.exports = Router;

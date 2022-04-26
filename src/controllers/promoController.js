@@ -1,8 +1,23 @@
-const { getPromos, createPromo, findPromo, updatePromo, deletePromo } = require("../models/promoModel.js");
+const { getPromos, createPromo, getPromoById, updatePromo, deletePromo } = require("../models/promoModel.js");
 
-const getAllPromos = async (_req, res) => {
+const getDetailPromo = async (req, res) => {
   try {
-    const { total, data } = await getPromos();
+    const { data } = await getPromoById(req.params.id);
+    res.status(200).json({
+      data,
+      error: null,
+    });
+  } catch (err) {
+    const { error, status } = err;
+    res.status(status).json({
+      error,
+    });
+  }
+};
+
+const searchPromos = async (req, res) => {
+  try {
+    const { total, data } = await getPromos(req.query);
     res.status(200).json({
       total,
       data,
@@ -11,23 +26,6 @@ const getAllPromos = async (_req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
-      error,
-    });
-  }
-};
-
-const findPromoByQueries = async (req, res) => {
-  try {
-    const { data } = await findPromo(req.query);
-    res.status(200).json({
-      data,
-      error: null,
-    });
-  } catch (err) {
-    const { error, status } = err;
-    res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -45,7 +43,6 @@ const addPromo = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -63,7 +60,6 @@ const editPromo = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
@@ -81,10 +77,9 @@ const deletePromoById = async (req, res) => {
   } catch (err) {
     const { error, status } = err;
     res.status(status).json({
-      data: [],
       error,
     });
   }
 };
 
-module.exports = { getAllPromos, addPromo, findPromoByQueries, editPromo, deletePromoById };
+module.exports = { getDetailPromo, addPromo, searchPromos, editPromo, deletePromoById };
