@@ -5,7 +5,7 @@ const productController = require("../controllers/productController.js");
 const { productPostValidator } = require("../middleware/postValidator.js");
 const { putValidator } = require("../middleware/putValidator.js");
 
-Router.get("/all", productController.getAllProducts);
+Router.get("/detail/:id", productController.getAllProducts);
 
 Router.get("/", productController.findProductByQueries);
 

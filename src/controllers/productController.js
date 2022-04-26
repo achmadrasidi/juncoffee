@@ -1,8 +1,8 @@
-const { getProducts, createProduct, updateProduct, deleteProduct, findProduct } = require("../models/productModel.js");
+const { getProducts, createProduct, updateProduct, deleteProduct, getProductById } = require("../models/productModel.js");
 
-const getAllProducts = async (_req, res) => {
+const getProductDetail = async (req, res) => {
   try {
-    const { total, data } = await getProducts();
+    const { total, data } = await getProductById(req.params.id);
     res.status(200).json({
       total,
       data,
@@ -19,7 +19,7 @@ const getAllProducts = async (_req, res) => {
 
 const findProductByQueries = async (req, res) => {
   try {
-    const { total, data } = await findProduct(req.query);
+    const { total, data } = await getProducts(req.query);
     res.status(200).json({
       total,
       data,
@@ -85,4 +85,4 @@ const deleteProductById = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, findProductByQueries, addProduct, editProduct, deleteProductById };
+module.exports = { getProductById, findProductByQueries, addProduct, editProduct, deleteProductById };

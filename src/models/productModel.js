@@ -1,6 +1,6 @@
 const db = require("../config/db.js");
 
-const getProducts = () => {
+const getProductById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const query =
@@ -20,7 +20,7 @@ const getProducts = () => {
   });
 };
 
-const findProduct = (query) => {
+const getProducts = (query) => {
   return new Promise(async (resolve, reject) => {
     const { id, name, category, minPrice, maxPrice, order, sort } = query;
     try {
@@ -89,4 +89,4 @@ const deleteProduct = (id) => {
   });
 };
 
-module.exports = { getProducts, findProduct, createProduct, updateProduct, deleteProduct };
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct };

@@ -17,7 +17,7 @@ const getUserDetail = async (req, res) => {
   }
 };
 
-const searchUser = async (req, res) => {
+const searchUsers = async (req, res) => {
   try {
     const { data } = await getUsers(req.query);
 
@@ -103,4 +103,4 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-module.exports = { getUserDetail, searchUser, addUser, deleteUserById, editUser, editUserPassword };
+module.exports = { getUserDetail, searchUsers, addUser, deleteUserById, editUser, editUserPassword };

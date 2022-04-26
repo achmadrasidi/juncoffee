@@ -10,7 +10,7 @@ const getValidator = require("../middleware/getValidator.js");
 Router.get("/detail/:id", userController.getUserDetail);
 
 // search users with query/keyword
-Router.get("/", getValidator, userController.searchUser);
+Router.get("/", getValidator, userController.searchUsers);
 
 // add new user
 Router.post("/", inputFormatter, userPostValidator, userController.addUser);
