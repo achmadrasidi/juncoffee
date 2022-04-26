@@ -1,18 +1,15 @@
 const db = require("../config/db.js");
 const bcrypt = require("bcrypt");
 
-const getUsers = () => {
+const getUserById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const result = await db.query(
-        "SELECT id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(history_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS history_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users"
+        "SELECT id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(history_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS history_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1",
+        [id]
       );
-      if (result.rowCount === 0) {
-        reject({ status: 404, error: "Users Not Found" });
-      }
       const response = {
-        total: result.rowCount,
-        data: result.rows,
+        data: result.rows[0],
       };
       resolve(response);
     } catch (err) {
@@ -21,16 +18,16 @@ const getUsers = () => {
   });
 };
 
-const findUser = (query) => {
+const getUsers = (query) => {
   return new Promise(async (resolve, reject) => {
-    const { id, name, email, address, gender, order, sort } = query;
+    const { keyword, email, gender, order, sort } = query;
     try {
       let sqlQuery =
-        "SELECT  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(history_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS history_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE lower(name) LIKE lower('%' || $2 || '%') OR lower(email) = lower($3) OR lower(address) LIKE lower('%' || $4 || '%') OR lower(gender) = $5 OR id = $1 ";
+        "SELECT id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(history_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS history_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(email) = lower($2) OR lower(address) LIKE lower('%' || $1 || '%') OR lower(gender) = $3";
       if (order) {
         sqlQuery += `order by ${sort} ${order}`;
       }
-      const result = await db.query(sqlQuery, [id, name, email, address, gender]);
+      const result = await db.query(sqlQuery, [keyword, email, gender]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "User Not Found" });
       }
@@ -103,4 +100,4 @@ const deleteUser = (id) => {
   });
 };
 
-module.exports = { getUsers, createUser, deleteUser, updateUserProfile, updateUserPassword, findUser };
+module.exports = { getUserById, createUser, deleteUser, updateUserProfile, updateUserPassword, getUsers };

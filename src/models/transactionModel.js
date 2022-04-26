@@ -25,7 +25,7 @@ const findTransaction = (query) => {
     const { id, user_name, product_name, delivery_method, order, sort } = query;
     try {
       let sqlQuery =
-        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(t.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id WHERE lower(u.name) LIKE lower('%' || $2 || '%') OR lower(p.name) LIKE lower('%' || $3 || '%') OR lower(d.method) = lower($4) OR t.id = $1  ";
+        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(t.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id WHERE lower(u.name) LIKE lower('%' || $2 || '%') OR lower(p.name) LIKE lower('%' || $3 || '%') OR lower(d.method) = lower($4) OR t.id = $1";
       if (order) {
         sqlQuery += `order by ${sort} ${order}`;
       }
