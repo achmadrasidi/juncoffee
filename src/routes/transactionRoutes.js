@@ -5,14 +5,16 @@ const { addTransaction, findOrderByQueries, editTransaction, deleteOrderById, ge
 const { orderValidator } = require("../middleware/fieldValidator.js");
 const inputFormatter = require("../middleware/valueValidator.js");
 
+// ADMIN
+// get transaction details
 Router.get("/detail/:id", inputFormatter, orderValidator, getDetailOrder);
-
+// search transactions
 Router.get("/", inputFormatter, orderValidator, findOrderByQueries);
-
-Router.post("/", inputFormatter, orderValidator, addTransaction);
-
-Router.patch("/", inputFormatter, orderValidator, editTransaction);
-
+// add new transaction
+Router.post("/add", inputFormatter, orderValidator, addTransaction);
+// update order status
+Router.patch("/update", inputFormatter, orderValidator, editTransaction);
+// delete transaction
 Router.delete("/:id", inputFormatter, orderValidator, deleteOrderById);
 
 module.exports = Router;

@@ -1,4 +1,4 @@
-const { getProducts, createProduct, updateProduct, deleteProduct, getProductById } = require("../models/productModel.js");
+const { getProducts, getProductByFav, createProduct, updateProduct, deleteProduct, getProductById } = require("../models/productModel.js");
 
 const getProductDetail = async (req, res) => {
   try {
@@ -18,6 +18,22 @@ const getProductDetail = async (req, res) => {
 const searchProducts = async (req, res) => {
   try {
     const { total, data } = await getProducts(req.query);
+    res.status(200).json({
+      total,
+      data,
+      error: null,
+    });
+  } catch (err) {
+    const { error, status } = err;
+    res.status(status).json({
+      error,
+    });
+  }
+};
+
+const favProduct = async (req, res) => {
+  try {
+    const { total, data } = await getProductByFav(req.query);
     res.status(200).json({
       total,
       data,
@@ -79,4 +95,11 @@ const deleteProductById = async (req, res) => {
   }
 };
 
-module.exports = { searchProducts, getProductDetail, addProduct, editProduct, deleteProductById };
+module.exports = {
+  searchProducts,
+  getProductDetail,
+  favProduct,
+  addProduct,
+  editProduct,
+  deleteProductById,
+};

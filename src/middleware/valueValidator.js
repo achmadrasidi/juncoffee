@@ -68,11 +68,19 @@ const inputFormatter = (req, res, next) => {
       }
     }
 
-    if (key === "delivery_method")
+    if (key === "delivery_method") {
       if (value.toLowerCase() !== "dine in" && value.toLowerCase() !== "door delivery") {
         valid = false;
         error = "delivery_method must be dine in or door delivery";
       }
+    }
+
+    if (key === "category") {
+      if (value.toLowerCase() !== "foods" && value.toLowerCase() !== "beverages") {
+        valid = false;
+        error = "category must be foods or beverages";
+      }
+    }
   }
 
   if (valid === false) {

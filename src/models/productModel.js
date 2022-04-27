@@ -19,6 +19,34 @@ const getProductById = (id) => {
   });
 };
 
+const getProductByFav = (query) => {
+  return new Promise(async (resolve, reject) => {
+    const { category, order, sort } = query;
+    try {
+      let sqlQuery =
+        "SELECT * FROM (SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE p.transaction_count > 3) fp";
+      if (category) {
+        sqlQuery += ` WHERE lower(fp.category) = lower('${category}')`;
+      }
+      if (order) {
+        sqlQuery += ` order by ${sort} ${order}`;
+      }
+      const result = await db.query(sqlQuery);
+      if (result.rowCount === 0) {
+        reject({ status: 404, error: "Product Not Found" });
+      }
+
+      const response = {
+        total: result.rowCount,
+        data: result.rows,
+      };
+      resolve(response);
+    } catch (err) {
+      reject({ status: 500, error: err.message });
+    }
+  });
+};
+
 const getProducts = (query) => {
   return new Promise(async (resolve, reject) => {
     const { keyword, category, minPrice, maxPrice, order, sort } = query;
@@ -94,4 +122,11 @@ const deleteProduct = (id) => {
   });
 };
 
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct };
+module.exports = {
+  getProducts,
+  getProductById,
+  getProductByFav,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};

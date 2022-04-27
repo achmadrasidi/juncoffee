@@ -1,4 +1,4 @@
-const { getUserById, getUsers, createUser, deleteUser, updateUserProfile, updateUserPassword } = require("../models/userModel.js");
+const { getUserById, getUsers, createUser, deleteUser, updateUserProfile, updateUserPassword, getUserHistory } = require("../models/userModel.js");
 
 const getUserDetail = async (req, res) => {
   try {
@@ -19,6 +19,23 @@ const getUserDetail = async (req, res) => {
 const searchUsers = async (req, res) => {
   try {
     const { total, data } = await getUsers(req.query);
+
+    res.status(200).json({
+      total,
+      data,
+      err: null,
+    });
+  } catch (err) {
+    const { error, status } = err;
+    res.status(status).json({
+      error,
+    });
+  }
+};
+
+const userHistory = async (req, res) => {
+  try {
+    const { total, data } = await getUserHistory(req.params.id);
 
     res.status(200).json({
       total,
@@ -98,4 +115,12 @@ const deleteUserById = async (req, res) => {
   }
 };
 
-module.exports = { getUserDetail, searchUsers, addUser, deleteUserById, editUser, editUserPassword };
+module.exports = {
+  getUserDetail,
+  searchUsers,
+  userHistory,
+  addUser,
+  deleteUserById,
+  editUser,
+  editUserPassword,
+};

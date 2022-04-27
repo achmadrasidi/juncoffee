@@ -10,12 +10,13 @@ const validatorHelper = (req, rules) => {
   }
 
   const method = req.method;
+  const path = req.path;
 
   const fields = Object.keys(obj);
   let valid;
   let error;
 
-  if (method === "GET" && !fields.includes("id")) {
+  if (method === "GET" && !fields.includes("id") && path !== "/favourite") {
     if (!fields.includes("order") || !fields.includes("sort")) {
       return {
         valid: false,
@@ -26,6 +27,15 @@ const validatorHelper = (req, rules) => {
       return {
         valid: false,
         error: "Required at least one query to search",
+      };
+    }
+  }
+
+  if (method === "GET" && path === "/favourite") {
+    if ((fields.includes("order") && !fields.includes("sort")) || (fields.includes("sort") && !fields.includes("order"))) {
+      return {
+        valid: false,
+        error: "Missing Required Field(s)",
       };
     }
   }
