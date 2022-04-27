@@ -17,9 +17,10 @@ const inputFormatter = (req, res, next) => {
     const phoneFormat = /^\d{12}$/;
     const numberFormat = /^\d+$/;
     const dateFormat = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-    const number = ["id", "price", "stock", "category_id", "discount", "product_id", "user_id", "quantity", "delivery_id", "minPrice", "maxPrice"];
+    const numberItem = ["id", "price", "stock", "category_id", "discount", "product_id", "user_id", "quantity", "delivery_id", "minPrice", "maxPrice"];
+    const sortItem = ["created_at", "price", "total_price", "discount", "name", "transaction_count", "last_order", "product_name", "expired_date", "quantity"];
 
-    if (number.includes(key)) {
+    if (numberItem.includes(key)) {
       Number(value);
       if (!value.match(numberFormat)) {
         valid = false;
@@ -79,6 +80,20 @@ const inputFormatter = (req, res, next) => {
       if (value.toLowerCase() !== "foods" && value.toLowerCase() !== "beverages") {
         valid = false;
         error = "category must be foods or beverages";
+      }
+    }
+
+    if (key === "order") {
+      if (value.toLowerCase() !== "desc" && value.toLowerCase() !== "asc") {
+        valid = false;
+        error = "Order must be asc or desc";
+      }
+    }
+
+    if (key === "sort") {
+      if (!sortItem.includes(value)) {
+        valid = false;
+        error = "Invalid Sort value ";
       }
     }
   }

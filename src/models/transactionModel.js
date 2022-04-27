@@ -23,12 +23,17 @@ const findTransaction = (query) => {
   return new Promise(async (resolve, reject) => {
     const { keyword, delivery_method, order_status, order, sort } = query;
     try {
+      let parameterize = [];
       let sqlQuery =
-        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(t.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id WHERE lower(t.order_status) = lower($3) OR lower(u.name) LIKE lower('%' || $1 || '%') OR lower(p.name) LIKE lower('%' || $1 || '%') OR lower(d.method) = lower($2) OR lower(t.order_status) LIKE lower('%' || $1 || '%')";
-      if (order) {
-        sqlQuery += `order by ${sort} ${order}`;
+        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id";
+      if (keyword || delivery_method || order_status) {
+        sqlQuery += "WHERE lower(t.order_status) = lower($3) OR lower(u.name) LIKE lower('%' || $1 || '%') OR lower(p.name) LIKE lower('%' || $1 || '%') OR lower(d.method) = lower($2) OR lower(t.order_status) LIKE lower('%' || $1 || '%')";
+        parameterize.push(keyword, delivery_method, order_status);
       }
-      const result = await db.query(sqlQuery, [keyword, delivery_method, order_status]);
+      if (order) {
+        sqlQuery += ` order by ${sort} ${order}`;
+      }
+      const result = await db.query(sqlQuery, parameterize);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Transaction Not Found" });
       }

@@ -8,7 +8,7 @@ const inputFormatter = require("../middleware/valueValidator.js");
 // ADMIN
 // get transaction details
 Router.get("/detail/:id", inputFormatter, orderValidator, getDetailOrder);
-// search transactions
+// get all transactions or search transactions
 Router.get("/", inputFormatter, orderValidator, findOrderByQueries);
 // add new transaction
 Router.post("/add", inputFormatter, orderValidator, addTransaction);

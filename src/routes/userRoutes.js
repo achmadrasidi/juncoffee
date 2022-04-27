@@ -19,7 +19,7 @@ Router.patch("/edit-password", inputFormatter, userValidator, userController.edi
 Router.delete("/:id", inputFormatter, userValidator, userController.deleteUserById);
 
 // ADMIN
-// search users with query
+// get all users, search users
 Router.get("/", inputFormatter, userValidator, userController.searchUsers);
 
 // add new user

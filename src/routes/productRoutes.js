@@ -8,7 +8,7 @@ const inputFormatter = require("../middleware/valueValidator.js");
 // USER
 // get product detail
 Router.get("/detail/:id", inputFormatter, productValidator, productController.getProductDetail);
-// search,filter,sort product
+// get all,search product
 Router.get("/", inputFormatter, productValidator, productController.searchProducts);
 // favourite product
 Router.get("/favourite", inputFormatter, productValidator, productController.favProduct);

@@ -24,9 +24,9 @@ const getUserById = (id) => {
 const getUserHistory = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const query =
+      let sqlQuery =
         "SELECT t.id AS order_id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at FROM users u JOIN transactions t ON u.id = t.user_id JOIN products p ON t.product_id = p.id JOIN delivery d ON t.delivery_id = d.id WHERE u.id = $1";
-      const result = await db.query(query, [id]);
+      const result = await db.query(sqlQuery, [id]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "No History Found" });
       }
@@ -45,12 +45,19 @@ const getUsers = (query) => {
   return new Promise(async (resolve, reject) => {
     const { keyword, email, gender, order, sort } = query;
     try {
+      let parameterize = [];
       let sqlQuery =
-        "SELECT id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(email) = lower($2) OR lower(address) LIKE lower('%' || $1 || '%') OR lower(gender) = $3";
+        "SELECT id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users ";
+
+      if (keyword || email || gender) {
+        sqlQuery += "WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(email) = lower($2) OR lower(address) LIKE lower('%' || $1 || '%') OR lower(gender) = $3";
+        parameterize.push(keyword, email, gender);
+      }
+
       if (order) {
         sqlQuery += `order by ${sort} ${order}`;
       }
-      const result = await db.query(sqlQuery, [keyword, email, gender]);
+      const result = await db.query(sqlQuery, parameterize);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "User Not Found" });
       }

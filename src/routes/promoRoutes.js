@@ -8,7 +8,7 @@ const inputFormatter = require("../middleware/valueValidator.js");
 // USER
 // get promo details
 Router.get("/detail/:id", inputFormatter, promoValidator, promoController.getDetailPromo);
-// search promo
+// view all promo,search promo
 Router.get("/", inputFormatter, promoValidator, promoController.searchPromos);
 
 // ADMIN
