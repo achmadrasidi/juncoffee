@@ -23,15 +23,17 @@ const getProductByFav = (query) => {
   return new Promise(async (resolve, reject) => {
     const { category, order, sort } = query;
     try {
+      let parameterize = [];
       let sqlQuery =
         "SELECT * FROM (SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE p.transaction_count > 3) fp";
       if (category) {
-        sqlQuery += ` WHERE lower(fp.category) = lower('${category}')`;
+        sqlQuery += " WHERE lower(fp.category) = lower($1)";
+        parameterize.push(category);
       }
       if (order) {
-        sqlQuery += ` order by ${sort} ${order}`;
+        sqlQuery += " order by " + sort + " " + order;
       }
-      const result = await db.query(sqlQuery);
+      const result = await db.query(sqlQuery, parameterize);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Product Not Found" });
       }
@@ -56,11 +58,11 @@ const getProducts = (query) => {
         "SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id ";
 
       if (keyword || category || minPrice || maxPrice) {
-        sqlQuery += "WHERE lower(c.name) = lower($2) OR lower(p.name) LIKE lower('%' || $1 || '%') OR p.price >= $3 AND p.price <= $4";
+        sqlQuery += " WHERE lower(c.name) = lower($2) OR lower(p.name) LIKE lower('%' || $1 || '%') OR p.price >= $3 AND p.price <= $4";
         parameterize.push(keyword, category, minPrice, maxPrice);
       }
       if (order) {
-        sqlQuery += `order by ${sort} ${order}`;
+        sqlQuery += " order by " + sort + " " + order;
       }
 
       const result = await db.query(sqlQuery, parameterize);

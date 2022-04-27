@@ -55,13 +55,12 @@ const getUsers = (query) => {
       }
 
       if (order) {
-        sqlQuery += `order by ${sort} ${order}`;
+        sqlQuery += " order by " + sort + " " + order;
       }
       const result = await db.query(sqlQuery, parameterize);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "User Not Found" });
       }
-      console.log(result);
       const response = {
         total: result.rowCount,
         data: result.rows,

@@ -28,11 +28,11 @@ const getPromos = (query) => {
       let sqlQuery =
         "SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id";
       if (keyword || product_name || coupon_code || category) {
-        sqlQuery += "WHERE lower(c.name) = lower($1) OR lower(p.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) = $3 OR lower(p.coupon_code) = $4";
+        sqlQuery += " WHERE lower(c.name) = lower($1) OR lower(p.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) = $3 OR lower(p.coupon_code) = $4";
         parameterize.push(category, keyword, product_name, coupon_code);
       }
       if (order) {
-        sqlQuery += ` order by ${sort} ${order}`;
+        sqlQuery += " order by " + sort + " " + order;
       }
       const result = await db.query(sqlQuery, parameterize);
       if (result.rowCount === 0) {
