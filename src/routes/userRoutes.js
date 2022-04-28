@@ -10,9 +10,9 @@ Router.get("/detail/:id", inputFormatter, userValidator, userController.getUserD
 // get user history
 Router.get("/order/:id", inputFormatter, userValidator, userController.userHistory);
 // edit user detail
-Router.put("/edit-profile", inputFormatter, userValidator, userController.editUser);
+Router.put("/:id", inputFormatter, userValidator, userController.editUser);
 // edit user password
-Router.patch("/edit-password", inputFormatter, userValidator, userController.editUserPassword);
+Router.patch("/:id", inputFormatter, userValidator, userController.editUserPassword);
 
 // USER AND ADMIN
 // delete user by id
@@ -23,6 +23,6 @@ Router.delete("/:id", inputFormatter, userValidator, userController.deleteUserBy
 Router.get("/", inputFormatter, userValidator, userController.searchUsers);
 
 // add new user
-Router.post("/add", inputFormatter, userValidator, userController.addUser);
+Router.post("/", inputFormatter, userValidator, userController.addUser);
 
 module.exports = Router;

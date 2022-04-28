@@ -15,9 +15,9 @@ Router.get("/favourite", inputFormatter, productValidator, productController.fav
 
 // ADMIN
 // add new product
-Router.post("/add", inputFormatter, productValidator, productController.addProduct);
+Router.post("/", inputFormatter, productValidator, productController.addProduct);
 // edit product detail
-Router.put("/edit", inputFormatter, productValidator, productController.editProduct);
+Router.put("/:id", inputFormatter, productValidator, productController.editProduct);
 // delete product
 Router.delete("/:id", inputFormatter, productValidator, productController.deleteProductById);
 

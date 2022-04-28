@@ -11,9 +11,9 @@ Router.get("/detail/:id", inputFormatter, orderValidator, getDetailOrder);
 // get all transactions or search transactions
 Router.get("/", inputFormatter, orderValidator, findOrderByQueries);
 // add new transaction
-Router.post("/add", inputFormatter, orderValidator, addTransaction);
+Router.post("/", inputFormatter, orderValidator, addTransaction);
 // update order status
-Router.patch("/update", inputFormatter, orderValidator, editTransaction);
+Router.patch("/:id", inputFormatter, orderValidator, editTransaction);
 // delete transaction
 Router.delete("/:id", inputFormatter, orderValidator, deleteOrderById);
 

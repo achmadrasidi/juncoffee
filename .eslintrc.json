@@ -10,6 +10,7 @@
   },
   "rules": {
     "semi": ["warning", "always"],
-    "quotes": ["warning", "double"]
+    "quotes": ["warning", "double"],
+    "no-use-before-define": ["error", { "functions": true, "classes": true, "variables": true }]
   }
 }

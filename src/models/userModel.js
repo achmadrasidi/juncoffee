@@ -5,7 +5,7 @@ const getUserById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const result = await db.query(
-        "SELECT id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1",
+        "SELECT id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1",
         [id]
       );
       if (result.rowCount === 0) {
@@ -47,11 +47,41 @@ const getUsers = (query) => {
     try {
       let parameterize = [];
       let sqlQuery =
-        "SELECT id,name,email,password,phone_number,address,date_of_birth,gender,last_order,created_at,updated_at FROM(SELECT id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,date_of_birth AS birthday,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, created_at AS created_date,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users) u ";
+        "SELECT id,name,email,phone_number,address,date_of_birth,gender,last_order,created_at,updated_at FROM(SELECT id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,date_of_birth AS birthday,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, created_at AS date,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users) u ";
 
-      if (keyword || email || gender) {
-        sqlQuery += "WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(email) = lower($2) OR lower(address) LIKE lower('%' || $1 || '%') OR lower(gender) = $3";
-        parameterize.push(keyword, email, gender);
+      if (keyword && !email && !gender) {
+        sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%')  OR lower(address) LIKE lower('%' || $1 || '%')";
+        parameterize.push(keyword);
+      }
+
+      if (email && !keyword && !gender) {
+        sqlQuery += " WHERE lower(email) = lower($1)";
+        parameterize.push(email);
+      }
+
+      if (gender && !keyword && !email) {
+        sqlQuery += " WHERE lower(gender) = lower($1)";
+        parameterize.push(gender);
+      }
+
+      if (gender && email && !keyword) {
+        sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(email) = lower($2) AND lower(address) LIKE lower('%' || $1 || '%')";
+        parameterize.push(gender, email);
+      }
+
+      if (keyword && email && !gender) {
+        sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%') AND lower(email) = lower($2) ";
+        parameterize.push(keyword, email);
+      }
+
+      if (keyword && gender && !email) {
+        sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%') AND lower(gender) = lower($2) ";
+        parameterize.push(keyword, gender);
+      }
+
+      if (keyword && gender && email) {
+        sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%') AND lower(gender) = lower($2) AND lower(gender) = lower($3) ";
+        parameterize.push(keyword, gender, email);
       }
 
       if (order) {
@@ -79,7 +109,7 @@ const createUser = (body) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 12);
       const query =
-        "INSERT INTO users(name,email,password,phone_number,address,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
+        "INSERT INTO users(name,email,phone_number,address,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
       const result = await db.query(query, [name, email, hashedPassword, phone_number, address, date_of_birth, gender]);
       const response = { data: result.rows[0], message: "Successfully Created" };
       resolve(response);
@@ -89,9 +119,9 @@ const createUser = (body) => {
   });
 };
 
-const updateUserProfile = (body) => {
+const updateUserProfile = (body, id) => {
   return new Promise(async (resolve, reject) => {
-    const { id, name, email, phone_number, address, date_of_birth, gender } = body;
+    const { name, email, phone_number, address, date_of_birth, gender } = body;
     try {
       const query =
         "UPDATE users SET name = COALESCE(NULLIF($1, ''), name),email = COALESCE(NULLIF($2, ''), email),phone_number = COALESCE(NULLIF($3, ''), phone_number),address = COALESCE(NULLIF($4, ''), address),date_of_birth = COALESCE(NULLIF($5, '')::date, date_of_birth),gender = COALESCE(NULLIF($6, ''), gender),updated_at = now() WHERE id = $7 RETURNING id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
@@ -99,7 +129,7 @@ const updateUserProfile = (body) => {
       if (result.rowCount === 0) {
         reject({ status: 404, error: "User Not Found" });
       }
-      const response = { data: result.rows[0], message: "Successfully Updated" };
+      const response = { data: result.rows[0], message: "User Profile Successfully Updated" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });
@@ -107,7 +137,7 @@ const updateUserProfile = (body) => {
   });
 };
 
-const updateUserPassword = ({ password, id }) => {
+const updateUserPassword = ({ password }, id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -116,7 +146,7 @@ const updateUserPassword = ({ password, id }) => {
       if (result.rowCount === 0) {
         reject({ status: 404, error: "User Not Found" });
       }
-      const response = { data: result.rows[0], message: "Successfully Updated" };
+      const response = { data: result.rows[0], message: "User Password Successfully Updated" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });
@@ -132,7 +162,7 @@ const deleteUser = (id) => {
       if (result.rowCount === 0) {
         reject({ status: 404, error: "User Not Found" });
       }
-      const response = { data: result.rows[0], message: "Successfully Deleted" };
+      const response = { data: result.rows[0], message: "User Successfully Deleted" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });

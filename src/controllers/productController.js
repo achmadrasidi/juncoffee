@@ -65,7 +65,7 @@ const addProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   try {
-    const { data, message } = await updateProduct(req.body);
+    const { data, message } = await updateProduct(req.body, req.params.id);
     res.status(200).json({
       data,
       message,

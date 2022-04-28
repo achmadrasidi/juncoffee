@@ -57,7 +57,7 @@ const createPromo = (body) => {
       const query =
         "INSERT INTO promos(name,description,discount,expired_date,category_id,product_id,coupon_code) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
       const result = await db.query(query, [name, description, discount, expired_date, category_id, product_id, coupon_code]);
-      const response = { data: result.rows[0], message: "Successfully Created" };
+      const response = { data: result.rows[0], message: "Promo Successfully Created" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });
@@ -65,9 +65,9 @@ const createPromo = (body) => {
   });
 };
 
-const updatePromo = (body) => {
+const updatePromo = (body, id) => {
   return new Promise(async (resolve, reject) => {
-    const { name, description, discount, expired_date, coupon_code, id, category_id, product_id } = body;
+    const { name, description, discount, expired_date, coupon_code, category_id, product_id } = body;
     try {
       const query =
         "UPDATE promos SET name = COALESCE(NULLIF($1, ''), name) , description = COALESCE(NULLIF($2, ''), description) , discount = COALESCE(NULLIF($3, '')::integer, discount) , expired_date = COALESCE(NULLIF($4, '')::date, expired_date) , coupon_code = COALESCE(NULLIF($5, ''), coupon_code),category_id = COALESCE(NULLIF($7, '')::integer, category_id),product_id = COALESCE(NULLIF($8, '')::integer, product_id), updated_at = now()  WHERE id = $6 RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
@@ -75,7 +75,7 @@ const updatePromo = (body) => {
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Promo Not Found" });
       }
-      const response = { data: result.rows[0], message: "Successfully Updated" };
+      const response = { data: result.rows[0], message: "Promo Successfully Updated" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });
@@ -91,7 +91,7 @@ const deletePromo = (id) => {
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Promo Not Found" });
       }
-      const response = { data: result.rows[0], message: "Successfully Deleted" };
+      const response = { data: result.rows[0], message: "Promo Successfully Deleted" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });

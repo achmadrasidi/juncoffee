@@ -50,7 +50,7 @@ const addTransaction = async (req, res) => {
 
 const editTransaction = async (req, res) => {
   try {
-    const { data, message } = await updateTransaction(req.body);
+    const { data, message } = await updateTransaction(req.body, req.params.id);
 
     res.status(200).json({
       data,

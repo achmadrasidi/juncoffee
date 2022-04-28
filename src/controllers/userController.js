@@ -68,7 +68,7 @@ const addUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   try {
-    const { data, message } = await updateUserProfile(req.body);
+    const { data, message } = await updateUserProfile(req.body, req.params.id);
 
     res.status(200).json({
       data,
@@ -85,7 +85,7 @@ const editUser = async (req, res) => {
 
 const editUserPassword = async (req, res) => {
   try {
-    const { data, message } = await updateUserPassword(req.body);
+    const { data, message } = await updateUserPassword(req.body, req.params.id);
     res.status(200).json({
       data,
       message,

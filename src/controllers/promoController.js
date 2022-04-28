@@ -50,7 +50,7 @@ const addPromo = async (req, res) => {
 
 const editPromo = async (req, res) => {
   try {
-    const { data, message } = await updatePromo(req.body);
+    const { data, message } = await updatePromo(req.body, req.params.id);
 
     res.status(200).json({
       data,

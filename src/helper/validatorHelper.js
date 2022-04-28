@@ -8,7 +8,6 @@ const validatorHelper = (req, rules) => {
   } else {
     obj = req.params;
   }
-
   const method = req.method;
 
   const fields = Object.keys(obj);
@@ -42,11 +41,10 @@ const validatorHelper = (req, rules) => {
   }
 
   if (method === "PUT" || method === "PATCH") {
-    if (!fields.includes("id")) {
-      return { valid: false, error: "Missing Required Field(s)" };
-    }
-    if (fields.length < 2) {
-      return { valid: false, error: "Required at least 1 field to edit" };
+    if (fields.includes("id")) {
+      if (fields.length < 2) {
+        return { valid: false, error: "Required at least 1 field to edit" };
+      }
     }
   }
 

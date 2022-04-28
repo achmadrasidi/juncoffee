@@ -25,7 +25,7 @@ const findTransaction = (query) => {
     try {
       let parameterize = [];
       let sqlQuery =
-        "SELECT id,user_name,product_name,product_price,shipping_address,quantity,subtotal,delivery_method,shipping_price,tax_price,total_price,created_at,order_status FROM(SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,t.created_at AS created_date,t.order_status FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id) td";
+        "SELECT id,user_name,product_name,product_price,shipping_address,quantity,subtotal,delivery_method,shipping_price,tax_price,total_price,created_at,order_status FROM(SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,t.created_at AS date,t.order_status FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id) td";
       if (keyword || delivery_method || order_status) {
         sqlQuery +=
           " WHERE lower(order_status) = lower($3) OR lower(user_name) LIKE lower('%' || $1 || '%') OR lower(product_name) LIKE lower('%' || $1 || '%') OR lower(delivery_method) = lower($2) OR lower(order_status) LIKE lower('%' || $1 || '%')";
@@ -86,7 +86,7 @@ const createTransaction = (body) => {
 
       const result = await db.query(updateQUery, [user_id, product_id, subtotal, shipping_price, tax_price, total_price, quantity, address, delivery_id, coupon_code]);
       await db.query("COMMIT");
-      const response = { data: result.rows[0], message: "Successfully Created" };
+      const response = { data: result.rows[0], message: "Transaction Successfully Created" };
       resolve(response);
     } catch (err) {
       await db.query("ROLLBACK");
@@ -95,9 +95,8 @@ const createTransaction = (body) => {
   });
 };
 
-const updateTransaction = (body) => {
+const updateTransaction = ({ order_status }, id) => {
   return new Promise(async (resolve, reject) => {
-    const { id, order_status } = body;
     try {
       const query = "UPDATE transactions SET order_status = $2, updated_at = now()  WHERE id = $1 RETURNING id,order_status,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at";
       const result = await db.query(query, [id, order_status.toUpperCase()]);
@@ -105,7 +104,7 @@ const updateTransaction = (body) => {
         reject({ status: 404, error: "transaction Not Found" });
       }
 
-      const response = { data: result.rows[0], message: "Successfully Updated" };
+      const response = { data: result.rows[0], message: "Transaction Successfully Updated" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });
@@ -121,7 +120,7 @@ const deleteTransaction = (id) => {
       if (result.rowCount === 0) {
         reject({ status: 404, error: "Transaction Not Found" });
       }
-      const response = { data: result.rows[0], message: "Successfully Deleted" };
+      const response = { data: result.rows[0], message: "Transaction Successfully Deleted" };
       resolve(response);
     } catch (err) {
       reject({ status: 500, error: err.message });
