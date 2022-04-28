@@ -109,7 +109,7 @@ const createUser = (body) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 12);
       const query =
-        "INSERT INTO users(name,email,phone_number,address,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
+        "INSERT INTO users(name,email,password,phone_number,address,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
       const result = await db.query(query, [name, email, hashedPassword, phone_number, address, date_of_birth, gender]);
       const response = { data: result.rows[0], message: "Successfully Created" };
       resolve(response);
