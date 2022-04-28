@@ -25,9 +25,10 @@ const findTransaction = (query) => {
     try {
       let parameterize = [];
       let sqlQuery =
-        "SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id";
+        "SELECT id,user_name,product_name,product_price,shipping_address,quantity,subtotal,delivery_method,shipping_price,tax_price,total_price,created_at,order_status FROM(SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,t.created_at AS created_date,t.order_status FROM transactions t JOIN users u on t.user_id = u.id JOIN products p on t.product_id = p.id JOIN delivery d on t.delivery_id = d.id) td";
       if (keyword || delivery_method || order_status) {
-        sqlQuery += " WHERE lower(t.order_status) = lower($3) OR lower(u.name) LIKE lower('%' || $1 || '%') OR lower(p.name) LIKE lower('%' || $1 || '%') OR lower(d.method) = lower($2) OR lower(t.order_status) LIKE lower('%' || $1 || '%')";
+        sqlQuery +=
+          " WHERE lower(order_status) = lower($3) OR lower(user_name) LIKE lower('%' || $1 || '%') OR lower(product_name) LIKE lower('%' || $1 || '%') OR lower(delivery_method) = lower($2) OR lower(order_status) LIKE lower('%' || $1 || '%')";
         parameterize.push(keyword, delivery_method, order_status);
       }
       if (order) {

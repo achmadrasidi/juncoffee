@@ -25,9 +25,9 @@ const getProductByFav = (query) => {
     try {
       let parameterize = [];
       let sqlQuery =
-        "SELECT * FROM (SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE p.transaction_count > 3) fp";
+        "SELECT id,name,price,description,stock,delivery_info,transaction_count,created_at,category FROM (SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,created_at AS created_date,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE p.transaction_count > 3) fp";
       if (category) {
-        sqlQuery += " WHERE lower(fp.category) = lower($1)";
+        sqlQuery += " WHERE lower(category) = lower($1)";
         parameterize.push(category);
       }
       if (order) {
@@ -55,10 +55,10 @@ const getProducts = (query) => {
     try {
       let parameterize = [];
       let sqlQuery =
-        "SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id ";
+        "SELECT id,name,price,description,stock,delivery_info,transaction_count,created_at,updated_at,category FROM (SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.transaction_count,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,created_at AS created_date,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,updated_at AS updated_date,c.name AS category FROM products p JOIN category c ON p.category_id = c.id) p ";
 
       if (keyword || category || minPrice || maxPrice) {
-        sqlQuery += " WHERE lower(c.name) = lower($2) OR lower(p.name) LIKE lower('%' || $1 || '%') OR p.price >= $3 AND p.price <= $4";
+        sqlQuery += " WHERE lower(category) = lower($2) OR lower(name) LIKE lower('%' || $1 || '%') OR price >= $3 AND price <= $4";
         parameterize.push(keyword, category, minPrice, maxPrice);
       }
       if (order) {

@@ -18,7 +18,7 @@ const inputFormatter = (req, res, next) => {
     const numberFormat = /^\d+$/;
     const dateFormat = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
     const numberItem = ["id", "price", "stock", "category_id", "discount", "product_id", "user_id", "quantity", "delivery_id", "minPrice", "maxPrice"];
-    const sortItem = ["created_at", "price", "total_price", "discount", "name", "transaction_count", "last_order", "product_name", "expired_date", "quantity"];
+    const sortItem = ["id", "created_date", "birthday", "price", "total_price", "discount", "name", "transaction_count", "product_name", "expired", "quantity"];
 
     if (numberItem.includes(key)) {
       Number(value);

@@ -26,9 +26,9 @@ const getPromos = (query) => {
     try {
       let parameterize = [];
       let sqlQuery =
-        "SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id";
+        "SELECT id,name,product_name,price,description,discount,coupon_code,expired_date,category FROM (SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,expired_date AS expired,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id) promo";
       if (keyword || product_name || coupon_code || category) {
-        sqlQuery += " WHERE lower(c.name) = lower($1) OR lower(p.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) LIKE lower('%' || $2 || '%') OR lower(prod.name) = $3 OR lower(p.coupon_code) = $4";
+        sqlQuery += " WHERE lower(category) = lower($1) OR lower(name) LIKE lower('%' || $2 || '%') OR lower(product_name) LIKE lower('%' || $2 || '%') OR lower(product_name) = $3 OR lower(coupon_code) = $4";
         parameterize.push(category, keyword, product_name, coupon_code);
       }
       if (order) {
