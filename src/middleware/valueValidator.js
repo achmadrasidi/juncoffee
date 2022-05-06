@@ -11,6 +11,7 @@ const inputFormatter = (req, res, next) => {
 
   let valid = true;
   let error;
+
   for (const key in obj) {
     const value = obj[key];
     const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

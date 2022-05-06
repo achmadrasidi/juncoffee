@@ -9,7 +9,7 @@ const validatorHelper = (req, rules) => {
     obj = req.params;
   }
   const method = req.method;
-
+  const path = req.baseUrl;
   const fields = Object.keys(obj);
   let valid;
   let error;
@@ -40,17 +40,11 @@ const validatorHelper = (req, rules) => {
     return { error, valid };
   }
 
-  if (method === "PUT" || method === "PATCH") {
+  if (method === "PATCH" && path !== "/transaction") {
     if (fields.includes("id")) {
       if (fields.length < 2) {
         return { valid: false, error: "Required at least 1 field to edit" };
       }
-    }
-  }
-
-  if (method === "DELETE") {
-    if (!fields.includes("id")) {
-      return { valid: false, error: "Missing Required Field(s)" };
     }
   }
 

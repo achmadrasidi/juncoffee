@@ -95,11 +95,11 @@ const createTransaction = (body) => {
   });
 };
 
-const updateTransaction = ({ order_status }, id) => {
+const updateTransaction = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const query = "UPDATE transactions SET order_status = $2, updated_at = now()  WHERE id = $1 RETURNING id,order_status,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at";
-      const result = await db.query(query, [id, order_status.toUpperCase()]);
+      const query = "UPDATE transactions SET order_status = 'PAID', updated_at = now()  WHERE id = $1 RETURNING id,order_status,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at";
+      const result = await db.query(query, [id]);
       if (result.rowCount === 0) {
         reject({ status: 404, error: "transaction Not Found" });
       }
