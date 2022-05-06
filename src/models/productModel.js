@@ -92,6 +92,7 @@ const getProducts = (query) => {
         parameterize.push(keyword, category, minPrice, maxPrice);
       }
 
+      // switch case
       if (order) {
         sqlQuery += " order by " + sort + " " + order;
       }

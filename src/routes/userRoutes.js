@@ -10,9 +10,9 @@ Router.get("/detail/:id", inputFormatter, userValidator, userController.getUserD
 // get user history
 Router.get("/order/:id", inputFormatter, userValidator, userController.userHistory);
 // edit user detail
-Router.put("/:id", inputFormatter, userValidator, userController.editUser);
+Router.patch("/edit-profile/:id", inputFormatter, userValidator, userController.editUser);
 // edit user password
-Router.patch("/:id", inputFormatter, userValidator, userController.editUserPassword);
+Router.patch("/edit-password/:id", inputFormatter, userValidator, userController.editUserPassword);
 
 // USER AND ADMIN
 // delete user by id

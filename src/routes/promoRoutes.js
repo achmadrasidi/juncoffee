@@ -15,7 +15,7 @@ Router.get("/", inputFormatter, promoValidator, promoController.searchPromos);
 // add new promo
 Router.post("/", inputFormatter, promoValidator, promoController.addPromo);
 // edit promo
-Router.put("/:id", inputFormatter, promoValidator, promoController.editPromo);
+Router.patch("/:id", inputFormatter, promoValidator, promoController.editPromo);
 // delete promo
 Router.delete("/:id", inputFormatter, promoValidator, promoController.deletePromoById);
 
