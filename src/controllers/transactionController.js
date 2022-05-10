@@ -5,12 +5,11 @@ const getDetailOrder = async (req, res) => {
     const { data } = await getOrderById(req.params.id);
     res.status(200).json({
       data,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -21,12 +20,11 @@ const findOrderByQueries = async (req, res) => {
     res.status(200).json({
       total,
       data,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -38,12 +36,11 @@ const addTransaction = async (req, res) => {
     res.status(201).json({
       data,
       message,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -55,12 +52,11 @@ const editTransaction = async (req, res) => {
     res.status(200).json({
       data,
       message,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -72,12 +68,11 @@ const deleteOrderById = async (req, res) => {
     res.status(200).json({
       data,
       message,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };

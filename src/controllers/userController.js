@@ -6,12 +6,11 @@ const getUserDetail = async (req, res) => {
 
     res.status(200).json({
       data,
-      err: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -19,16 +18,14 @@ const getUserDetail = async (req, res) => {
 const searchUsers = async (req, res) => {
   try {
     const { total, data } = await getUsers(req.query);
-
     res.status(200).json({
       total,
       data,
-      err: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -36,16 +33,14 @@ const searchUsers = async (req, res) => {
 const userHistory = async (req, res) => {
   try {
     const { total, data } = await getUserHistory(req.params.id);
-
     res.status(200).json({
       total,
       data,
-      err: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -56,12 +51,11 @@ const addUser = async (req, res) => {
     res.status(201).json({
       data,
       message,
-      err: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -69,16 +63,14 @@ const addUser = async (req, res) => {
 const editUser = async (req, res) => {
   try {
     const { data, message } = await updateUserProfile(req.body, req.params.id);
-
     res.status(200).json({
       data,
       message,
-      err: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -89,12 +81,11 @@ const editUserPassword = async (req, res) => {
     res.status(200).json({
       data,
       message,
-      err: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -105,12 +96,11 @@ const deleteUserById = async (req, res) => {
     res.status(200).json({
       data,
       message,
-      err: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };

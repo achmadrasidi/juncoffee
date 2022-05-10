@@ -5,12 +5,11 @@ const getProductDetail = async (req, res) => {
     const { data } = await getProductById(req.params.id);
     res.status(200).json({
       data,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -21,12 +20,11 @@ const searchProducts = async (req, res) => {
     res.status(200).json({
       total,
       data,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -37,12 +35,11 @@ const favProduct = async (req, res) => {
     res.status(200).json({
       total,
       data,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -53,12 +50,11 @@ const addProduct = async (req, res) => {
     res.status(201).json({
       data,
       message,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -69,12 +65,11 @@ const editProduct = async (req, res) => {
     res.status(200).json({
       data,
       message,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
@@ -85,12 +80,11 @@ const deleteProductById = async (req, res) => {
     res.status(200).json({
       data,
       message,
-      error: null,
     });
   } catch (err) {
-    const { error, status } = err;
+    const { message, status } = err;
     res.status(status).json({
-      error,
+      error: message,
     });
   }
 };
