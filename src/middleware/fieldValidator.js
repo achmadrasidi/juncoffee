@@ -1,7 +1,7 @@
 const validatorHelper = require("../helper/validatorHelper.js");
 
 const userValidator = (req, res, next) => {
-  const rules = ["name", "email", "password", "phone_number"];
+  const rules = ["email", "password", "phone_number"];
   const { error, valid } = validatorHelper(req, rules);
 
   if (valid === false) {

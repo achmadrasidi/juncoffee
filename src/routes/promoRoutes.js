@@ -3,20 +3,20 @@ const Router = require("express").Router();
 const promoController = require("../controllers/promoController.js");
 
 const { promoValidator } = require("../middleware/fieldValidator.js");
-const inputFormatter = require("../middleware/valueValidator.js");
+const { valueValidator } = require("../middleware/valueValidator.js");
 
 // USER
 // get promo details
-Router.get("/detail/:id", inputFormatter, promoValidator, promoController.getDetailPromo);
+Router.get("/detail/:id", valueValidator, promoController.getDetailPromo);
 // view all promo,search promo
-Router.get("/", inputFormatter, promoValidator, promoController.searchPromos);
+Router.get("/", valueValidator, promoValidator, promoController.searchPromos);
 
 // ADMIN
 // add new promo
-Router.post("/", inputFormatter, promoValidator, promoController.addPromo);
+Router.post("/", valueValidator, promoValidator, promoController.addPromo);
 // edit promo
-Router.patch("/:id", inputFormatter, promoValidator, promoController.editPromo);
+Router.patch("/:id", valueValidator, promoValidator, promoController.editPromo);
 // delete promo
-Router.delete("/:id", inputFormatter, promoValidator, promoController.deletePromoById);
+Router.delete("/:id", valueValidator, promoController.deletePromoById);
 
 module.exports = Router;

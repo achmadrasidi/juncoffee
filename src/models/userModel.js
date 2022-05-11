@@ -36,6 +36,13 @@ const getUserHistory = async (id) => {
   }
 };
 
+const getUserByEmail = async (email) => {
+  try {
+    return await db.query("SELECT email FROM users WHERE email = $1", [email]);
+  } catch (err) {
+    throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
+  }
+};
 const getUsers = async (query) => {
   const { keyword, email, gender, order, sort } = query;
   try {
@@ -101,7 +108,7 @@ const createUser = async (body) => {
     const query =
       "INSERT INTO users(name,email,password,phone_number,address,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
     const result = await db.query(query, [name, email, hashedPassword, phone_number, address, date_of_birth, gender]);
-    return { data: result.rows[0], message: "Successfully Created" };
+    return { data: result.rows[0], message: "User Successfully Created" };
   } catch (err) {
     throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
   }
@@ -151,6 +158,7 @@ const deleteUser = async (id) => {
 
 module.exports = {
   getUserById,
+  getUserByEmail,
   createUser,
   deleteUser,
   updateUserProfile,
