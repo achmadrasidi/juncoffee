@@ -5,7 +5,7 @@ const ErrorHandler = require("../helper/errorHandler");
 const getUserById = async (id) => {
   try {
     const result = await db.query(
-      "SELECT id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1",
+      "SELECT id,name,email,phone_number,address,role,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1",
       [id]
     );
     if (result.rowCount === 0) {
@@ -36,13 +36,6 @@ const getUserHistory = async (id) => {
   }
 };
 
-const getUserByEmail = async (email) => {
-  try {
-    return await db.query("SELECT email FROM users WHERE email = $1", [email]);
-  } catch (err) {
-    throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
-  }
-};
 const getUsers = async (query) => {
   const { keyword, email, gender, order, sort } = query;
   try {
@@ -102,12 +95,12 @@ const getUsers = async (query) => {
 };
 
 const createUser = async (body) => {
-  const { name, email, password, phone_number, address, date_of_birth, gender } = body;
+  const { name, email, password, phone_number, address, date_of_birth, gender, role } = body;
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
     const query =
-      "INSERT INTO users(name,email,password,phone_number,address,date_of_birth,gender) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
-    const result = await db.query(query, [name, email, hashedPassword, phone_number, address, date_of_birth, gender]);
+      "INSERT INTO users(name,email,password,phone_number,address,date_of_birth,gender,role) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING  id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
+    const result = await db.query(query, [name, email, hashedPassword, phone_number, address, date_of_birth, gender, role]);
     return { data: result.rows[0], message: "User Successfully Created" };
   } catch (err) {
     throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
@@ -158,7 +151,6 @@ const deleteUser = async (id) => {
 
 module.exports = {
   getUserById,
-  getUserByEmail,
   createUser,
   deleteUser,
   updateUserProfile,

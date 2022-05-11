@@ -1,4 +1,4 @@
-const { getUserByEmail } = require("../models/userModel.js");
+const { getUserByEmail } = require("../models/authModel.js");
 
 const duplicateValidator = async (req, res, next) => {
   try {

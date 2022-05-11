@@ -1,28 +1,29 @@
 const Router = require("express").Router();
 
-const userController = require("../controllers/userController.js");
+const { getUserDetail, userHistory, editUser, editUserPassword, deleteUserById, searchUsers, addUser } = require("../controllers/userController.js");
 const { userValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
+const { checkToken, checkRole } = require("../middleware/authValidator.js");
 
 // USER
 // get user detail
-Router.get("/detail/:id", valueValidator, userController.getUserDetail);
+Router.get("/detail/:id", checkToken, checkRole("user"), valueValidator, getUserDetail);
 // get user history
-Router.get("/order/:id", valueValidator, userController.userHistory);
+Router.get("/order/:id", checkToken, checkRole("user"), valueValidator, userHistory);
 // edit user detail
-Router.patch("/edit-profile/:id", valueValidator, userValidator, userController.editUser);
+Router.patch("/edit-profile/", checkToken, checkRole("user"), valueValidator, userValidator, editUser);
 // edit user password
-Router.patch("/edit-password/:id", valueValidator, userValidator, userController.editUserPassword);
+Router.patch("/edit-password/:id", checkToken, checkRole("user"), valueValidator, userValidator, editUserPassword);
 
 // USER AND ADMIN
 // delete user by id
-Router.delete("/:id", valueValidator, userController.deleteUserById);
+Router.delete("/:id", checkToken, checkRole("user"), valueValidator, deleteUserById);
 
 // ADMIN
 // get all users, search users
-Router.get("/", valueValidator, userValidator, userController.searchUsers);
+Router.get("/", checkToken, checkRole("admin"), valueValidator, userValidator, searchUsers);
 
 // add new user
-Router.post("/", valueValidator, userValidator, userController.addUser);
+Router.post("/", checkToken, checkRole("admin"), valueValidator, userValidator, addUser);
 
 module.exports = Router;

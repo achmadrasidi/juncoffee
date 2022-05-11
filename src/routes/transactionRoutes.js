@@ -4,17 +4,18 @@ const { addTransaction, findOrderByQueries, editTransaction, deleteOrderById, ge
 
 const { orderValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
+const { checkToken, checkRole } = require("../middleware/authValidator");
 
 // ADMIN
 // get transaction details
-Router.get("/detail/:id", valueValidator, getDetailOrder);
+Router.get("/detail/:id", checkToken, checkRole("admin"), valueValidator, getDetailOrder);
 // get all transactions or search transactions
-Router.get("/", valueValidator, orderValidator, findOrderByQueries);
+Router.get("/", checkToken, checkRole("admin"), valueValidator, orderValidator, findOrderByQueries);
 // add new transaction
-Router.post("/", valueValidator, orderValidator, addTransaction);
+Router.post("/", checkToken, checkRole("admin"), valueValidator, orderValidator, addTransaction);
 // update order status
-Router.patch("/:id", valueValidator, orderValidator, editTransaction);
+Router.patch("/:id", checkToken, checkRole("admin"), valueValidator, orderValidator, editTransaction);
 // delete transaction
-Router.delete("/:id", valueValidator, deleteOrderById);
+Router.delete("/:id", checkToken, checkRole("admin"), valueValidator, deleteOrderById);
 
 module.exports = Router;

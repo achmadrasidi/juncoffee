@@ -1,22 +1,23 @@
 const Router = require("express").Router();
 
-const promoController = require("../controllers/promoController.js");
+const { getDetailPromo, searchPromos, addPromo, editPromo, deletePromoById } = require("../controllers/promoController.js");
 
 const { promoValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
+const { checkToken, checkRole } = require("../middleware/authValidator");
 
 // USER
 // get promo details
-Router.get("/detail/:id", valueValidator, promoController.getDetailPromo);
+Router.get("/detail/:id", checkToken, checkRole("user"), valueValidator, getDetailPromo);
 // view all promo,search promo
-Router.get("/", valueValidator, promoValidator, promoController.searchPromos);
+Router.get("/", checkToken, checkRole("user"), valueValidator, promoValidator, searchPromos);
 
 // ADMIN
 // add new promo
-Router.post("/", valueValidator, promoValidator, promoController.addPromo);
+Router.post("/", checkToken, checkRole("admin"), valueValidator, promoValidator, addPromo);
 // edit promo
-Router.patch("/:id", valueValidator, promoValidator, promoController.editPromo);
+Router.patch("/:id", checkToken, checkRole("admin"), valueValidator, promoValidator, editPromo);
 // delete promo
-Router.delete("/:id", valueValidator, promoController.deletePromoById);
+Router.delete("/:id", checkToken, checkRole("admin"), valueValidator, deletePromoById);
 
 module.exports = Router;

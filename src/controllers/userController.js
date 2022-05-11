@@ -62,7 +62,7 @@ const addUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   try {
-    const { data, message } = await updateUserProfile(req.body, req.params.id);
+    const { data, message } = await updateUserProfile(req.body, req.userPayload.id);
     res.status(200).json({
       data,
       message,
