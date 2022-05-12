@@ -16,9 +16,32 @@ const getDetailPromo = async (req, res) => {
 
 const searchPromos = async (req, res) => {
   try {
-    const { total, data } = await getPromos(req.query);
+    const { totalPromo, totalPage, data } = await getPromos(req.query);
+    const { page = 1, limit } = req.query;
+    const queryProp = Object.keys(req.query);
+    let pageQuery = "?page=";
+    let limitQuery = `&limit=${limit}`;
+    let route = "";
+
+    const re = new RegExp(`\&page=${page}`);
+    const reg = new RegExp(`\&limit=${limit}`);
+
+    if (queryProp.length > 0) {
+      route = req._parsedUrl.search.replace(/\?/g, "&").replace(re, "").replace(reg, "");
+    }
+    const currentPage = Number(page);
+    const nextPage = `/promo${pageQuery}${Number(page) + 1}${limitQuery}${route}`;
+    const prevPage = `/promo${pageQuery}${Number(page) - 1}${limitQuery}${route}`;
+
+    const meta = {
+      totalPromo,
+      totalPage,
+      currentPage,
+      nextPage: currentPage === Number(totalPage) ? null : nextPage,
+      prevPage: currentPage === 1 ? null : prevPage,
+    };
     res.status(200).json({
-      total,
+      meta,
       data,
     });
   } catch (err) {

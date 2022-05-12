@@ -38,7 +38,7 @@ const valueValidator = async (req, res, next) => {
     const phoneFormat = /^\d{12}$/;
     const numberFormat = /^\d+$/;
     const dateFormat = /^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-    const numberItem = ["id", "price", "stock", "category_id", "discount", "product_id", "user_id", "quantity", "delivery_id", "minPrice", "maxPrice"];
+    const numberItem = ["id", "price", "stock", "category_id", "discount", "product_id", "user_id", "quantity", "delivery_id", "minPrice", "maxPrice", "limit", "number"];
     const sortItem = ["id", "date", "birthday", "stock", "price", "total_price", "discount", "name", "product_name", "expired", "quantity"];
 
     if (numberItem.includes(key)) {
@@ -101,13 +101,6 @@ const valueValidator = async (req, res, next) => {
       if (value.toLowerCase() !== "foods" && value.toLowerCase() !== "beverages") {
         valid = false;
         error = "category must be foods or beverages";
-      }
-    }
-
-    if (key === "order") {
-      if (value.toLowerCase() !== "desc" && value.toLowerCase() !== "asc") {
-        valid = false;
-        error = "Order must be asc or desc";
       }
     }
 

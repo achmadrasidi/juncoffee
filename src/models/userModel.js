@@ -37,56 +37,91 @@ const getUserHistory = async (id) => {
 };
 
 const getUsers = async (query) => {
-  const { keyword, email, gender, order, sort } = query;
+  const { keyword, email, gender, order, sort, limit, page = 1 } = query;
   try {
-    let parameterize = [];
+    let params = [];
+    let totalParams = [];
+    let totalQuery = "SELECT count(*) AS total FROM users ";
     let sqlQuery =
-      "SELECT id,name,email,phone_number,address,date_of_birth,gender,last_order,created_at,updated_at FROM(SELECT id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,date_of_birth AS birthday,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, created_at AS date,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users) u ";
+      "SELECT id,name,email,phone_number,address,date_of_birth,gender,last_order,role,created_at,updated_at FROM(select id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,date_of_birth AS birthday,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,role,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, created_at AS date,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users) ug ";
 
     if (keyword && !email && !gender) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%')  OR lower(address) LIKE lower('%' || $1 || '%')";
-      parameterize.push(keyword);
+      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%')";
+      totalQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%')";
+      params.push(keyword);
+      totalParams.push(keyword);
     }
 
     if (email && !keyword && !gender) {
       sqlQuery += " WHERE lower(email) = lower($1)";
-      parameterize.push(email);
+      totalQuery += " WHERE lower(email) = lower($1)";
+      params.push(email);
+      totalParams.push(email);
     }
 
     if (gender && !keyword && !email) {
       sqlQuery += " WHERE lower(gender) = lower($1)";
-      parameterize.push(gender);
+      totalQuery += " WHERE lower(gender) = lower($1)";
+      params.push(gender);
+      totalParams.push(gender);
     }
 
     if (gender && email && !keyword) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(email) = lower($2) AND lower(address) LIKE lower('%' || $1 || '%')";
-      parameterize.push(gender, email);
+      sqlQuery += " WHERE lower(email) = lower($2) AND lower(email) = lower($1)";
+      totalQuery += " WHERE lower(email) = lower($2) AND lower(gender) = lower($1)";
+      params.push(gender, email);
+      totalParams.push(gender, email);
     }
 
     if (keyword && email && !gender) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%') AND lower(email) = lower($2) ";
-      parameterize.push(keyword, email);
+      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(email) = lower($2) ";
+      totalQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(email) = lower($2) ";
+      params.push(keyword, email);
+      totalParams.push(keyword, email);
     }
 
     if (keyword && gender && !email) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%') AND lower(gender) = lower($2) ";
-      parameterize.push(keyword, gender);
+      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(gender) = lower($2) ";
+      totalQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(gender) = lower($2) ";
+      params.push(keyword, gender);
+      totalParams.push(keyword, gender);
     }
 
     if (keyword && gender && email) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%') AND lower(gender) = lower($2) AND lower(gender) = lower($3) ";
-      parameterize.push(keyword, gender, email);
+      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(email) = lower($3) AND lower(gender) = lower($2) ";
+      totalQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(email) = lower($3) AND lower(gender) = lower($2) ";
+      params.push(keyword, gender, email);
+      totalParams.push(keyword, gender, email);
+    }
+    if (order) {
+      switch (order) {
+        case "asc":
+          sqlQuery += " ORDER BY " + sort + " asc";
+          break;
+        case "desc":
+          sqlQuery += " ORDER BY " + sort + " desc";
+          break;
+        default:
+          throw new ErrorHandler({ status: 400, message: "Order must be asc or desc" });
+      }
     }
 
-    if (order) {
-      sqlQuery += " order by " + sort + " " + order;
+    if (limit) {
+      const offset = (Number(page) - 1) * Number(limit);
+      sqlQuery += " LIMIT $" + (params.length + 1) + " OFFSET $" + (params.length + 2);
+      params.push(Number(limit), Number(offset));
     }
-    const result = await db.query(sqlQuery, parameterize);
+    const result = await db.query(sqlQuery, params);
     if (result.rowCount === 0) {
       throw new ErrorHandler({ status: 404, message: "User Not Found" });
     }
+
+    const dataUsers = await db.query(totalQuery, totalParams);
+    const total = dataUsers.rows[0].total;
+
     return {
-      total: result.rowCount,
+      totalUser: Number(total),
+      totalPage: limit ? Math.ceil(Number(total) / limit) : 1,
       data: result.rows,
     };
   } catch (err) {

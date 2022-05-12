@@ -25,7 +25,7 @@ const checkToken = (req, res, next) => {
       return;
     }
 
-    const cachedToken = JSON.parse(cache.getItem(`jwt${payload.id}`)) || false;
+    const cachedToken = cache.getItem(`jwt${payload.id}`) || false;
     if (!cachedToken) {
       res.status(403).json({
         error: "Please Login First",
@@ -33,9 +33,9 @@ const checkToken = (req, res, next) => {
       return;
     }
 
-    if (!cachedToken.token || cachedToken.token !== token) {
+    if (!cachedToken || cachedToken !== token) {
       res.status(403).json({
-        error: "The cached token and the token doesnt match, please login again",
+        error: "Token Unauthorize, please login again",
       });
       return;
     }
@@ -73,24 +73,27 @@ const isLoggedIn = (req, res, next) => {
       next();
       return;
     }
-    const cachedToken = JSON.parse(cache.getItem(`jwt${payload.id}`)) || false;
+    const cachedToken = cache.getItem(`jwt${payload.id}`) || false;
     if (!cachedToken) {
       next();
       return;
     }
+    if (!cachedToken || cachedToken !== token) {
+      next();
+      return;
+    }
+
     res.status(403).json({
       error: "You Already Logged In",
     });
   });
 };
 
-const revokeAccess = (data) => {
-  if (data && data.id && data.role) {
-    const cachedToken = JSON.parse(cache.getItem(`jwt${data.id}`)) || false;
-    if (cachedToken && cachedToken.token) {
-      cache.removeItem(`jwt${data.id}`);
-    }
+const removeAccess = (id) => {
+  const cachedToken = cache.getItem(`jwt${id}`) || false;
+  if (cachedToken) {
+    cache.removeItem(`jwt${id}`);
   }
 };
 
-module.exports = { checkToken, checkRole, revokeAccess, isLoggedIn };
+module.exports = { checkToken, checkRole, removeAccess, isLoggedIn };

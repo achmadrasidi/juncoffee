@@ -16,9 +16,32 @@ const getProductDetail = async (req, res) => {
 
 const searchProducts = async (req, res) => {
   try {
-    const { total, data } = await getProducts(req.query);
+    const { totalProduct, totalPage, data } = await getProducts(req.query);
+    const { page = 1, limit } = req.query;
+    const queryProp = Object.keys(req.query);
+    let pageQuery = "?page=";
+    let limitQuery = `&limit=${limit}`;
+    let route = "";
+
+    const re = new RegExp(`\&page=${page}`);
+    const reg = new RegExp(`\&limit=${limit}`);
+
+    if (queryProp.length > 0) {
+      route = req._parsedUrl.search.replace(/\?/g, "&").replace(re, "").replace(reg, "");
+    }
+    const currentPage = Number(page);
+    const nextPage = `/product${pageQuery}${Number(page) + 1}${limitQuery}${route}`;
+    const prevPage = `/product${pageQuery}${Number(page) - 1}${limitQuery}${route}`;
+
+    const meta = {
+      totalProduct,
+      totalPage,
+      currentPage,
+      nextPage: currentPage === Number(totalPage) ? null : nextPage,
+      prevPage: currentPage === 1 ? null : prevPage,
+    };
     res.status(200).json({
-      total,
+      meta,
       data,
     });
   } catch (err) {

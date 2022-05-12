@@ -1,19 +1,13 @@
-const { getUserById } = require("../models/userModel.js");
 const { getPassByEmail, registerUser } = require("../models/authModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { revokeAccess } = require("../middleware/authValidator");
+const { removeAccess } = require("../middleware/authValidator");
 const cache = require("../config/cache");
 
 const register = async (req, res) => {
   try {
-    const { data } = await registerUser(req.body);
+    await registerUser(req.body);
     res.status(201).json({
-      data: {
-        id: data.id,
-        email: data.email,
-        register_at: data.created_at,
-      },
       message: "Register Success",
     });
   } catch (err) {
@@ -41,7 +35,7 @@ const login = async (req, res) => {
       role: data.role,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { issuer: process.env.JWT_ISSUER, expiresIn: "12h" });
-    cache.setItem(`jwt${data.id}`, JSON.stringify({ token }));
+    cache.setItem(`jwt${data.id}`, token);
     res.status(200).json({
       email,
       token,
@@ -57,9 +51,7 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const { data } = await getUserById(req.userPayload.id);
-
-    revokeAccess(data);
+    removeAccess(req.userPayload.id);
 
     res.status(200).json({
       message: "You are logout",
