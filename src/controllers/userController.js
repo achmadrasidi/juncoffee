@@ -27,7 +27,7 @@ const searchUsers = async (req, res) => {
     const re = new RegExp(`\&page=${page}`);
     const reg = new RegExp(`\&limit=${limit}`);
 
-    if (queryProp.length > 0) {
+    if (queryProp.length) {
       route = req._parsedUrl.search.replace(/\?/g, "&").replace(re, "").replace(reg, "");
     }
     const currentPage = Number(page);
@@ -41,6 +41,7 @@ const searchUsers = async (req, res) => {
       nextPage: currentPage === Number(totalPage) ? null : nextPage,
       prevPage: currentPage === 1 ? null : prevPage,
     };
+
     res.status(200).json({
       meta,
       data,
@@ -85,13 +86,21 @@ const addUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   try {
-    const { data, message } = await updateUserProfile(req.body, req.userPayload.id);
+    const { file } = req;
+    let image = "";
+
+    if (file !== undefined) {
+      image = file.path.replace("public", "").replace(/\\/g, "/");
+    }
+
+    const { data, message } = await updateUserProfile(req.body, req.userPayload.id, image);
     res.status(200).json({
       data,
       message,
     });
   } catch (err) {
-    const { message, status } = err;
+    const { message } = err;
+    const status = err.status ? err.status : 500;
     res.status(status).json({
       error: message,
     });

@@ -5,7 +5,7 @@ const ErrorHandler = require("../helper/errorHandler");
 const getUserById = async (id) => {
   try {
     const result = await db.query(
-      "SELECT id,name,email,phone_number,address,role,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1",
+      "SELECT id,name,email,phone_number,address,image,role,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1",
       [id]
     );
     if (result.rowCount === 0) {
@@ -43,7 +43,7 @@ const getUsers = async (query) => {
     let totalParams = [];
     let totalQuery = "SELECT count(*) AS total FROM users ";
     let sqlQuery =
-      "SELECT id,name,email,phone_number,address,date_of_birth,gender,last_order,role,created_at,updated_at FROM(select id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,date_of_birth AS birthday,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,role,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, created_at AS date,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users) ug ";
+      "SELECT id,name,email,phone_number,address,date_of_birth,gender,last_order,image,role,created_at,updated_at FROM(select id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,date_of_birth AS birthday,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,role,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, created_at AS date,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users) ug ";
 
     if (keyword && !email && !gender) {
       sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(address) LIKE lower('%' || $1 || '%')";
@@ -142,12 +142,12 @@ const createUser = async (body) => {
   }
 };
 
-const updateUserProfile = async (body, id) => {
+const updateUserProfile = async (body, id, image) => {
   const { name, email, phone_number, address, date_of_birth, gender } = body;
   try {
     const query =
-      "UPDATE users SET name = COALESCE(NULLIF($1, ''), name),email = COALESCE(NULLIF($2, ''), email),phone_number = COALESCE(NULLIF($3, ''), phone_number),address = COALESCE(NULLIF($4, ''), address),date_of_birth = COALESCE(NULLIF($5, '')::date, date_of_birth),gender = COALESCE(NULLIF($6, ''), gender),updated_at = now() WHERE id = $7 RETURNING id,name,email,password,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
-    const result = await db.query(query, [name, email, phone_number, address, date_of_birth, gender, id]);
+      "UPDATE users SET name = COALESCE(NULLIF($1, ''), name),email = COALESCE(NULLIF($2, ''), email),phone_number = COALESCE(NULLIF($3, ''), phone_number),address = COALESCE(NULLIF($4, ''), address),date_of_birth = COALESCE(NULLIF($5, '')::date, date_of_birth),gender = COALESCE(NULLIF($6, ''), gender),image = COALESCE(NULLIF($8, ''), image), updated_at = now() WHERE id = $7 RETURNING id,name,email,phone_number,address,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,image,role,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
+    const result = await db.query(query, [name, email, phone_number, address, date_of_birth, gender, id, image]);
     if (result.rowCount === 0) {
       throw new ErrorHandler({ status: 404, message: "User Not Found" });
     }
@@ -160,7 +160,7 @@ const updateUserProfile = async (body, id) => {
 const updateUserPassword = async ({ password }, id) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
-    const query = "UPDATE users SET password = $1 , updated_at = now() WHERE id = $2 RETURNING id,name,password,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
+    const query = "UPDATE users SET password = $1 , updated_at = now() WHERE id = $2 RETURNING id,name,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
     const result = await db.query(query, [hashedPassword, id]);
     if (result.rowCount === 0) {
       throw new ErrorHandler({ status: 404, message: "User Not Found" });

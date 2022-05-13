@@ -5,6 +5,7 @@ const { getDetailPromo, searchPromos, addPromo, editPromo, deletePromoById } = r
 const { promoValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
 const { checkToken, checkRole } = require("../middleware/authValidator");
+const uploadFile = require("../middleware/fileUpload");
 
 // USER
 // get promo details
@@ -16,7 +17,7 @@ Router.get("/", checkToken, checkRole("user"), valueValidator, promoValidator, s
 // add new promo
 Router.post("/", checkToken, checkRole("admin"), valueValidator, promoValidator, addPromo);
 // edit promo
-Router.patch("/:id", checkToken, checkRole("admin"), valueValidator, promoValidator, editPromo);
+Router.patch("/:id", checkToken, checkRole("admin"), uploadFile, valueValidator, promoValidator, editPromo);
 // delete promo
 Router.delete("/:id", checkToken, checkRole("admin"), valueValidator, deletePromoById);
 

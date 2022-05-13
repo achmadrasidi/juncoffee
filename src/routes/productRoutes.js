@@ -4,6 +4,7 @@ const { getProductDetail, searchProducts, favProduct, addProduct, editProduct, d
 const { productValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
 const { checkToken, checkRole } = require("../middleware/authValidator");
+const uploadFile = require("../middleware/fileUpload");
 
 // USER
 // get product detail
@@ -17,7 +18,7 @@ Router.get("/favourite", checkToken, checkRole("user"), valueValidator, productV
 // add new product
 Router.post("/", checkToken, checkRole("admin"), valueValidator, productValidator, addProduct);
 // edit product detail
-Router.patch("/:id", checkToken, checkRole("admin"), valueValidator, productValidator, editProduct);
+Router.patch("/:id", checkToken, checkRole("admin"), uploadFile, valueValidator, productValidator, editProduct);
 // delete product
 Router.delete("/:id", checkToken, checkRole("admin"), valueValidator, deleteProductById);
 

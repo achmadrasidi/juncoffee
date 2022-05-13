@@ -84,7 +84,13 @@ const addProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   try {
-    const { data, message } = await updateProduct(req.body, req.params.id);
+    const { file } = req;
+    let image = "";
+    if (file !== undefined) {
+      image = file.path.replace("public", "").replace(/\\/g, "/");
+    }
+
+    const { data, message } = await updateProduct(req.body, req.params.id, image);
     res.status(200).json({
       data,
       message,

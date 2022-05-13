@@ -18,7 +18,7 @@ const duplicateValidator = async (req, res, next) => {
   }
 };
 
-const valueValidator = async (req, res, next) => {
+const valueValidator = (req, res, next) => {
   let obj;
 
   if (Object.keys(req.query).length > 0) {

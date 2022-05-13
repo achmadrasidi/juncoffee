@@ -4,7 +4,7 @@ const ErrorHandler = require("../helper/errorHandler.js");
 const getPromoById = async (id) => {
   try {
     const result = await db.query(
-      "SELECT p.id,p.name,prod.name AS ,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,c.name AS category,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM promos p JOIN products prod ON p.product_id = prod.id JOIN category c ON p.category_id = c.id WHERE p.id = $1",
+      "SELECT p.id,p.name,prod.name AS product_name,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,p.coupon_code,p.image,c.name AS category,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM promos p JOIN products prod ON p.product_id = prod.id JOIN category c ON p.category_id = c.id WHERE p.id = $1",
       [id]
     );
     if (result.rowCount === 0) {
@@ -25,7 +25,7 @@ const getPromos = async (query) => {
     let totalParams = [];
     let totalQuery = "SELECT count(*) AS total FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c ON p.category_id = c.id ";
     let sqlQuery =
-      "SELECT id,name,product_name,price,description,discount,coupon_code,expired_date,category FROM (SELECT p.id,p.name,prod.name as product_name ,prod.price AS price,p.description,p.discount,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,expired_date AS expired,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id) promo ";
+      "SELECT id,name,product_name,price,description,discount,coupon_code,expired_date,image,category FROM (SELECT p.id,p.name,prod.name as product_name ,prod.price AS price,p.description,p.discount,p.image,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,expired_date AS expired,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id) promo ";
 
     if (keyword && !coupon_code && !category) {
       sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') OR lower(product_name) LIKE lower('%' || $1 || '%') ";
@@ -127,12 +127,12 @@ const createPromo = async (body) => {
   }
 };
 
-const updatePromo = async (body, id) => {
+const updatePromo = async (body, id, image) => {
   const { name, description, discount, expired_date, coupon_code, category_id, product_id } = body;
   try {
     const query =
-      "UPDATE promos SET name = COALESCE(NULLIF($1, ''), name) , description = COALESCE(NULLIF($2, ''), description) , discount = COALESCE(NULLIF($3, '')::integer, discount) , expired_date = COALESCE(NULLIF($4, '')::date, expired_date) , coupon_code = COALESCE(NULLIF($5, ''), coupon_code),category_id = COALESCE(NULLIF($7, '')::integer, category_id),product_id = COALESCE(NULLIF($8, '')::integer, product_id), updated_at = now()  WHERE id = $6 RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
-    const result = await db.query(query, [name, description, discount, expired_date, coupon_code, id, category_id, product_id]);
+      "UPDATE promos SET name = COALESCE(NULLIF($1, ''), name) , description = COALESCE(NULLIF($2, ''), description) , discount = COALESCE(NULLIF($3, '')::integer, discount) , expired_date = COALESCE(NULLIF($4, '')::date, expired_date) , coupon_code = COALESCE(NULLIF($5, ''), coupon_code),category_id = COALESCE(NULLIF($7, '')::integer, category_id),product_id = COALESCE(NULLIF($8, '')::integer, product_id),image = COALESCE(NULLIF($9, ''), coupon_code), updated_at = now()  WHERE id = $6 RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,image,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
+    const result = await db.query(query, [name, description, discount, expired_date, coupon_code, id, category_id, product_id, image]);
     if (result.rowCount === 0) {
       throw new ErrorHandler({ status: 404, message: "Promo Not Found" });
     }

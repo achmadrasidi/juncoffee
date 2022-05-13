@@ -4,6 +4,7 @@ const { getUserDetail, userHistory, editUser, editUserPassword, deleteUserById, 
 const { userValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
 const { checkToken, checkRole } = require("../middleware/authValidator.js");
+const uploadFile = require("../middleware/fileUpload.js");
 
 // USER
 // get user detail
@@ -11,7 +12,7 @@ Router.get("/detail/:id", checkToken, checkRole("user"), valueValidator, getUser
 // get user history
 Router.get("/order/:id", checkToken, checkRole("user"), valueValidator, userHistory);
 // edit user detail
-Router.patch("/edit-profile/", checkToken, checkRole("user"), valueValidator, userValidator, editUser);
+Router.patch("/edit-profile/", checkToken, checkRole("user"), uploadFile, valueValidator, userValidator, editUser);
 // edit user password
 Router.patch("/edit-password/:id", checkToken, checkRole("user"), valueValidator, userValidator, editUserPassword);
 

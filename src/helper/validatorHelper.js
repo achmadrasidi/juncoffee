@@ -1,9 +1,8 @@
 const validatorHelper = (req, rules) => {
   let obj;
-
-  if (Object.keys(req.body).length > 0) {
+  if (Object.keys(req.body).length) {
     obj = req.body;
-  } else if (Object.keys(req.query).length > 0) {
+  } else if (Object.keys(req.query).length) {
     obj = req.query;
   } else {
     obj = req.params;
@@ -11,8 +10,7 @@ const validatorHelper = (req, rules) => {
   const method = req.method;
   const path = req.baseUrl;
   const fields = Object.keys(obj);
-  let valid;
-  let error;
+  console.log(fields);
 
   if (method === "GET") {
     if ((fields.includes("order") && !fields.includes("sort")) || (fields.includes("sort") && !fields.includes("order"))) {
@@ -31,6 +29,8 @@ const validatorHelper = (req, rules) => {
   }
 
   if (method === "POST") {
+    let valid;
+    let error;
     rules.forEach((val) => {
       if (!fields.includes(val)) {
         valid = false;
@@ -41,8 +41,17 @@ const validatorHelper = (req, rules) => {
   }
 
   if (method === "PATCH" && path !== "/transaction") {
+    if (!fields.length && !fields.includes("id")) {
+      if (req.file) {
+        return true;
+      }
+      return { valid: false, error: "Required at least 1 field to edit" };
+    }
     if (fields.includes("id")) {
       if (fields.length < 2) {
+        if (req.file) {
+          return true;
+        }
         return { valid: false, error: "Required at least 1 field to edit" };
       }
     }

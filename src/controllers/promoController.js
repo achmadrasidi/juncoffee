@@ -70,7 +70,14 @@ const addPromo = async (req, res) => {
 
 const editPromo = async (req, res) => {
   try {
-    const { data, message } = await updatePromo(req.body, req.params.id);
+    const { file } = req;
+    let image = "";
+
+    if (file !== undefined) {
+      image = file.path.replace("public", "").replace(/\\/g, "/");
+    }
+
+    const { data, message } = await updatePromo(req.body, req.params.id, image);
 
     res.status(200).json({
       data,
