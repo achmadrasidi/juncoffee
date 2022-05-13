@@ -69,7 +69,13 @@ const favProduct = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const { data, message } = await createProduct(req.body);
+    const { file } = req;
+    let image = "";
+
+    if (file !== undefined) {
+      image = file.path.replace("public", "").replace(/\\/g, "/");
+    }
+    const { data, message } = await createProduct(req.body, image);
     res.status(201).json({
       data,
       message,

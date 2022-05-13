@@ -148,13 +148,13 @@ const getProducts = async (query) => {
   }
 };
 
-const createProduct = async (body) => {
+const createProduct = async (body, image) => {
   const { name, price, description, stock, delivery_info, category_id } = body;
 
   try {
     const query =
-      "INSERT INTO products(name,price,description,stock,delivery_info,category_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING id,name,price,description,stock,delivery_info,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
-    const result = await db.query(query, [name, price, description, stock, delivery_info, category_id]);
+      "INSERT INTO products(name,price,description,stock,delivery_info,category_id,image) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING id,name,price,description,stock,delivery_info,image,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
+    const result = await db.query(query, [name, price, description, stock, delivery_info, category_id, image]);
     return { data: result.rows[0], message: "Product Successfully Created" };
   } catch (err) {
     throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });

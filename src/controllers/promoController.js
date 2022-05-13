@@ -54,7 +54,13 @@ const searchPromos = async (req, res) => {
 
 const addPromo = async (req, res) => {
   try {
-    const { data, message } = await createPromo(req.body);
+    const { file } = req;
+    let image = "";
+
+    if (file !== undefined) {
+      image = file.path.replace("public", "").replace(/\\/g, "/");
+    }
+    const { data, message } = await createPromo(req.body, image);
 
     res.status(201).json({
       data,

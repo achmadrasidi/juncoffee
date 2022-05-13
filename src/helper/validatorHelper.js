@@ -10,7 +10,6 @@ const validatorHelper = (req, rules) => {
   const method = req.method;
   const path = req.baseUrl;
   const fields = Object.keys(obj);
-  console.log(fields);
 
   if (method === "GET") {
     if ((fields.includes("order") && !fields.includes("sort")) || (fields.includes("sort") && !fields.includes("order"))) {
@@ -32,7 +31,7 @@ const validatorHelper = (req, rules) => {
     let valid;
     let error;
     rules.forEach((val) => {
-      if (!fields.includes(val)) {
+      if (!fields.includes(val) || req.file === undefined) {
         valid = false;
         error = "Missing Required Field(s)";
       }

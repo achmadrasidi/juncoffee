@@ -114,13 +114,13 @@ const getPromos = async (query) => {
   }
 };
 
-const createPromo = async (body) => {
+const createPromo = async (body, image) => {
   const { name, description, discount, expired_date, category_id, product_id, coupon_code } = body;
 
   try {
     const query =
-      "INSERT INTO promos(name,description,discount,expired_date,category_id,product_id,coupon_code) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
-    const result = await db.query(query, [name, description, discount, expired_date, category_id, product_id, coupon_code]);
+      "INSERT INTO promos(name,description,discount,expired_date,category_id,product_id,coupon_code,image) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id,name,description,discount,to_char(expired_date,'Dy DD Mon YYYY') AS expired_date,coupon_code,image,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at";
+    const result = await db.query(query, [name, description, discount, expired_date, category_id, product_id, coupon_code, image]);
     return { data: result.rows[0], message: "Promo Successfully Created" };
   } catch (err) {
     throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
