@@ -4,7 +4,7 @@
   "description": "Coffee Shop App",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "startDev": "nodemon server.js",
     "test": "nodemon test.js"
   },
