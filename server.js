@@ -7,10 +7,8 @@ const mainRouter = require("./src/routes/index.js");
 const { dbConn } = require("./src/config/db.js");
 
 const { notFound, errorHandling } = require("./src/middleware/errorHandler.js");
-const { redisConn } = require("./src/config/redis");
 
 dbConn();
-redisConn();
 const app = express();
 const PORT = process.env.PORT;
 
