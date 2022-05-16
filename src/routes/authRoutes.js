@@ -1,5 +1,5 @@
 const Router = require("express").Router();
-const { register, login, logout } = require("../controllers/authcontroller.js");
+const { register, login, logout } = require("../controllers/authController.js");
 const { userValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator, duplicateValidator } = require("../middleware/valueValidator.js");
 const { checkToken, checkRole, isLoggedIn } = require("../middleware/authValidator");
