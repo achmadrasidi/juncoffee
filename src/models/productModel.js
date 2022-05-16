@@ -1,12 +1,12 @@
-const db = require("../config/db.js");
-const ErrorHandler = require("../helper/errorHandler.js");
+const { db } = require("../config/db.js");
+const { ErrorHandler } = require("../middleware/errorHandler.js");
 
 const getProductById = async (id) => {
   try {
     const query =
       "SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,image,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,to_char(p.updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at,c.name AS category FROM products p JOIN category c ON p.category_id = c.id WHERE p.id = $1";
     const result = await db.query(query, [id]);
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Product Not Found" });
     }
     return {
@@ -28,19 +28,28 @@ const getProductByFav = async (query) => {
       params.push(category);
     }
     if (order) {
+      sqlQuery += " ORDER BY ";
+      const sortItems = ["price", "date", "stock"];
+      if (sortItems.includes(sort)) {
+        sortItems.map((val) => {
+          if (val === sort) {
+            sqlQuery += val;
+          }
+        });
+      }
       switch (order) {
         case "asc":
-          sqlQuery += " ORDER BY " + sort + " asc";
+          sqlQuery += " asc";
           break;
         case "desc":
-          sqlQuery += " ORDER BY " + sort + " desc";
+          sqlQuery += " desc";
           break;
         default:
           throw new ErrorHandler({ status: 400, message: "Order must be asc or desc" });
       }
     }
     const result = await db.query(sqlQuery, params);
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Product Not Found" });
     }
 
@@ -54,93 +63,78 @@ const getProductByFav = async (query) => {
 };
 
 const getProducts = async (query) => {
-  const { keyword, category, minPrice, maxPrice, order, sort, limit, page = 1 } = query;
+  const { keyword, category, minPrice, maxPrice, order, sort, limit = 5, page = 1 } = query;
   try {
+    const queryProperty = Object.keys(query);
+    let filterQuery = [];
     let params = [];
-    let totalParams = [];
-    let totalQuery = "SELECT count(*) AS total FROM products p JOIN category c ON p.category_id = c.id ";
     let sqlQuery =
-      "SELECT id,name,price,description,stock,delivery_info,image,created_at,updated_at,category FROM (SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.image,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,created_at AS date,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,updated_at AS updated_date,c.name AS category FROM products p JOIN category c ON p.category_id = c.id) p ";
+      "SELECT count(*) over() as total,id,name,price,description,stock,delivery_info,image,created_at,updated_at,category FROM (SELECT p.id,p.name,p.price,p.description,p.stock,p.delivery_info,p.image,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at,created_at AS date,to_char(p.updated_at,'Dy DD Mon YYYY HH24:MI') AS updated_at,updated_at AS updated_date,c.name AS category FROM products p JOIN category c ON p.category_id = c.id) p ";
 
-    if (keyword && !category && !minPrice) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%')";
-      totalQuery += " WHERE lower(p.name) LIKE lower('%' || $1 || '%') ";
-      params.push(keyword);
-      totalParams.push(keyword);
-    }
+    const queryList = ["keyword", "category", "minPrice"];
+    const queryFilter = queryProperty.filter((val) => queryList.includes(val));
+    const filterLength = queryFilter.length;
 
-    if (category && !keyword && !minPrice) {
-      sqlQuery += " WHERE lower(category) = lower($1)";
-      totalQuery += " WHERE lower(c.name) = lower($1) ";
-      params.push(category);
-      totalParams.push(category);
-    }
-
-    if (minPrice && !category && !keyword) {
-      sqlQuery += " WHERE price >= $1 AND price <= $2";
-      totalQuery += " WHERE price >= $1 AND price <= $2 ";
-      params.push(minPrice, maxPrice);
-      totalParams.push(minPrice, maxPrice);
-    }
-
-    if (keyword && category && !minPrice) {
-      sqlQuery += " WHERE lower(category) = lower($2) AND lower(name) LIKE lower('%' || $1 || '%')";
-      totalQuery += " WHERE lower(c.name) = lower($2) AND lower(p.name) LIKE lower('%' || $1 || '%') ";
-      params.push(keyword, category);
-      totalParams.push(keyword, category);
-    }
-
-    if (keyword && minPrice && !category) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND price >= $2 AND price <= $3";
-      totalQuery += " WHERE lower(p.name) LIKE lower('%' || $1 || '%') AND price >= $2 AND price <= $3 ";
-      params.push(keyword, minPrice, maxPrice);
-      totalParams.push(keyword, minPrice, maxPrice);
-    }
-
-    if (category && minPrice && !keyword) {
-      sqlQuery += " WHERE lower(category) = lower($1) AND price >= $2 AND price <= $3";
-      totalQuery += " WHERE lower(c.name) = lower($1) AND price >= $2 AND price <= $3 ";
-      params.push(category, minPrice, maxPrice);
-      totalParams.push(category, minPrice, maxPrice);
-    }
-
-    if (keyword && category && minPrice) {
-      sqlQuery += " WHERE lower(name) LIKE lower('%' || $1 || '%') AND lower(category) = lower($2) AND price >= $3 AND price <= $6";
-      totalQuery += " WHERE lower(p.name) LIKE lower('%' || $1 || '%') AND lower(c.name) = lower($2) AND price >= $3 AND price <= $4 ";
-      params.push(keyword, category, minPrice, maxPrice);
-      totalParams.push(keyword, category, minPrice, maxPrice);
+    if (filterLength) {
+      sqlQuery += " WHERE";
+      for (const key of queryFilter) {
+        switch (key) {
+          case "keyword":
+            filterQuery.push(" lower(name) LIKE lower('%' || $" + (params.length + 1) + " || '%')", " AND");
+            params.push(keyword);
+            break;
+          case "category":
+            filterQuery.push(" lower(category) = lower($" + (params.length + 1) + ")", " AND");
+            params.push(category);
+            break;
+          case "minPrice":
+            filterQuery.push(" price > $" + (params.length + 1) + " AND price < $" + (params.length + 2) + "", " AND");
+            params.push(minPrice, maxPrice);
+            break;
+          default:
+            throw new ErrorHandler({ status: 404, message: "key not found" });
+        }
+      }
+      filterQuery.pop();
+      sqlQuery += filterQuery.join("");
     }
 
     if (order) {
+      sqlQuery += " ORDER BY ";
+      const sortItems = ["price", "date", "stock"];
+      if (sortItems.includes(sort)) {
+        sortItems.map((value) => {
+          if (value === sort) {
+            sqlQuery += value;
+          }
+        });
+      }
       switch (order) {
         case "asc":
-          sqlQuery += " ORDER BY " + sort + " asc";
+          sqlQuery += " asc";
           break;
         case "desc":
-          sqlQuery += " ORDER BY " + sort + " desc";
+          sqlQuery += " desc";
           break;
         default:
           throw new ErrorHandler({ status: 400, message: "Order must be asc or desc" });
       }
     }
 
-    if (limit) {
-      const offset = (Number(page) - 1) * Number(limit);
-      sqlQuery += " LIMIT $" + (params.length + 1) + " OFFSET $" + (params.length + 2);
-      params.push(Number(limit), Number(offset));
-    }
+    const offset = (Number(page) - 1) * Number(limit);
+    sqlQuery += " LIMIT $" + (params.length + 1) + " OFFSET $" + (params.length + 2);
+    params.push(Number(limit), Number(offset));
 
     const result = await db.query(sqlQuery, params);
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Product Not Found" });
     }
 
-    const dataProducts = await db.query(totalQuery, totalParams);
-    const total = dataProducts.rows[0].total;
+    const total = result.rows[0].total;
 
     return {
       totalProduct: Number(total),
-      totalPage: limit ? Math.ceil(Number(total) / limit) : 1,
+      totalPage: Math.ceil(Number(total) / limit),
       data: result.rows,
     };
   } catch (err) {
@@ -167,7 +161,7 @@ const updateProduct = async (body, id, image) => {
     const query =
       "UPDATE products SET name = COALESCE(NULLIF($1, ''), name), price = COALESCE(NULLIF($2, '')::integer, price), description = COALESCE(NULLIF($3, ''), description), stock = COALESCE(NULLIF($4, '')::integer, stock), delivery_info = COALESCE(NULLIF($5, ''), delivery_info),category_id = COALESCE(NULLIF($6, '')::integer, category_id),image = COALESCE(NULLIF($8, ''), image), updated_at = now() WHERE id = $7 RETURNING id,name,price,description,stock,delivery_info,image,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at";
     const result = await db.query(query, [name, price, description, stock, delivery_info, category_id, id, image]);
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Product Not Found" });
     }
     return { data: result.rows[0], message: "Product Successfully Updated" };
@@ -178,9 +172,9 @@ const updateProduct = async (body, id, image) => {
 
 const deleteProduct = async (id) => {
   try {
-    const query = "DELETE FROM products WHERE id = $1 RETURNING id,name,price,description,stock,delivery_info";
+    const query = "DELETE FROM products WHERE id = $1 RETURNING id,name,price,description,stock,delivery_info,image";
     const result = await db.query(query, [id]);
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Product Not Found" });
     }
     return { data: result.rows[0], message: "Product Successfully Deleted" };

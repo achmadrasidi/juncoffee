@@ -1,5 +1,5 @@
-const db = require("../config/db.js");
-const ErrorHandler = require("../helper/errorHandler");
+const { db } = require("../config/db.js");
+const { ErrorHandler } = require("../middleware/errorHandler");
 
 const getOrderById = async (id) => {
   try {
@@ -44,9 +44,11 @@ const findTransaction = async (query) => {
   }
 };
 
-const createTransaction = async (body) => {
+const createTransaction = async (body, id) => {
   const { user_id, product_id, delivery_id, shipping_address, coupon_code, quantity } = body;
   try {
+    let userId = id;
+    if (!id) userId = user_id;
     const client = await db.connect();
     await client.query("BEGIN");
     const queryProduct = "SELECT price FROM products WHERE id = $1";
@@ -77,9 +79,9 @@ const createTransaction = async (body) => {
     const total_price = subtotal + tax_price + shipping_price;
 
     const updateQUery =
-      "WITH p AS (UPDATE products SET stock = stock - $7,updated_at = now() WHERE id = $2 RETURNING *), u AS (UPDATE users SET last_order = now() WHERE id = $1 RETURNING *),t AS (INSERT INTO transactions(user_id,product_id,delivery_id,shipping_address,shipping_price,tax_price,subtotal,total_price,coupon_code,quantity) values($1,$2,$9,$8,$4,$5,$3,$6,$10,$7) RETURNING *) SELECT t.id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at FROM p,u,t JOIN delivery d ON t.delivery_id = d.id";
+      "WITH p AS (UPDATE products SET stock = stock - $7,updated_at = now() WHERE id = $2 RETURNING *), u AS (UPDATE users SET last_order = now() WHERE id = $1 RETURNING *),t AS (INSERT INTO transactions(user_id,product_id,delivery_id,shipping_address,shipping_price,tax_price,subtotal,total_price,coupon_code,quantity) values($1,$2,$9,$8,$4,$5,$3,$6,$10,$7) RETURNING *) SELECT t.id,u.name AS user_name,u.email AS user_email,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at FROM p,u,t JOIN delivery d ON t.delivery_id = d.id";
 
-    const result = await client.query(updateQUery, [user_id, product_id, subtotal, shipping_price, tax_price, total_price, quantity, address, delivery_id, coupon_code]);
+    const result = await client.query(updateQUery, [userId, product_id, subtotal, shipping_price, tax_price, total_price, quantity, address, delivery_id, coupon_code]);
     await client.query("COMMIT");
     return { data: result.rows[0], message: "Transaction Successfully Created" };
   } catch (err) {

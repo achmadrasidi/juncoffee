@@ -1,32 +1,33 @@
 const { getUserByEmail } = require("../models/authModel.js");
+const { ErrorHandler } = require("./errorHandler.js");
 
-const duplicateValidator = async (req, res, next) => {
+const duplicateValidator = async (req, _res, next) => {
   try {
     const result = await getUserByEmail(req.body.email);
-    if (result.rowCount > 0) {
-      res.status(400).json({
-        error: "Email is Already in use",
-      });
-      return;
+    if (result.rowCount) {
+      throw new ErrorHandler({ status: 400, message: "Email is Already in use" });
     }
     next();
   } catch (err) {
-    const { message, status } = err;
-    res.status(status).json({
-      error: message,
-    });
+    const { message } = err;
+    const status = err.status ? err.status : 500;
+    next({ status, message });
   }
 };
 
-const valueValidator = (req, res, next) => {
+const valueValidator = (req, _res, next) => {
   let obj;
 
-  if (Object.keys(req.query).length > 0) {
-    obj = req.query;
-  } else if (Object.keys(req.body).length > 0) {
-    obj = req.body;
+  const { query, body, params } = req;
+  const queryLength = Object.keys(query).length;
+  const bodyLength = Object.keys(body).length;
+
+  if (queryLength) {
+    obj = query;
+  } else if (bodyLength) {
+    obj = body;
   } else {
-    obj = req.params;
+    obj = params;
   }
 
   let valid = true;
@@ -112,10 +113,8 @@ const valueValidator = (req, res, next) => {
     }
   }
 
-  if (valid === false) {
-    res.status(400).json({
-      error,
-    });
+  if (!valid) {
+    next({ status: 400, message: error });
     return;
   }
   next();

@@ -1,30 +1,41 @@
 require("dotenv").config();
 const express = require("express");
-
-const mainRouter = require("./src/routes/index.js");
-const db = require("./src/config/db.js");
 const logger = require("morgan");
 const path = require("path");
+const cors = require("cors");
 
+const mainRouter = require("./src/routes/index.js");
+const { dbConn } = require("./src/config/db.js");
+
+const { notFound, errorHandling } = require("./src/middleware/errorHandler.js");
+const { redisConn } = require("./src/config/redis");
+
+dbConn();
+redisConn();
 const app = express();
 const PORT = process.env.PORT;
 
-db.connect()
-  .then(() => {
-    console.log("DB connected");
+const originList = ["http://localhost/", "http://127.0.0.1/", "::1"];
 
-    app.use(logger(":method :url :status :res[content-length] - :response-time ms"));
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
+const corsOption = {
+  origin: (origin, callback) => {
+    if (originList.includes(origin) || !origin) return callback(null, true);
+    return callback(new Error("Forbidden Origin"));
+  },
+  optionsSuccessStatus: 200,
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+};
 
-    app.use(express.static(path.join(__dirname, "public")));
+app.use(cors(corsOption));
+app.use(logger(":method :url :status :res[content-length] - :response-time ms"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-    app.use(mainRouter);
+app.use(express.static(path.join(__dirname, "public")));
 
-    app.listen(PORT, () => {
-      console.log(`Server is Running at port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+app.use(mainRouter);
+
+app.use(errorHandling);
+app.use(notFound);
+
+app.listen(PORT, console.log(`Server is Running at port ${PORT}`));

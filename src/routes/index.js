@@ -6,6 +6,11 @@ const promosRouter = require("./promoRoutes");
 const transactionsRouter = require("./transactionRoutes");
 const authRouter = require("./authRoutes");
 
+Router.get("/", (_req, res) => {
+  res.json({
+    message: "This is juncoffee API",
+  });
+});
 Router.use("/auth", authRouter);
 Router.use("/user", usersRouter);
 Router.use("/product", productsRouter);

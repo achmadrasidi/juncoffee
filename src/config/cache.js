@@ -1,5 +1,7 @@
 const { LocalStorage } = require("node-localstorage");
 
-const localStorage = new LocalStorage("var/cache/local-storage");
+const userStorage = new LocalStorage("var/cache/image/user");
+const productStorage = new LocalStorage("var/cache/image/product");
+const promoStorage = new LocalStorage("var/cache/image/promo");
 
-module.exports = localStorage;
+module.exports = { userStorage, productStorage, promoStorage };

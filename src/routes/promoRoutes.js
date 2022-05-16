@@ -15,9 +15,9 @@ Router.get("/", checkToken, checkRole("user"), valueValidator, promoValidator, s
 
 // ADMIN
 // add new promo
-Router.post("/", checkToken, checkRole("admin"), uploadFile, valueValidator, promoValidator, addPromo);
+Router.post("/", checkToken, checkRole("admin"), valueValidator, uploadFile, promoValidator, addPromo);
 // edit promo
-Router.patch("/:id", checkToken, checkRole("admin"), uploadFile, valueValidator, promoValidator, editPromo);
+Router.patch("/:id", checkToken, checkRole("admin"), valueValidator, uploadFile, promoValidator, editPromo);
 // delete promo
 Router.delete("/:id", checkToken, checkRole("admin"), valueValidator, deletePromoById);
 

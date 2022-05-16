@@ -1,14 +1,21 @@
 const validatorHelper = (req, rules) => {
   let obj;
-  if (Object.keys(req.body).length) {
-    obj = req.body;
-  } else if (Object.keys(req.query).length) {
-    obj = req.query;
+
+  const { query, body, params } = req;
+  const queryLength = Object.keys(query).length;
+  const bodyLength = Object.keys(body).length;
+
+  if (queryLength) {
+    obj = query;
+  } else if (bodyLength) {
+    obj = body;
   } else {
-    obj = req.params;
+    obj = params;
   }
+
   const method = req.method;
   const path = req.baseUrl;
+  const route = req.path;
   const fields = Object.keys(obj);
 
   if (method === "GET") {
@@ -28,35 +35,44 @@ const validatorHelper = (req, rules) => {
   }
 
   if (method === "POST") {
-    let valid;
-    let error;
+    let valid = true;
+    let error = null;
+    if (path !== "/auth" && path !== "/transaction" && route !== "/new-order/") {
+      rules.forEach((val) => {
+        if (!fields.includes(val) || req.file === undefined) {
+          valid = false;
+          error = "Missing Required Field(s)";
+        }
+      });
+    }
     rules.forEach((val) => {
-      if (!fields.includes(val) || req.file === undefined) {
+      if (!fields.includes(val)) {
         valid = false;
         error = "Missing Required Field(s)";
       }
     });
+
     return { error, valid };
   }
 
   if (method === "PATCH" && path !== "/transaction") {
     if (!fields.length && !fields.includes("id")) {
       if (req.file) {
-        return true;
+        return { valid: true, error: null };
       }
       return { valid: false, error: "Required at least 1 field to edit" };
     }
     if (fields.includes("id")) {
       if (fields.length < 2) {
         if (req.file) {
-          return true;
+          return { valid: true, error: null };
         }
         return { valid: false, error: "Required at least 1 field to edit" };
       }
     }
   }
 
-  return true;
+  return { valid: true, error: null };
 };
 
 module.exports = validatorHelper;
