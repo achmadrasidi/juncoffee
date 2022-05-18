@@ -35,7 +35,7 @@ const login = async (req, res) => {
 
     if (!result) {
       res.status(400).json({
-        error: "Invalid Password",
+        error: "Invalid Email or Password",
       });
       return;
     }
@@ -66,7 +66,7 @@ const logout = async (req, res) => {
     await removeAccess(req.userPayload.id);
 
     res.status(200).json({
-      message: "You are logout",
+      message: "You have successfully logged out",
     });
   } catch (err) {
     const { message, status } = err;

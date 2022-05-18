@@ -25,7 +25,7 @@ const checkToken = (req, _res, next) => {
         throw new ErrorHandler({ status: 403, message: "Please Login First" });
       }
 
-      if (!cachedToken || cachedToken !== token) {
+      if (cachedToken !== token) {
         throw new ErrorHandler({ status: 403, message: "Token Unauthorize, please login again" });
       }
       req.userPayload = payload;

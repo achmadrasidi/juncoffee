@@ -46,7 +46,7 @@ const valueValidator = (req, _res, next) => {
       Number(value);
       if (!value.match(numberFormat)) {
         valid = false;
-        error = "Invalid Number Input";
+        error = "Invalid Number Format";
       }
     }
 
@@ -58,14 +58,14 @@ const valueValidator = (req, _res, next) => {
     if (key === "date_of_birth" || key === "expired_date") {
       if (!value.match(dateFormat)) {
         valid = false;
-        error = "Invalid Date Input";
+        error = "Invalid Date Format";
       }
     }
 
     if (key === "email") {
       if (!value.match(emailFormat)) {
         valid = false;
-        error = "Invalid Email Input";
+        error = "Invalid Email Format";
       }
     }
 
@@ -73,7 +73,7 @@ const valueValidator = (req, _res, next) => {
       Number(value);
       if (!value.match(phoneFormat)) {
         valid = false;
-        error = "Invalid Phone Input";
+        error = "Invalid Phone Format";
       }
     }
 

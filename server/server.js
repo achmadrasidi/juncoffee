@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const logger = require("morgan");
 const path = require("path");
 const cors = require("cors");
 
@@ -7,8 +8,10 @@ const mainRouter = require("./src/routes/index.js");
 const { dbConn } = require("./src/config/db.js");
 
 const { notFound, errorHandling } = require("./src/middleware/errorHandler.js");
+const { redisConn } = require("./src/config/redis");
 
 dbConn();
+redisConn();
 const app = express();
 const PORT = process.env.PORT;
 
@@ -24,6 +27,7 @@ const corsOption = {
 };
 
 app.use(cors(corsOption));
+app.use(logger(":method :url :status :res[content-length] - :response-time ms"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -27,7 +27,7 @@ const getPassByEmail = async (email) => {
   try {
     const result = await db.query("SELECT id,password,role FROM users WHERE email = $1", [email]);
     if (!result.rowCount) {
-      throw new ErrorHandler({ status: 400, message: "Email is Not Registered" });
+      throw new ErrorHandler({ status: 400, message: "Invalid Email or Password" });
     }
     return {
       data: result.rows[0],

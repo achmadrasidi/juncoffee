@@ -1,7 +1,9 @@
 const validatorHelper = require("../helper/validatorHelper.js");
 
 const userValidator = (req, _res, next) => {
-  const rules = ["email", "password"];
+  const rules = ["email", "password", "phone_number"];
+  const path = req.path;
+  if (path === "/login") rules.pop();
   const { error, valid } = validatorHelper(req, rules);
   if (!valid) {
     next({ status: 400, message: error });
