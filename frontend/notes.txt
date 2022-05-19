@@ -1,0 +1,23 @@
+Buatlah slicing halaman Coffee Shop (Home, Product, Profile)
+Requirements:
+HTML5
+Container Bootstrap with Grid
+Display Flex/Grid
+Buat semirip mungkin sesuai figma
+Responsive
+Deploy di https://www.netlify.com/
+
+Pergunakan Bahasa Inggris untuk nama class atau id
+Upload/push tugas kamu ke github dan gunakan nama yang profesional
+Presentasikan apa yang telah Anda lakukan dalam minggu ini - Selasa, 24 Mei 2022
+Tell us about your project
+Jelaskan apa itu dan konsep tentang:
+HTML
+CSS
+Bootstrap
+Deploy aplikasi kamu
+Netlify
+
+yang sudah tugas week 5
+- membuat folder project
+- login dan register Responsive

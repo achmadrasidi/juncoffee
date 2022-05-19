@@ -1,0 +1,327 @@
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Responsive */
+@font-face {
+  font-family: "Rubik";
+  src: url("/juncoffee/frontend/assets/font/Rubik-VariableFont_wght.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/juncoffee/frontend/assets/font/Poppins-Regular.ttf");
+}
+
+@media (max-width: 790px) {
+  .column-image {
+    display: none;
+  }
+  .column-main {
+    background-color: aliceblue;
+  }
+}
+
+@media (max-width: 500px) {
+  .side-title {
+    padding: 0 0% !important;
+  }
+  .page-title {
+    float: none !important;
+    font-size: 28px !important;
+    margin-top: 20px !important;
+    text-align: center;
+  }
+  .register {
+    padding: 8% 10% 0 !important;
+    margin: 0px 10px 26px !important;
+  }
+  .google-button {
+    font-size: 13px !important;
+    margin-bottom: 20px !important;
+  }
+  .already-account-text {
+    font-size: 12px !important;
+  }
+  .already-account {
+    margin-bottom: 20px !important;
+  }
+  .login-here-button {
+    margin-bottom: 20px !important;
+  }
+  .link {
+    display: none !important;
+  }
+  .describe {
+    width: 100% !important;
+    padding-top: 0 !important;
+  }
+}
+
+/* Main container */
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.column-image,
+.side-image {
+  width: 100%;
+  height: 1284px;
+}
+
+.column-main {
+  width: 100%;
+  padding: 55px;
+}
+
+.side-title {
+  padding: 0 10%;
+}
+
+.header-title {
+  display: inline;
+  position: absolute;
+  top: 45px;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #0b132a;
+}
+
+.page-title {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  margin: 0;
+  float: right;
+  line-height: 41px;
+  color: #6a4029;
+}
+
+.register-form {
+  display: grid;
+}
+
+.register {
+  display: grid;
+  padding: 10% 10% 0;
+  margin: 10px 10px 26px;
+}
+
+label {
+  margin-bottom: 13px;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #0b132a;
+}
+
+input {
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(79, 86, 101);
+  border-radius: 10px;
+  height: 40px;
+  margin-bottom: 19px;
+}
+
+::placeholder {
+  padding-left: 1%;
+}
+
+.register-button {
+  background: #ffba33;
+  box-shadow: 0px 6px 20px rgba(255, 186, 51, 0.4);
+  border-radius: 10px;
+  border: none;
+  height: 40px;
+  margin-bottom: 26px;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  color: #6a4029;
+}
+
+.register-button:hover {
+  background-color: #fdc75b;
+}
+
+.google-button {
+  background: #ffffff;
+  box-shadow: 0px 6px 20px rgba(196, 196, 196, 0.67);
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  padding-bottom: 10px;
+  margin-bottom: 62px;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.google-button:hover {
+  background-color: #f1f1f1;
+}
+
+.google-icon {
+  position: relative;
+  top: 6px;
+}
+
+.already-account {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+  margin-bottom: 42px;
+}
+
+.already-account-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 30px;
+  color: #9f9f9f;
+}
+
+.underline {
+  flex: 1;
+  border-bottom: solid 2px #c4c4c4;
+}
+
+.login-here-button {
+  height: 40px;
+  margin-bottom: 82px;
+
+  background: #6a4029;
+  box-shadow: 0px 6px 20px rgba(106, 64, 41, 0.63);
+  border-radius: 10px;
+  border: none;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  color: white;
+}
+
+.login-here-button:hover {
+  background-color: #7c523c;
+}
+
+footer {
+  display: flex;
+}
+
+.link-title {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 30px;
+  color: #0b132a;
+}
+
+.link-item {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.footer-title {
+  display: inline;
+  position: relative;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  bottom: 5px;
+  color: #0b132a;
+}
+
+.describe {
+  width: 50%;
+  padding: 10% 10% 0;
+}
+
+.link {
+  width: 50%;
+}
+
+a,
+footer-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  color: #4f5665;
+}
+
+.forgot-pass {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  margin-bottom: 51px;
+
+  color: #6a4029;
+}
+
+/* Bootstrap */
+.navbar-brand {
+  padding-left: 10%;
+}
+.navbar-nav {
+  margin-left: 30%;
+}
+span.navbar-text {
+  padding-right: 2%;
+}
+.btn-primary {
+  margin-right: 10% !important;
+  background-color: #ffba33 !important;
+  border: none !important;
+  border-radius: 50px !important;
+  font-family: "Rubik" !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  color: #6a4029 !important;
+  width: 10%;
+}
+.navbar-nav .nav-link.active {
+  color: #6a4029 !important;
+}
+.right-nav {
+  display: contents;
+}
+.row {
+  padding-left: 10%;
+}
+.hero-image {
+  background-image: url("/juncoffee/frontend/assets/img/nathan-dumlao-71u2fOofI-U-unsplash\ 2.png");
+  height: 638px;
+  width: 1190px !important;
+}
+.hero-title {
+  color: white;
+}
+.hero-desc {
+  color: white;
+}
