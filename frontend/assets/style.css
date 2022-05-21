@@ -197,8 +197,11 @@ input {
 }
 
 .underline {
-  flex: 1;
   border-bottom: solid 2px #c4c4c4;
+}
+
+.sideline {
+  border-left: 2px solid #eeeff2;
 }
 
 .login-here-button {
@@ -229,7 +232,7 @@ footer {
 .link-title {
   font-family: "Rubik";
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 18px;
   line-height: 30px;
   color: #0b132a;
@@ -265,10 +268,10 @@ a,
 footer-text {
   font-family: "Rubik";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 16px;
   line-height: 30px;
-  color: #4f5665;
+  color: #4f5665 !important;
 }
 
 .forgot-pass {
@@ -283,8 +286,17 @@ footer-text {
 }
 
 /* Bootstrap */
+.nav-coffee {
+  padding-top: 2% !important;
+  padding-bottom: 2% !important;
+}
 .navbar-brand {
   padding-left: 10%;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  font-size: 2rem !important;
 }
 .navbar-nav {
   margin-left: 30%;
@@ -299,13 +311,30 @@ span.navbar-text {
   border-radius: 50px !important;
   font-family: "Rubik" !important;
   font-style: normal !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
   font-size: 16px !important;
   line-height: 19px !important;
   color: #6a4029 !important;
   width: 10%;
+  height: 45px;
+}
+.btn-primary:hover {
+  background-color: #fdc75b !important;
+}
+.login-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  color: #0b132a !important;
 }
 .navbar-nav .nav-link.active {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+
   color: #6a4029 !important;
 }
 .right-nav {
@@ -315,13 +344,324 @@ span.navbar-text {
   padding-left: 10%;
 }
 .hero-image {
-  background-image: url("/juncoffee/frontend/assets/img/nathan-dumlao-71u2fOofI-U-unsplash\ 2.png");
+  background-image: url("/juncoffee/frontend/assets/img/nathan-dumlao-6VhPY27jdps-unsplash.jpg");
   height: 638px;
-  width: 1190px !important;
 }
 .hero-title {
   color: white;
+  padding: 10% 28% 3% 0;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 70px;
 }
 .hero-desc {
   color: white;
+  padding: 0 39% 3% 0;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+}
+.get-started {
+  width: 25%;
+  height: 60px;
+
+  background: #ffba33;
+  border-radius: 10px;
+  border: none;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 25px;
+  color: #6a4029;
+}
+.get-started:hover {
+  background-color: #fdc75b;
+}
+.box-head {
+  padding-right: 10%;
+  padding-top: 5%;
+}
+.card-box {
+  height: 200px !important;
+}
+.card-content {
+  display: flex;
+  justify-content: space-evenly;
+
+  padding-top: 2%;
+}
+.card-content-item {
+  padding-top: 3%;
+  display: flex;
+}
+.text-item {
+  display: grid;
+  margin-left: 15%;
+}
+.bold-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+}
+.normal-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+}
+.content-desc {
+  padding: 10% 10% 5%;
+}
+.desc-list-item {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 30px;
+  color: #4f5665;
+  list-style: none;
+  padding-left: 0;
+}
+.list-item-desc {
+  padding-top: 2%;
+}
+.desc-title {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 50px;
+  color: #0b132a;
+}
+.desc-word {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  color: #4f5665;
+}
+.desc-item {
+  padding: 4% 9% 0 8%;
+}
+.favorite {
+  padding: 5% 5% 5% 0;
+  background-color: #f5f5f5;
+}
+.section-title {
+  text-align: center;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 50px;
+  color: #0b132a;
+}
+.section-desc {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+
+  text-align: center;
+  color: #4f5665;
+}
+.card-img-top {
+  width: 40% !important;
+  margin-top: -20%;
+  margin-left: 30%;
+}
+.card-rows {
+  padding: 10% 20% 0 26%;
+}
+.card-layout {
+  padding-bottom: 10%;
+  border-radius: 10px !important;
+  border: 2px solid #dddddd !important;
+  justify-content: space-between;
+}
+.card-layout-active {
+  padding-bottom: 10%;
+  border-radius: 10px !important;
+  border: 2px solid #6a4029 !important;
+  justify-content: space-between;
+}
+.card-cols {
+  display: flex;
+  justify-content: space-evenly;
+}
+.card-title {
+  text-align: center;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 30px;
+  color: #0b132a;
+}
+.card-price-one {
+  text-align: center;
+  margin-top: 35%;
+  padding-bottom: 10%;
+}
+.card-price-two {
+  text-align: center;
+  margin-top: 20%;
+  padding-bottom: 10%;
+}
+.button-select {
+  margin-top: 7%;
+}
+.chicken-list {
+  margin-top: 20%;
+}
+.card-price-three {
+  text-align: center;
+  margin-top: 9%;
+}
+.button-select-active {
+  margin-top: -7%;
+}
+.store {
+  padding: 5% 5% 5% 0;
+  background-color: #f5f5f5;
+}
+.global-image {
+  margin-top: 8% !important;
+  text-align: center;
+}
+.partner {
+  padding: 0 5% 1% 0;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+.testimony {
+  background-color: #f5f5f5;
+  padding: 0 5% 5% 0;
+}
+.user-detail {
+  display: flex;
+  justify-content: space-between;
+}
+.user-image {
+  display: flex;
+}
+.user-credential {
+  display: grid;
+}
+.user-name {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 30px;
+  color: #0b132a;
+}
+.user-addres {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 30px;
+  color: #4f5665;
+}
+.user-testimony {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  color: #0b132a;
+}
+.card-testimony-active-layout {
+  border: 2px solid #6a4029 !important;
+  border-radius: 10px !important;
+}
+.card-testimony-layout {
+  border: 2px solid #dddddd;
+  border-radius: 10px;
+}
+.col-arrow {
+  text-align: right;
+}
+.left-arrow {
+  padding-bottom: 14%;
+  margin-top: -2%;
+}
+.right-arrow {
+  margin-top: -12%;
+  margin-left: -5%;
+}
+.promo {
+  background-color: #eeeeee;
+  text-align: center;
+}
+.promo-overlay {
+  margin-top: -7%;
+  margin-right: 5%;
+}
+.promo-title {
+  text-align: left;
+  margin-top: 2%;
+}
+.promo-desc {
+  text-align: left;
+}
+.card-promo-layout {
+  margin-top: -10% !important;
+
+  border-radius: 10px !important;
+}
+.card-promo-row {
+  padding-left: 20%;
+  padding-right: 20%;
+}
+.card-promo-row-inside {
+  padding-left: 3%;
+}
+.promo-button {
+  margin-top: 5%;
+  margin-left: 25%;
+}
+.home-footer {
+  background-color: #eeeeee;
+}
+.footer-brand {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  color: #0b132a;
+}
+.footer-fb-icon {
+  margin-left: -2%;
+}
+.footer-twitter-icon {
+  margin-left: -3%;
+}
+.footer-ig-icon {
+  margin-left: -3%;
+}
+.footer-home-copyright {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  color: #afb5c0;
+}
+
+.footer-home-link {
+  display: grid;
+  row-gap: 5%;
 }
