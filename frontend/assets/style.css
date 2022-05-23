@@ -7,13 +7,282 @@ body {
 /* Responsive */
 @font-face {
   font-family: "Rubik";
-  src: url("/juncoffee/frontend/assets/font/Rubik-VariableFont_wght.ttf");
+  src: url("assets/font/Rubik-VariableFont_wght.ttf");
 }
 @font-face {
   font-family: "Poppins";
-  src: url("/juncoffee/frontend/assets/font/Poppins-Regular.ttf");
+  src: url("assets/font/Poppins-Regular.ttf");
 }
 
+@media (max-width: 1282px) {
+  #row-email-phone-card {
+    gap: 0.5rem !important;
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 1352px) {
+  #card-back-brown-res {
+    background: none !important;
+    height: 100% !important;
+    border: none !important;
+  }
+  #card-back-black-res {
+    height: 100% !important;
+    background: none !important;
+    border: none !important;
+  }
+  #card-product-promo-res {
+    height: 100% !important;
+  }
+}
+@media (max-width: 525px) {
+  #teamwork-img-mobile {
+    margin-top: 50% !important;
+  }
+  .customer-card-res {
+    margin-top: 4% !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar-nav {
+    margin-left: 10% !important;
+  }
+  .profile-right-nav {
+    padding-left: 10% !important;
+    text-align: left !important;
+    width: 70% !important;
+  }
+  .right-nav {
+    display: block !important;
+    padding-left: 10%;
+  }
+  .left-arrow {
+    padding-bottom: 17% !important;
+    margin-top: -2% !important;
+  }
+  .right-arrow {
+    margin-left: -9% !important;
+  }
+  .content-item-res {
+    column-gap: 10%;
+  }
+}
+
+@media (max-width: 767px) {
+  input[name="gender"] {
+    transform: scale(1.5) !important;
+  }
+  .date-gender-res {
+    margin-top: 2% !important;
+  }
+  #card-user-detail-res {
+    margin-top: 0 !important;
+  }
+  #delivery-res {
+    margin-top: 0.5rem !important;
+  }
+  .user-profile {
+    height: 100% !important;
+  }
+  #user-contact-card-res {
+    padding: 2% !important;
+    margin-top: 4%;
+  }
+  .row {
+    padding-left: 0 !important;
+  }
+  .user-profile {
+    padding-left: 0 !important;
+  }
+  #card-profile-layout-res {
+    height: 100% !important;
+  }
+  .email-text {
+    margin-top: -5% !important;
+  }
+  #user-detail-row-res {
+    padding: 0 !important;
+  }
+  #card-detail-layout-res {
+    height: 100% !important;
+  }
+  .button-user-detail {
+    margin-top: 8% !important;
+    margin-bottom: 10% !important;
+  }
+  .footer-nav {
+    display: flex !important;
+    justify-content: space-evenly;
+  }
+  .footer-brand-layout {
+    text-align: center;
+  }
+  #card-box-res {
+    height: 100% !important;
+    border: none !important;
+    text-align: center;
+  }
+  .content-desc {
+    margin-top: 30% !important;
+    text-align: center;
+  }
+  .desc-title {
+    font-size: 35px !important;
+  }
+  .desc-word {
+    font-size: 25px !important;
+  }
+  .favorite {
+    padding: 5% 0 0 0 !important;
+  }
+  .section-desc {
+    font-size: 25px !important;
+  }
+  .card-rows {
+    margin: auto !important;
+    padding: 0 !important;
+  }
+  .card-layout {
+    align-items: center;
+    margin-top: 5% !important;
+    padding-bottom: 5% !important;
+  }
+  #card-img-top-res {
+    width: 40% !important;
+    margin-top: 5% !important;
+    margin-left: 0 !important;
+  }
+  .button-select {
+    width: 100% !important;
+    font-size: 25px !important;
+  }
+  .card-price {
+    margin-top: 5% !important;
+  }
+  .hero-res {
+    padding-left: 5% !important;
+  }
+  .list-item-desc {
+    font-size: 25px !important;
+  }
+  .card-title {
+    font-size: 35px !important;
+  }
+  .price-text {
+    font-size: 35px !important;
+  }
+  .global-image-res {
+    width: 80% !important;
+  }
+  .store {
+    padding: 5% 5% 5% 5% !important;
+  }
+  .partner {
+    padding: 0 5% 1% 5% !important;
+  }
+  .partner-img-res {
+    width: 100% !important;
+  }
+  .card-testimony-layout-res1 {
+    padding-bottom: 54% !important;
+  }
+  .card-testimony-layout-res2 {
+    padding-bottom: 41% !important;
+  }
+  .col-arrow {
+    display: none !important;
+  }
+  #card-promo-layout-res {
+    margin-top: 0 !important;
+    margin-left: 11% !important;
+  }
+  .pagination-button-res {
+    text-align: center;
+  }
+  .btn-primary {
+    width: 25% !important;
+    height: 30px !important;
+  }
+  #apply-coupon-res {
+    margin-top: 10% !important;
+  }
+  #tnc-res {
+    text-align: center !important;
+    margin-top: 10% !important;
+    list-style-position: inside !important;
+    margin-bottom: 5%;
+  }
+  .product-card-image {
+    width: 50% !important;
+    margin-top: 3% !important;
+  }
+  .fav-product-title {
+    margin-top: -15% !important;
+    font-size: 40px !important;
+  }
+  .fav-product-price {
+    margin-top: 10% !important;
+    font-size: 35px !important;
+  }
+  .fav-product {
+    gap: 5rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .teamwork-img-res {
+    margin-top: 15% !important;
+  }
+  #card-testimony-mobile {
+    padding-bottom: 0 !important;
+  }
+  .card-testimony-layout {
+    margin-top: 5% !important;
+    margin-left: 5% !important;
+  }
+}
+
+@media (max-width: 419px) {
+  .hero-title {
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 1468px) {
+  .teamwork-img-res {
+    width: 85% !important;
+  }
+  .content-desc-res {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1248px) {
+  .box-head {
+    padding: 0px !important;
+    background-color: white;
+    margin-top: 10% !important;
+  }
+  .card-box {
+    border: none !important;
+  }
+  .content-desc-res {
+    margin-top: 5% !important;
+  }
+  #card-box-res {
+    border-radius: 0px !important;
+  }
+}
+
+@media (max-width: 1030px) {
+  .card-user-detail-row {
+    column-gap: 0 !important;
+  }
+}
 @media (max-width: 790px) {
   .column-image {
     display: none;
@@ -66,14 +335,20 @@ body {
 }
 
 .column-image,
-.side-image {
+.side-image-register {
   width: 100%;
-  height: 1284px;
+  height: 1532px;
+}
+
+.column-image,
+.side-image-login {
+  width: 100%;
+  height: 1417px;
 }
 
 .column-main {
   width: 100%;
-  padding: 55px;
+  padding-top: 55px;
 }
 
 .side-title {
@@ -83,11 +358,12 @@ body {
 .header-title {
   display: inline;
   position: absolute;
-  top: 45px;
+  top: 33px;
+  margin-left: 10px;
   font-family: "Rubik";
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 35px;
   line-height: 24px;
   color: #0b132a;
 }
@@ -104,35 +380,40 @@ body {
 }
 
 .register-form {
-  display: grid;
+  margin: 50px auto 0;
+  width: 70%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
 }
 
 .register {
   display: grid;
-  padding: 10% 10% 0;
-  margin: 10px 10px 26px;
+  padding: 7% 10% 0px;
+  margin: 5px 10px 14px;
 }
 
 label {
-  margin-bottom: 13px;
-  font-family: "Rubik";
+  font-family: Rubik;
   font-style: normal;
-  font-weight: 700;
+  font-weight: bold;
   font-size: 20px;
   line-height: 24px;
   color: #0b132a;
+  margin-bottom: 13px;
 }
 
 input {
   background: rgb(255, 255, 255);
+  box-sizing: border-box;
+  border-radius: 20px;
+  padding: 30px 25px;
   border: 1px solid rgb(79, 86, 101);
-  border-radius: 10px;
-  height: 40px;
-  margin-bottom: 19px;
-}
-
-::placeholder {
-  padding-left: 1%;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
 }
 
 .register-button {
@@ -140,7 +421,7 @@ input {
   box-shadow: 0px 6px 20px rgba(255, 186, 51, 0.4);
   border-radius: 10px;
   border: none;
-  height: 40px;
+  height: 60px;
   margin-bottom: 26px;
 
   font-family: "Rubik";
@@ -160,7 +441,7 @@ input {
   box-shadow: 0px 6px 20px rgba(196, 196, 196, 0.67);
   border: none;
   border-radius: 10px;
-  height: 40px;
+  height: 60px;
   padding-bottom: 10px;
   margin-bottom: 62px;
 
@@ -181,10 +462,12 @@ input {
 }
 
 .already-account {
+  justify-content: center;
   display: flex;
   align-items: center;
-  column-gap: 15px;
-  margin-bottom: 42px;
+  column-gap: 20px;
+  width: 70%;
+  margin: auto;
 }
 
 .already-account-text {
@@ -198,35 +481,38 @@ input {
 
 .underline {
   border-bottom: solid 2px #c4c4c4;
+  flex: 1;
 }
 
 .sideline {
-  border-left: 2px solid #eeeff2;
+  border-right: 2px solid #eeeff2;
 }
 
 .login-here-button {
-  height: 40px;
-  margin-bottom: 82px;
+  height: 60px;
 
   background: #6a4029;
-  box-shadow: 0px 6px 20px rgba(106, 64, 41, 0.63);
+  box-shadow: 0px 6px 20px rgb(106 64 41 / 63%);
   border-radius: 10px;
   border: none;
-
   font-family: "Rubik";
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
   line-height: 25px;
   color: white;
+  margin: 50px auto;
+  width: 70%;
 }
 
 .login-here-button:hover {
   background-color: #7c523c;
 }
 
-footer {
+.login {
   display: flex;
+  background-color: #eeeeee;
+  padding: 5% 0;
 }
 
 .link-title {
@@ -275,14 +561,12 @@ footer-text {
 }
 
 .forgot-pass {
-  font-family: "Rubik";
+  font-family: Rubik;
   font-style: normal;
-  font-weight: 700;
+  font-weight: bold;
   font-size: 20px;
   line-height: 24px;
-  margin-bottom: 51px;
-
-  color: #6a4029;
+  color: rgb(106, 64, 41) !important;
 }
 
 /* Bootstrap */
@@ -332,12 +616,26 @@ span.navbar-text {
   background-color: #ffffff;
   padding-right: 2%;
 }
-.navbar-nav .nav-link.active {
+
+.profile-nav {
   font-family: "Rubik";
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
-
+  color: #4f5665 !important;
+}
+.home-nav {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px;
+  color: #6a4029 !important;
+}
+.product-nav {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px;
   color: #6a4029 !important;
 }
 .right-nav {
@@ -347,7 +645,7 @@ span.navbar-text {
   padding-left: 5%;
 }
 .hero-image {
-  background-image: url("/juncoffee/frontend/assets/img/nathan-dumlao-6VhPY27jdps-unsplash.jpg");
+  background-image: url("https://juncoffee.netlify.app/assets/img/nathan-dumlao-6VhPY27jdps-unsplash.jpg");
   height: 638px;
 }
 .hero-title {
@@ -369,7 +667,7 @@ span.navbar-text {
   line-height: 30px;
 }
 .get-started {
-  width: 25%;
+  width: 40%;
   height: 60px;
 
   background: #ffba33;
@@ -393,16 +691,7 @@ span.navbar-text {
 }
 .card-box {
   height: 190px !important;
-}
-.card-content {
-  display: flex;
-  justify-content: space-evenly;
-
-  padding-top: 2%;
-}
-.card-content-item {
-  padding-top: 3%;
-  display: flex;
+  border-radius: 10px !important;
 }
 .text-item {
   display: grid;
@@ -425,7 +714,9 @@ span.navbar-text {
 .content-desc {
   padding: 10% 10% 5%;
 }
-.desc-list-item {
+
+.list-item-desc {
+  padding-top: 2%;
   font-family: "Rubik";
   font-style: normal;
   font-weight: 400;
@@ -433,10 +724,6 @@ span.navbar-text {
   line-height: 30px;
   color: #4f5665;
   list-style: none;
-  padding-left: 0;
-}
-.list-item-desc {
-  padding-top: 2%;
 }
 .desc-title {
   font-family: "Rubik";
@@ -492,13 +779,10 @@ span.navbar-text {
   padding-bottom: 10%;
   border-radius: 10px !important;
   border: 2px solid #dddddd !important;
-  justify-content: space-between;
+  width: 100%;
 }
-.card-layout-active {
-  padding-bottom: 10%;
-  border-radius: 10px !important;
+.card-layout:hover {
   border: 2px solid #6a4029 !important;
-  justify-content: space-between;
 }
 .card-cols {
   display: flex;
@@ -513,25 +797,39 @@ span.navbar-text {
   line-height: 30px;
   color: #0b132a;
 }
-.card-price-one {
+.card-price {
   text-align: center;
   margin-top: 35%;
   padding-bottom: 10%;
 }
-.card-price-two {
-  text-align: center;
-  margin-top: 20%;
-  padding-bottom: 10%;
+.price-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+  color: #0b132a;
 }
 .button-select {
   margin-top: 7%;
+  border: 2px solid #ffba33;
+  border-radius: 50px;
+  background: none;
+  width: 55%;
+  height: 45px;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  color: #6a4029;
+}
+.button-select:hover {
+  background-color: #ffba33;
 }
 .chicken-list {
   margin-top: 20%;
-}
-.card-price-three {
-  text-align: center;
-  margin-top: 9%;
 }
 .button-select-active {
   margin-top: -7%;
@@ -587,13 +885,13 @@ span.navbar-text {
   line-height: 30px;
   color: #0b132a;
 }
-.card-testimony-active-layout {
-  border: 2px solid #6a4029 !important;
+
+.card-testimony-layout {
+  border: 2px solid #dddddd !important;
   border-radius: 10px !important;
 }
-.card-testimony-layout {
-  border: 2px solid #dddddd;
-  border-radius: 10px;
+.card-testimony-layout:hover {
+  border: 2px solid #6a4029 !important;
 }
 .col-arrow {
   text-align: right;
@@ -603,16 +901,12 @@ span.navbar-text {
   margin-top: -2%;
 }
 .right-arrow {
-  margin-top: -12%;
+  margin-top: -13%;
   margin-left: -5%;
 }
 .promo {
   background-color: #eeeeee;
   text-align: center;
-}
-.promo-overlay {
-  margin-top: -7%;
-  margin-right: 5%;
 }
 .promo-title {
   text-align: left;
@@ -629,16 +923,34 @@ span.navbar-text {
 .card-promo-row {
   padding-left: 20%;
   padding-right: 20%;
+  padding-top: 1%;
 }
 .card-promo-row-inside {
   padding-left: 3%;
 }
 .promo-button {
-  margin-top: 5%;
-  margin-left: 25%;
+  background: #ffba33;
+  border-radius: 10px;
+  height: 60px;
+  border: none;
+  width: 50%;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 25px;
+  color: #6a4029;
+}
+.promo-button:hover {
+  background: #ffc654;
 }
 .home-footer {
   background-color: #eeeeee;
+}
+.footer-nav {
+  flex: 1;
+  display: contents;
 }
 .footer-brand {
   font-family: "Rubik";
@@ -679,7 +991,7 @@ span.navbar-text {
   text-align: right;
 }
 .user-profile {
-  background-image: url("/juncoffee/frontend/assets/img/love-coffee.jpg");
+  background-image: url("https://juncoffee.netlify.app/assets/img/love-coffee.jpg");
   height: 1200px;
   padding-left: 10%;
 }
@@ -713,7 +1025,11 @@ span.navbar-text {
   font-weight: 700;
   font-size: 20px;
   line-height: 25px;
+  border: none;
   border-bottom: 1px solid #000000;
+  padding: 0;
+  border-radius: 0;
+  width: 100%;
 }
 .card-detail-layout {
   box-shadow: 0px 15px 0px 0px rgb(106 64 41) !important;
@@ -721,7 +1037,7 @@ span.navbar-text {
   height: 418px !important;
 }
 .card-user-detail-row {
-  justify-content: space-between;
+  column-gap: 2rem;
 }
 .male-icon-text {
   font-family: "Poppins";
@@ -731,7 +1047,7 @@ span.navbar-text {
   line-height: 30px;
   color: #9f9f9f;
 }
-.female-icon-text {
+.radio-row input[type="radio"]:checked + label {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 700;
@@ -766,6 +1082,9 @@ span.navbar-text {
   line-height: 27px;
   color: white;
 }
+.save-change-button:hover {
+  background-color: #694835;
+}
 .cancel-button {
   background: #ffba33;
   border-radius: 20px;
@@ -780,6 +1099,9 @@ span.navbar-text {
   font-size: 18px;
   line-height: 27px;
   color: #6a4029;
+}
+.cancel-button:hover {
+  background-color: #fdc75b;
 }
 .edit-pass-button {
   background: #ffffff;
@@ -823,4 +1145,201 @@ span.navbar-text {
 }
 .button-content {
   display: grid;
+}
+.email-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 50px;
+  color: #4f5665;
+  margin-top: -7%;
+}
+.product-ordered {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 25px;
+  color: #4f5665;
+}
+.product-section {
+  background-color: #f5f5f5;
+}
+.product-promo-col {
+  border-right: 0.5px solid #9f9f9f;
+}
+.card-product-promo-layout {
+  width: 108%;
+  margin-left: -15%;
+  background-color: #ffcb65 !important;
+  border-radius: 20px !important;
+  margin-top: -6%;
+  height: 585px !important;
+}
+.card-product-promo-layout:hover {
+  background-color: #f5ce82 !important;
+}
+.card-back-black {
+  background-color: #000000 !important;
+  border-radius: 20px !important;
+  margin-left: 10%;
+  height: 525px !important;
+  margin-top: -5%;
+  width: 88%;
+}
+.card-back-brown {
+  background-color: #895537 !important;
+  border-radius: 20px !important;
+  height: 470px !important;
+  margin-top: 10% !important;
+  width: 80% !important;
+  margin-left: 13%;
+}
+.apply-coupon {
+  margin-top: 20% !important;
+}
+.apply-coupon-button {
+  background: #6a4029;
+  border-radius: 20px;
+  width: 40% !important;
+  height: 64px;
+  border: none;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 26px;
+  color: white;
+}
+.apply-coupon-button:hover {
+  background-color: #895537;
+}
+.nav-product {
+  border-bottom: 0.5px solid #9f9f9f;
+}
+.promo-food-img {
+  width: 70% !important;
+}
+.product-promo-card-title {
+  margin-top: -20% !important;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 40px;
+  line-height: 45px;
+}
+.product-promo-card-desc {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 30px;
+}
+.coupon-code-exp {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+}
+.border-dot {
+  border: 1px dashed #000000;
+}
+.coupon-code-text {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 40px;
+  line-height: 45px;
+}
+.promo-title-product {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 30px;
+  color: #6a4029;
+}
+.promo-desc-product {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 18px;
+  text-align: center;
+}
+.tnc {
+  margin-top: 50% !important;
+}
+.tnc-title {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 14px;
+  color: #4f5665;
+}
+.tnc-items {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 14px;
+  color: #4f5665;
+}
+.card-fav-product-layout {
+  box-shadow: 0px 30px 60px rgba(57, 57, 57, 0.1);
+  border-radius: 30px !important;
+  width: 100%;
+}
+.card-fav-product-layout:hover {
+  border-color: #7c523c;
+}
+.product-card-image {
+  width: 100%;
+  margin-top: -35%;
+}
+.fav-product {
+  margin-top: 10% !important;
+}
+.fav-product-title {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 40px;
+  margin-top: -30%;
+}
+.fav-product-price {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+  text-align: center;
+  color: #6a4029;
+  margin-top: 28%;
+}
+.link-text-active {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 20px !important;
+  color: #6a4029 !important;
+  border-bottom: 3px solid #6a4029;
+  text-align: center;
+}
+.link-text {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400 !important;
+  font-size: 20px !important;
+  text-align: center;
+  color: #9f9f9f !important;
+}
+input[name="gender"] {
+  accent-color: #ffba33;
+  transform: scale(2);
 }

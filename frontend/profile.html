@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Juncoffee - Profile</title>
-    <link rel="stylesheet" href="/juncoffee/frontend/assets/style.css" />
+    <link rel="stylesheet" href="assets/style.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" />
   </head>
@@ -13,29 +13,29 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top bg-white nav-coffee">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/juncoffee/frontend/home.html"> <img src="/juncoffee/frontend/assets/img/coffee 1.png" alt="logo-icon" />&nbsp;Juncoffee</a>
+        <a class="navbar-brand" href="home.html"> <img src="assets/img/coffee 1.png" alt="logo-icon" />&nbsp;Juncoffee</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/juncoffee/frontend/home.html">Home</a>
+              <a class="nav-link active profile-nav" aria-current="page" href="home.html">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Product</a>
+              <a class="nav-link" href="product.html">Product</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">Your Cart</a>
+              <a class="nav-link" href="#">Your Cart</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">History</a>
+              <a class="nav-link" href="#">History</a>
             </li>
           </ul>
           <div class="profile-right-nav">
-            <img src="/juncoffee/frontend/assets/img/search.png" width="8%" class="me-3" alt="" />
-            <img src="/juncoffee/frontend/assets/img/chat (1) 1.png" width="10%" alt="" />
-            <img src="/juncoffee/frontend/assets/img/profile-user-icon.png" class="ms-3" alt="" />
+            <a href="#"><img src="assets/img/search.png" width="8%" class="me-3" alt="" /></a>
+            <a href="#"><img src="assets/img/chat (1) 1.png" width="10%" alt="" /></a>
+            <a href="profile.html"><img src="assets/img/profile-user-icon.png" class="ms-3" alt="" /></a>
           </div>
         </div>
       </div>
@@ -51,82 +51,79 @@
         </div>
         <div class="row my-4">
           <div class="col-md-3">
-            <div class="card card-profile-layout">
+            <div class="card card-profile-layout " id="card-profile-layout-res">
               <div class="card-body text-center mt-5">
-                <img src="/juncoffee/frontend/assets/img/user-profile-image.png" class="user-profile-image" alt="" />
-                <h2 class="card-title">Zulaikha</h2>
-                <p class="text-center">zulaikha17@gmail.com</p>
-                <p class="product-ordered text-center mt-5">Has been ordered 15 products</p>
+                <img src="assets/img/user-profile-image.png" class="user-profile-image" alt="" />
+                <h2 class="card-title mt-3">Zulaikha</h2>
+                <p class="text-center email-text">zulaikha17@gmail.com</p>
+                <p class="product-ordered text-center mt-4">Has been ordered 15 products</p>
               </div>
             </div>
           </div>
-          <div class="col-md-8 user-contact-card">
-            <div class="card card-profile-layout">
+          <div class="col-md-8 user-contact-card" id="user-contact-card-res">
+            <div class="card card-profile-layout " id="card-profile-layout-res">
               <div class="card-body">
                 <div class="row mt-3 ps-3">
                   <div class="col-md-6">
                     <h2 class="user-contact">Contacts</h2>
                   </div>
                   <div class="col-md-6 text-end">
-                    <img src="/juncoffee/frontend/assets/img/needle.png" width="10%" alt="" />
+                    <img src="assets/img/needle.png" width="10%" alt="" />
                   </div>
                 </div>
-                <div class="row mt-4 ps-3">
+                <div class="row mt-4 ps-3 gap-5" id="row-email-phone-card">
                   <div class="col-md-6">
                     <h2 class="user-contact-title">Email Address :</h2>
-                    <p class="user-contact-text">zulaikha17@gmail.com</p>
+                    <input type="text" class="user-contact-text" value="zulaikha17@gmail.com"></input>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                     <h2 class="user-contact-title">Mobile number :</h2>
-                    <p class="user-contact-text">(+62)813456782</p>
+                    <input type="text" class="user-contact-text" value="(+62)813456782"></input>
                   </div>
                 </div>
-                <div class="row mt-3 ps-3">
+                <div class="row mt-3 ps-3" id="delivery-res">
                   <div class="col-md-6">
                     <h2 class="user-contact-title">Delivery Address :</h2>
-                    <p class="user-contact-text">Iskandar Street no. 67 Block A Near Bus Stop</p>
+                    <textarea class="user-contact-text">Iskandar Street no. 67 Block A Near
+Bus Stop</textarea>             
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row mt-lg-5 pt-5">
+        <div class="row mt-lg-5 pt-5 " id="user-detail-row-res">
           <div class="col-md-6 me-5">
-            <div class="card card-detail-layout">
+            <div class="card card-detail-layout" id="card-detail-layout-res">
               <div class="card-body">
                 <div class="row mt-3 ps-3">
                   <div class="col-md-6">
                     <h2 class="user-contact">Details</h2>
                   </div>
                   <div class="col-md-6 text-end">
-                    <img src="/juncoffee/frontend/assets/img/needle.png" width="13%" alt="" />
+                    <img src="assets/img/needle.png" width="11%" alt="" />
                   </div>
                 </div>
-                <div class="row mt-4 ps-3 card-user-detail-row">
-                  <div class="col-md-7">
+                <div class="row mt-4 ps-3 card-user-detail-row" id="card-user-detail-res">
+                  <div class="col-md-7 d-flex flex-column gap-2">
                     <h2 class="user-contact-title">Display Name :</h2>
-                    <p class="user-contact-text">Zulaikha</p>
-                  </div>
-                  <div class="col-md-4">
-                    <h2 class="user-contact-title">DD/MM/YY</h2>
-                    <p class="user-contact-text">03/04/90</p>
-                  </div>
-                </div>
-                <div class="row mt-3 ps-3 card-user-detail-row">
-                  <div class="col-md-7">
+                    <input type="text" class="user-contact-text" value="Zulaikha"></input>
                     <h2 class="user-contact-title">First name :</h2>
-                    <p class="user-contact-text">Zulaikha</p>
-                  </div>
-                  <div class="col-md-4 d-grid">
-                    <span class="male-icon-text"><img src="/juncoffee/frontend/assets/img/male-icon.png" alt="" /> &nbsp; Male </span
-                    ><span class="female-icon-text mt-3"><img src="/juncoffee/frontend/assets/img/radio-check.png" width="13%" alt="" /> &nbsp; Female</span>
-                  </div>
-                </div>
-                <div class="row mt-3 ps-3 card-user-detail-row">
-                  <div class="col-md-7">
+                    <input type="text" class="user-contact-text" value="Zulaikha"></input>
                     <h2 class="user-contact-title">Last name :</h2>
-                    <p class="user-contact-text">Nirmala</p>
+                    <input type="text" class="user-contact-text" value="Nirmala"></input>
+                  </div>
+                  <div class="col-md-4 d-flex flex-column date-gender-res gap-2">
+                    <h2 class="user-contact-title">Date Of Birth</h2>
+                    <input type="date" class="user-contact-text" value="1990-04-03"></input>
+                    <div class="radio-row mt-2">
+                      <input type="radio" name="gender" value="male">
+                      <label for="gender" class="male-icon-text ms-2 mb-0"> Male </label>
+                      </div>
+                    <div class="radio-row">
+                        <input type="radio" name="gender" value="female" checked>
+                        <label for="gender"  class="male-icon-text ms-2 mb-0"> Female</label>
+                      </div>
                   </div>
                 </div>
               </div>
@@ -140,8 +137,8 @@
             <div class="button-content mt-4">
               <button class="save-change-button">Save Change</button>
               <button class="cancel-button mt-3">Cancel</button>
-              <button class="edit-pass-button mt-5"><span>Edit Password</span> <img src="/juncoffee/frontend/assets/img/right-icon.png" alt="" /></button>
-              <button class="logout-button mt-3"><span>Log out</span> <img src="/juncoffee/frontend/assets/img/right-icon.png" alt="" /></button>
+              <button class="edit-pass-button mt-5"><span>Edit Password</span> <img src="assets/img/right-icon.png" alt="" /></button>
+              <button class="logout-button mt-3"  onclick="window.location.href='login.html'"><span>Log out</span> <img src="assets/img/right-icon.png" alt="" /></button>
             </div>
           </div>
         </div>
@@ -152,18 +149,19 @@
     <footer class="home-footer py-5">
       <div class="container-fluid mt-5">
         <div class="row">
-          <div class="col-md-8">
-            <h2 class="footer-brand"><img src="/juncoffee/frontend/assets/img/coffee 1.png" alt="logo-icon" />&nbsp;Juncoffee</h2>
+          <div class="col-md-8 footer-brand-layout">
+            <h2 class="footer-brand"><img src="assets/img/coffee 1.png" alt="logo-icon" />&nbsp;Juncoffee</h2>
             <p class="footer-text mt-3">
               Juncoffee is a store that sells some good <br />
               meals, and especially coffee. We provide <br />
               high quality beans
             </p>
-            <img src="/juncoffee/frontend/assets/img/Facebook.png" class="footer-fb-icon" alt="fb-icon" />
-            <img src="/juncoffee/frontend/assets/img/Twitter-icon.png" class="footer-twitter-icon" alt="twitter-icon" />
-            <img src="/juncoffee/frontend/assets/img/Instagram.png" class="footer-ig-icon" alt="ig-icon" />
+            <img src="assets/img/Facebook.png" class="footer-fb-icon" alt="fb-icon" />
+            <img src="assets/img/Twitter-icon.png" class="footer-twitter-icon" alt="twitter-icon" />
+            <img src="assets/img/Instagram.png" class="footer-ig-icon" alt="ig-icon" />
             <p class="footer-home-copyright">@2022Juncoffee</p>
           </div>
+          <div class="footer-nav">
           <div class="col-md-2">
             <h2 class="link-title">Product</h2>
             <div class="footer-home-link">
@@ -184,6 +182,7 @@
               <a href="">Terms of Service</a>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </footer>
