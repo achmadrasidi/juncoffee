@@ -1,6 +1,6 @@
 <p align="center">
   <img src="assets/img/coffee 1.png" width=100 alt="logo-icon" />
-  <h1 align='center'>Juncoffee Client</h1>
+  <h1 align='center'>Juncoffee Static HTML Bootstrap</h1>
 </p>
   <p align="center">
     <a href="https://juncoffee.netlify.app/">View Static Demo</a>
