@@ -18,8 +18,8 @@ Juncoffee is a store that sells some good meals, and especially coffee. We provi
 
 <p align="center" display='flex'>
    <div align="center">
-   <image src='frontend\static\assets\img\home1.png' width=48%/>
-  <image src='frontend\static\assets\img\home2.png' width=49%/>
+   <image src='frontend/static/assets/img/home 1.PNG' width=48%/>
+  <image src='frontend/static/assets/img/home 2.PNG' width=49%/>
     <image src='frontend\static\assets\img\screencapture-juncoffee-netlify-app-product-html-2022-05-24-03_05_01.png' width=45%/>
     <image src='frontend\static\assets\img\screencapture-juncoffee-netlify-app-profile-html-2022-05-24-03_06_17.png' width=51%/>
     <image src='frontend\static\assets\img\screencapture-juncoffee-netlify-app-login-html-2022-05-24-03_07_31.png' width=50%/>
