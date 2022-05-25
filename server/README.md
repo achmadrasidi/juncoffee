@@ -7,11 +7,11 @@
 
   <p align="center">
     <br />
-    <a href="https://coffeeshop-sks.muchamadagushermawan.online/">View Demo</a>
+    <a href="https://juncoffe.netlify.app/">View Demo</a>
     ·
-    <a href="https://github.com/muchamadagush/backend-CoffeeShop/issues">Report Bug</a>
+    <a href="https://github.com/achmadrasidi/juncoffee/issues">Report Bug</a>
     ·
-    <a href="https://github.com/muchamadagush/backend-CoffeeShop/issues">Request Feature</a>
+    <a href="https://github.com/achmadrasidi/juncoffee/issues">Request Feature</a>
   </p>
 </p>
 

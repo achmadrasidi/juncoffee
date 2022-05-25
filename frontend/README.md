@@ -1,66 +1,70 @@
-<p align="center">
-  <img src="assets/img/coffee 1.png" width=100 alt="logo-icon" />
-  <h1 align='center'>Juncoffee Client</h1>
-</p>
-  <p align="center">
-    <a href="https://juncoffee.netlify.app/">View Static Demo</a>
-    ·
-    <a href="https://github.com/achmadrasidi/juncoffee/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/achmadrasidi/juncoffee/pulls">Request Feature</a>
-  </p>
+# Getting Started with Create React App
 
-## About The Project
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Juncoffee is a store that sells some good meals, and especially coffee. We provide high quality beans
+## Available Scripts
 
-## Screenshots
+In the project directory, you can run:
 
-<p align="center" display='flex'>
-  <image src='assets\img\screencapture-juncoffee-netlify-app-2022-05-24-03_00_34.png' width=45%/>
-  <div align="center">
-    <image src='assets\img\screencapture-juncoffee-netlify-app-product-html-2022-05-24-03_05_01.png' width=45%/>
-    <image src='assets\img\screencapture-juncoffee-netlify-app-profile-html-2022-05-24-03_06_17.png' width=51%/>
-    <image src='assets\img\screencapture-juncoffee-netlify-app-login-html-2022-05-24-03_07_31.png' width=50%/>
-    <image src='assets\img\screencapture-juncoffee-netlify-app-register-html-2022-05-24-03_10_01.png' width=46%/>
-  </div>
-</p>
+### `npm start`
 
-## Built With
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-[![Bootstrap](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## Requirements
+### `npm test`
 
-1. Layout,color, typography
-2. Login
-3. Register
-4. Product
-5. Profile
-6. Responsive
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Getting Started
+### `npm run build`
 
-1. Download this Project or you can type `git clone https://github.com/achmadrasidi/juncoffee.git`
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-```sh
-git clone https://github.com/achmadrasidi/juncoffee.git
-```
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-2. Open app's directory in CMD or Terminal
-3. Go to _frontend_ directory
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-```sh
-cd frontend
-```
+### `npm run eject`
 
-4. Open [VS Code](https://code.visualstudio.com/) in _frontend_ directory
-5. Install [Live Server Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-6. Right click _home.html_ then choose **Open With Live Server**
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-## Related Project
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-- [`Backend-juncoffee Directory`](https://github.com/achmadrasidi/juncoffee/tree/main/server)
-- [`Backend-juncoffee Documentation`](https://github.com/achmadrasidi/juncoffee/tree/main/server)
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

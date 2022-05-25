@@ -7,11 +7,11 @@ body {
 /* Responsive */
 @font-face {
   font-family: "Rubik";
-  src: url("assets/font/Rubik-VariableFont_wght.ttf");
+  src: url("https://juncoffee.netlify.app/assets/font/Rubik-VariableFont_wght.ttf");
 }
 @font-face {
   font-family: "Poppins";
-  src: url("assets/font/Poppins-Regular.ttf");
+  src: url("https://juncoffee.netlify.app/assets/font/Poppins-Regular.ttf");
 }
 
 @media (max-width: 1282px) {
@@ -36,18 +36,35 @@ body {
     height: 100% !important;
   }
 }
-@media (max-width: 525px) {
-  #teamwork-img-mobile {
-    margin-top: 50% !important;
-  }
-  .customer-card-res {
-    margin-top: 4% !important;
-  }
-}
 
 @media (max-width: 991px) {
+  .hero-image {
+    height: 100% !important;
+    padding-bottom: 10% !important;
+  }
+  .hero-title {
+    padding: 10% 0 5% !important;
+    line-height: 45px !important;
+  }
+  .hero-desc {
+    padding: 0 15% 5% 0 !important;
+    line-height: 30px !important;
+  }
+  .normal-text {
+    font-size: 18px !important;
+  }
+  .banner {
+    margin-top: 0 !important;
+  }
   .navbar-nav {
     margin-left: 10% !important;
+  }
+  .desc-title {
+    font-size: 25px !important;
+    line-height: 30px !important;
+  }
+  .desc-word {
+    line-height: 25px !important;
   }
   .profile-right-nav {
     padding-left: 10% !important;
@@ -121,12 +138,19 @@ body {
   }
   #card-box-res {
     height: 100% !important;
-    border: none !important;
     text-align: center;
+    margin-top: 1rem;
+  }
+  .card-row-res {
+    gap: 1rem !important;
   }
   .content-desc {
-    margin-top: 30% !important;
     text-align: center;
+    padding: 5% !important;
+  }
+  #sideline-res {
+    border: none !important;
+    padding-bottom: 0 !important;
   }
   .desc-title {
     font-size: 35px !important;
@@ -135,7 +159,7 @@ body {
     font-size: 25px !important;
   }
   .favorite {
-    padding: 5% 0 0 0 !important;
+    padding: 5% 5% 0 !important;
   }
   .section-desc {
     font-size: 25px !important;
@@ -143,6 +167,7 @@ body {
   .card-rows {
     margin: auto !important;
     padding: 0 !important;
+    width: 80% !important;
   }
   .card-layout {
     align-items: center;
@@ -150,46 +175,39 @@ body {
     padding-bottom: 5% !important;
   }
   #card-img-top-res {
-    width: 40% !important;
+    width: 30% !important;
     margin-top: 5% !important;
     margin-left: 0 !important;
   }
   .button-select {
     width: 100% !important;
-    font-size: 25px !important;
+    font-size: 18px !important;
   }
   .card-price {
-    margin-top: 5% !important;
+    margin-top: 1rem !important;
   }
   .hero-res {
     padding-left: 5% !important;
   }
+  #gap-res {
+    gap: 0 !important;
+  }
   .list-item-desc {
+    font-size: 18px !important;
+    line-height: 20px !important;
+  }
+
+  .card-title {
     font-size: 25px !important;
   }
-  .card-title {
-    font-size: 35px !important;
-  }
   .price-text {
-    font-size: 35px !important;
-  }
-  .global-image-res {
-    width: 80% !important;
+    font-size: 25px !important;
   }
   .store {
-    padding: 5% 5% 5% 5% !important;
+    padding: 5% !important;
   }
   .partner {
-    padding: 0 5% 1% 5% !important;
-  }
-  .partner-img-res {
-    width: 100% !important;
-  }
-  .card-testimony-layout-res1 {
-    padding-bottom: 54% !important;
-  }
-  .card-testimony-layout-res2 {
-    padding-bottom: 41% !important;
+    padding: 0 5% 1% !important;
   }
   .col-arrow {
     display: none !important;
@@ -220,58 +238,68 @@ body {
   }
   .fav-product-title {
     margin-top: -15% !important;
-    font-size: 40px !important;
+    font-size: 25px !important;
+    line-height: 25px !important;
   }
   .fav-product-price {
     margin-top: 10% !important;
-    font-size: 35px !important;
+    font-size: 20px !important;
   }
   .fav-product {
     gap: 5rem;
+    display: grid !important;
+    grid-template-columns: 25% 25%;
+    justify-content: center;
   }
 }
 
 @media (max-width: 575px) {
+  #content-desc-res {
+    gap: 0 !important;
+  }
   .teamwork-img-res {
-    margin-top: 15% !important;
+    margin: auto !important;
   }
   #card-testimony-mobile {
     padding-bottom: 0 !important;
   }
   .card-testimony-layout {
-    margin-top: 5% !important;
     margin-left: 5% !important;
+  }
+  #fav-prod-mobile-res {
+    display: flex !important;
+  }
+  .testimony-row {
+    gap: 1rem !important;
+  }
+  .card-body-testi {
+    padding-bottom: 5% !important;
   }
 }
 
 @media (max-width: 419px) {
   .hero-title {
     padding: 0 !important;
+    margin-top: 1rem !important;
   }
-}
-
-@media (max-width: 1468px) {
-  .teamwork-img-res {
-    width: 85% !important;
+  #user-detail-col-res {
+    padding: 0 2% !important;
   }
-  .content-desc-res {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  #user-contact-res {
+    margin-bottom: 5% !important;
+  }
+  .footer-nav {
+    text-align: center;
   }
 }
 
 @media (max-width: 1248px) {
   .box-head {
-    padding: 0px !important;
-    background-color: white;
-    margin-top: 10% !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
   }
   .card-box {
     border: none !important;
-  }
-  .content-desc-res {
-    margin-top: 5% !important;
   }
   #card-box-res {
     border-radius: 0px !important;
@@ -283,19 +311,17 @@ body {
     column-gap: 0 !important;
   }
 }
+
 @media (max-width: 790px) {
   .column-image {
     display: none;
   }
   .column-main {
-    background-color: aliceblue;
+    background-color: white;
   }
 }
 
 @media (max-width: 500px) {
-  .side-title {
-    padding: 0 0% !important;
-  }
   .page-title {
     float: none !important;
     font-size: 28px !important;
@@ -328,7 +354,17 @@ body {
   }
 }
 
-/* Main container */
+@media (max-width: 1138px) {
+  .side-image-login {
+    height: 1381px !important;
+  }
+
+  .side-image-register {
+    height: 1464px !important;
+  }
+}
+
+/* Login and Register CSS */
 .container {
   display: flex;
   width: 100%;
@@ -484,10 +520,6 @@ input {
   flex: 1;
 }
 
-.sideline {
-  border-right: 2px solid #eeeff2;
-}
-
 .login-here-button {
   height: 60px;
 
@@ -558,6 +590,7 @@ footer-text {
   font-size: 16px;
   line-height: 30px;
   color: #4f5665 !important;
+  text-decoration: none !important;
 }
 
 .forgot-pass {
@@ -568,8 +601,10 @@ footer-text {
   line-height: 24px;
   color: rgb(106, 64, 41) !important;
 }
+/* End Login And Register CSS  */
 
 /* Bootstrap */
+/* Home Page  */
 .nav-coffee {
   padding-top: 2% !important;
   padding-bottom: 2% !important;
@@ -648,6 +683,9 @@ span.navbar-text {
   background-image: url("https://juncoffee.netlify.app/assets/img/nathan-dumlao-6VhPY27jdps-unsplash.jpg");
   height: 638px;
 }
+.hero-content {
+  padding-left: 5% !important;
+}
 .hero-title {
   color: white;
   padding: 10% 28% 3% 0;
@@ -665,6 +703,9 @@ span.navbar-text {
   font-weight: 700;
   font-size: 20px;
   line-height: 30px;
+}
+.sideline {
+  border-right: 2px solid #c4c4c4;
 }
 .get-started {
   width: 40%;
@@ -684,9 +725,11 @@ span.navbar-text {
 .get-started:hover {
   background-color: #fdc75b;
 }
+.banner {
+  margin-top: -5%;
+}
 .box-head {
   padding-right: 10%;
-  padding-top: 5%;
   padding-left: 10%;
 }
 .card-box {
@@ -712,7 +755,7 @@ span.navbar-text {
   line-height: 30px;
 }
 .content-desc {
-  padding: 10% 10% 5%;
+  padding: 5% 10%;
 }
 
 .list-item-desc {
@@ -773,7 +816,7 @@ span.navbar-text {
   margin-left: 30%;
 }
 .card-rows {
-  padding: 10% 20% 0 26%;
+  padding: 5% 20% 0 26%;
 }
 .card-layout {
   padding-bottom: 10%;
@@ -835,17 +878,23 @@ span.navbar-text {
   margin-top: -7%;
 }
 .store {
-  padding: 5% 5% 5% 0;
+  padding: 0 5% 5% 0;
   background-color: #f5f5f5;
 }
 .global-image {
-  margin-top: 8% !important;
+  margin-top: 2% !important;
   text-align: center;
+}
+.global-image-res {
+  max-width: fit-content;
 }
 .partner {
   padding: 0 5% 1% 0;
   background-color: #f5f5f5;
   text-align: center;
+}
+.partner-img-res {
+  max-width: fit-content;
 }
 .testimony {
   background-color: #f5f5f5;
@@ -889,6 +938,7 @@ span.navbar-text {
 .card-testimony-layout {
   border: 2px solid #dddddd !important;
   border-radius: 10px !important;
+  height: 100% !important;
 }
 .card-testimony-layout:hover {
   border: 2px solid #6a4029 !important;
@@ -986,6 +1036,9 @@ span.navbar-text {
   right: 20px;
   display: none;
 }
+/* End Home  */
+
+/* Profile CSS  */
 .profile-right-nav {
   padding-right: 10%;
   text-align: right;
@@ -1163,6 +1216,9 @@ span.navbar-text {
   line-height: 25px;
   color: #4f5665;
 }
+/* End Profile  */
+
+/* Product CSS  */
 .product-section {
   background-color: #f5f5f5;
 }
@@ -1271,7 +1327,7 @@ span.navbar-text {
   text-align: center;
 }
 .tnc {
-  margin-top: 50% !important;
+  margin-top: 35% !important;
 }
 .tnc-title {
   font-family: "Rubik";
@@ -1293,6 +1349,8 @@ span.navbar-text {
   box-shadow: 0px 30px 60px rgba(57, 57, 57, 0.1);
   border-radius: 30px !important;
   width: 100%;
+  max-width: fit-content;
+  margin: auto;
 }
 .card-fav-product-layout:hover {
   border-color: #7c523c;
