@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="frontend/assets/img/coffee 1.png" width=100 alt="logo-icon" />
+  <img src="frontend/static/assets/img/coffee 1.png" width=100 alt="logo-icon" />
   <h1 align='center'>Juncoffee Shop</h1>
 </p>
   <p align="center">
@@ -18,12 +18,12 @@ Juncoffee is a store that sells some good meals, and especially coffee. We provi
 
 <p align="center" display='flex'>
    <div align="center">
-   <image src='frontend\assets\img\home 1.png' width=48%/>
-  <image src='frontend\assets\img\home 2.png' width=49%/>
-    <image src='frontend\assets\img\screencapture-juncoffee-netlify-app-product-html-2022-05-24-03_05_01.png' width=45%/>
-    <image src='frontend\assets\img\screencapture-juncoffee-netlify-app-profile-html-2022-05-24-03_06_17.png' width=51%/>
-    <image src='frontend\assets\img\screencapture-juncoffee-netlify-app-login-html-2022-05-24-03_07_31.png' width=50%/>
-    <image src='frontend\assets\img\screencapture-juncoffee-netlify-app-register-html-2022-05-24-03_10_01.png' width=46%/>
+   <image src='frontend/static/assets/img/home 1.PNG' width=48%/>
+  <image src='frontend/static/assets/img/home 2.PNG' width=49%/>
+    <image src='frontend\static\assets\img\screencapture-juncoffee-netlify-app-product-html-2022-05-24-03_05_01.png' width=45%/>
+    <image src='frontend\static\assets\img\screencapture-juncoffee-netlify-app-profile-html-2022-05-24-03_06_17.png' width=51%/>
+    <image src='frontend\static\assets\img\screencapture-juncoffee-netlify-app-login-html-2022-05-24-03_07_31.png' width=50%/>
+    <image src='frontend\static\assets\img\screencapture-juncoffee-netlify-app-register-html-2022-05-24-03_10_01.png' width=46%/>
   </div>
 </p>
 
@@ -77,7 +77,8 @@ npm install
 PORT
 DB_USER
 DB_HOST
-DB_DATABASEDB_PASS
+DB_DATABASE
+DB_PASS
 JWT_SECRET_KEY
 JWT_ISSUER
 ```
