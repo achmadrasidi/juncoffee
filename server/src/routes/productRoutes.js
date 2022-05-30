@@ -8,11 +8,11 @@ const uploadFile = require("../middleware/fileUpload");
 
 // USER
 // get product detail
-Router.get("/detail/:id", checkToken, checkRole("user"), valueValidator, getProductDetail);
+Router.get("/detail/:id", valueValidator, getProductDetail);
 // get all,search product
 Router.get("/", valueValidator, productValidator, searchProducts);
 // favourite product
-Router.get("/favourite", checkToken, checkRole("user"), valueValidator, productValidator, favProduct);
+Router.get("/favourite", valueValidator, productValidator, favProduct);
 
 // ADMIN
 // add new product

@@ -11,11 +11,11 @@ const getUserById = async (req) => {
       case `/detail/${req.params.id}`:
         id = req.params.id;
         sqlQuery =
-          "SELECT id,name,email,phone_number,address,image,role,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1";
+          "SELECT id,name,email,phone_number,address,image,role,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1";
         break;
-      case "/profile/":
+      case "/profile":
         id = req.userPayload.id;
-        sqlQuery = "SELECT name,email,phone_number,address,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth FROM users WHERE id = $1";
+        sqlQuery = "SELECT name,email,phone_number,address,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender FROM users WHERE id = $1";
         break;
       default:
         id = req.userPayload.id;

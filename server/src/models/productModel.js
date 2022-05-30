@@ -18,11 +18,11 @@ const getProductById = async (id) => {
 };
 
 const getProductByFav = async (query) => {
-  const { category, order, sort } = query;
+  const { category, order, sort, limit = 5, page = 1 } = query;
   try {
     let params = [];
     let sqlQuery =
-      "select id,name,price,description,stock,delivery_info,image,created_at,category from (select product_id AS id,p.name AS name,p.price AS price,p.description AS description,p.stock AS stock,p.delivery_info AS delivery_info,p.image,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, p.created_at AS date,c.name AS category from transactions t join products p on t.product_id = p.id join category c on p.category_id = c.id group by t.product_id,p.name,p.price,p.stock,p.description,p.delivery_info,p.image,p.created_at,c.name having count(*) > 1) AS fp";
+      "SELECT count(*) over() as total, id,name,price,description,stock,delivery_info,image,created_at,category from (select product_id AS id,p.name AS name,p.price AS price,p.description AS description,p.stock AS stock,p.delivery_info AS delivery_info,p.image,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, p.created_at AS date,c.name AS category from transactions t join products p on t.product_id = p.id join category c on p.category_id = c.id group by t.product_id,p.name,p.price,p.stock,p.description,p.delivery_info,p.image,p.created_at,c.name having count(*) > 1) AS fp";
     if (category) {
       sqlQuery += " WHERE lower(category) = lower($1)";
       params.push(category);
@@ -48,13 +48,21 @@ const getProductByFav = async (query) => {
           throw new ErrorHandler({ status: 400, message: "Order must be asc or desc" });
       }
     }
+
+    const offset = (Number(page) - 1) * Number(limit);
+    sqlQuery += " LIMIT $" + (params.length + 1) + " OFFSET $" + (params.length + 2);
+    params.push(Number(limit), Number(offset));
+
     const result = await db.query(sqlQuery, params);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Product Not Found" });
     }
 
+    const total = result.rows[0].total;
+
     return {
-      total: result.rowCount,
+      totalProduct: Number(total),
+      totalPage: Math.ceil(Number(total) / limit),
       data: result.rows,
     };
   } catch (err) {
@@ -63,7 +71,7 @@ const getProductByFav = async (query) => {
 };
 
 const getProducts = async (query) => {
-  const { keyword, category, minPrice, maxPrice, order, sort, limit = 5, page = 1 } = query;
+  const { keyword, category, minPrice, maxPrice, order, sort, limit = 12, page = 1 } = query;
   try {
     const queryProperty = Object.keys(query);
     let filterQuery = [];

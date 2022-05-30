@@ -39,6 +39,7 @@ const login = async (req, res) => {
       });
       return;
     }
+
     const payload = {
       id: data.id,
       email,

@@ -15,7 +15,7 @@ redisConn();
 const app = express();
 const PORT = process.env.PORT;
 
-const originList = ["http://localhost/", "http://127.0.0.1/", "::1"];
+const originList = ["http://localhost:3000", "http://127.0.0.1/", "::1"];
 
 const corsOption = {
   origin: (origin, callback) => {
@@ -23,7 +23,7 @@ const corsOption = {
     return callback(new Error("Forbidden Origin"));
   },
   optionsSuccessStatus: 200,
-  methods: ["GET", "POST", "PATCH", "DELETE"],
+  methods: ["OPTIONS", "GET", "POST", "PATCH", "DELETE"],
 };
 
 app.use(cors(corsOption));

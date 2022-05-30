@@ -99,9 +99,10 @@ const valueValidator = (req, _res, next) => {
     }
 
     if (key === "category") {
-      if (value.toLowerCase() !== "foods" && value.toLowerCase() !== "beverages") {
+      const listCategory = ["foods", "coffee", "non-coffee"];
+      if (!listCategory.includes(value.toLowerCase())) {
         valid = false;
-        error = "category must be foods or beverages";
+        error = "category must be foods,coffee,non-coffee";
       }
     }
 
