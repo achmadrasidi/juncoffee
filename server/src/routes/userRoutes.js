@@ -1,6 +1,6 @@
 const Router = require("express").Router();
 
-const { getUserDetail, userHistory, editUser, editUserPassword, deleteUserById, searchUsers, addUser, createOrder } = require("../controllers/userController.js");
+const { getUserDetail, userHistory, editUser, editUserPassword, deleteUserById, searchUsers, addUser, createOrder, deleteAllHistory, deleteSingleHistory } = require("../controllers/userController.js");
 const { userValidator, orderValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
 const { checkToken, checkRole } = require("../middleware/authValidator.js");
@@ -19,6 +19,10 @@ Router.patch("/edit-profile/", checkToken, checkRole("user"), valueValidator, up
 Router.patch("/edit-password/", checkToken, checkRole("user"), valueValidator, userValidator, editUserPassword);
 // delete user account
 Router.delete("/delete/", checkToken, checkRole("user"), deleteUserById);
+// delete all user history
+Router.delete("/history/", checkToken, checkRole("user"), deleteAllHistory);
+// delete single user history
+Router.delete("/history-order/", checkToken, checkRole("user"), deleteSingleHistory);
 
 // ADMIN
 // get all users, search users

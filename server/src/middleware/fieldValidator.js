@@ -37,10 +37,7 @@ const promoValidator = (req, _res, next) => {
 };
 
 const orderValidator = (req, _res, next) => {
-  const path = req.path;
-  const rules = ["user_id", "product_id", "quantity", "delivery_id"];
-  if (path === "/new-order/") rules.shift();
-
+  const rules = ["email"];
   const { error, valid } = validatorHelper(req, rules);
   if (!valid) {
     next({ status: 400, message: error });

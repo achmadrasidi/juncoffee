@@ -509,6 +509,16 @@ body {
 }
 
 /* Login and Register CSS */
+.eye-icon {
+  margin-top: -27%;
+  margin-left: 85%;
+  cursor: pointer;
+}
+.eye-icon-prof {
+  margin-top: -13%;
+  margin-left: 90%;
+  cursor: pointer;
+}
 .container-auth {
   display: flex;
   width: 100%;
@@ -523,7 +533,7 @@ body {
 .column-image,
 .side-image-login {
   width: 100%;
-  height: 1378px;
+  height: 100%;
 }
 
 .column-main {
@@ -748,6 +758,9 @@ a,
 /* Bootstrap */
 /* Home Page  */
 .welcome-name {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   color: #4f5665 !important;
   cursor: pointer;
 }
@@ -838,7 +851,7 @@ span.navbar-text {
   padding-left: 5%;
 }
 .hero-image {
-  background-image: url("https://juncoffee.netlify.app/assets/img/nathan-dumlao-6VhPY27jdps-unsplash.jpg");
+  background-image: url("https://juncoffee-static.netlify.app/assets/img/nathan-dumlao-6VhPY27jdps-unsplash.jpg");
   height: 638px;
 }
 .hero-content {
@@ -1194,12 +1207,22 @@ span.navbar-text {
 /* End Home  */
 
 /* Profile CSS  */
+.foto-input {
+  padding: 0;
+  border-radius: 0;
+}
 .profile-right-nav {
   padding-right: 10%;
   text-align: right;
 }
+.user-profile-image {
+  width: 112px;
+  height: 121px;
+  border-radius: 50%;
+  cursor: pointer;
+}
 .user-profile {
-  background-image: url("https://juncoffee.netlify.app/assets/img/love-coffee.jpg");
+  background-image: url("https://juncoffee-static.netlify.app/assets/img/love-coffee.jpg");
   height: 1200px;
   padding-left: 10%;
 }
@@ -2139,7 +2162,7 @@ input[name="delete"] {
   font-weight: 700;
   font-size: 15px;
   line-height: 22px;
-
+  cursor: pointer;
   color: #ffffff;
 }
 .card-cart-delivery {
@@ -2224,6 +2247,9 @@ input[name="delete"] {
   text-decoration-line: underline;
   cursor: pointer;
   color: #ffffff;
+}
+.card-history-text-pointer {
+  cursor: pointer;
 }
 .card-history-layout {
   background: #ffffff;

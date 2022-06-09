@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 export const ProtectedRoutes = ({ children }) => {
-  const token = JSON.parse(localStorage.getItem("userInfo"));
+  const { token } = useSelector((state) => state.persist.userToken.info);
 
-  const location = useLocation();
   if (!token) {
-    return <Navigate to="/auth/login" replace state={{ from: location }} />;
+    return <Navigate to="/auth/login" replace />;
   }
   return children;
 };
 
 export const IsLoggedInRoutes = ({ children }) => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userInfo"));
-    setUser(token);
-  }, [user]);
-  const location = useLocation();
-  if (!!user) {
-    return <Navigate to="/" replace state={{ from: location }} />;
+  const { token } = useSelector((state) => state.persist.userToken.info);
+  if (!!token) {
+    return <Navigate to="/" replace />;
   }
   return children;
 };

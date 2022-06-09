@@ -1,8 +1,11 @@
-const { getUserById, getUsers, createUser, deleteUser, updateUserProfile, updateUserPassword, getUserHistory } = require("../models/userModel.js");
+const { getUserById, getUsers, createUser, deleteUser, updateUserProfile, updateUserPassword, getUserHistory, deleteAllUserHistory, deleteSingleUserHistory } = require("../models/userModel.js");
 const { createTransaction } = require("../models/transactionModel");
 const { removeAccess } = require("../middleware/authValidator");
 const { userStorage } = require("../config/cache");
 const fs = require("fs");
+const { sendConfirmationPayment } = require("../config/nodemailer.js");
+const jwt = require("jsonwebtoken");
+const { client } = require("../config/redis.js");
 
 const getUserDetail = async (req, res) => {
   try {
@@ -63,10 +66,24 @@ const searchUsers = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     const { data } = await createTransaction(req.body, req.userPayload.id);
+    const { email, items, totalPrice, payMethod, subtotal, address, shipping, tax } = req.body;
 
+    const payload = {
+      t_id: data.transaction_id,
+      totalPrice,
+      subtotal,
+      address,
+      shipping,
+      tax,
+      payMethod,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET_PAYMENT_KEY, { issuer: process.env.JWT_ISSUER, expiresIn: "1h" });
+    await client.set(`jwt${data.transaction_id}`, token);
+    await sendConfirmationPayment(email, email, items, totalPrice, payMethod, token);
     res.status(201).json({
       data,
-      message: "Your Order has been process",
+      message: "Your order has been process,Please check your email to confirm your payment",
     });
   } catch (err) {
     const { message } = err;
@@ -189,6 +206,41 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const deleteAllHistory = async (req, res) => {
+  try {
+    const { data } = await deleteAllUserHistory(req.userPayload.id);
+
+    res.status(200).json({
+      data,
+      message: "Your Transaction(s) has been deleted",
+    });
+  } catch (err) {
+    const { message } = err;
+    const status = err.status ? err.status : 500;
+    res.status(status).json({
+      error: message,
+    });
+  }
+};
+
+const deleteSingleHistory = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const { data } = await deleteSingleUserHistory(id);
+
+    res.status(200).json({
+      data,
+      message: "Your Transaction(s) has been deleted",
+    });
+  } catch (err) {
+    const { message } = err;
+    const status = err.status ? err.status : 500;
+    res.status(status).json({
+      error: message,
+    });
+  }
+};
+
 module.exports = {
   getUserDetail,
   searchUsers,
@@ -198,4 +250,6 @@ module.exports = {
   deleteUserById,
   editUser,
   editUserPassword,
+  deleteAllHistory,
+  deleteSingleHistory,
 };

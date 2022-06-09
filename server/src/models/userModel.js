@@ -11,16 +11,18 @@ const getUserById = async (req) => {
       case `/detail/${req.params.id}`:
         id = req.params.id;
         sqlQuery =
-          "SELECT id,name,email,phone_number,address,image,role,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1";
+          "SELECT id,name,first_name,last_name,email,phone_number,address,image,role,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender,to_char(last_order::timestamp,'Dy DD Mon YYYY HH24:MI') AS last_order,gender,to_char(created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at FROM users WHERE id = $1";
         break;
       case "/profile":
         id = req.userPayload.id;
-        sqlQuery = "SELECT name,email,phone_number,address,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender FROM users WHERE id = $1";
+        sqlQuery =
+          "with u as(select name,first_name,last_name,email,phone_number,address,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,gender FROM users WHERE id = $1),t as(select count(*) as total_order from transactions where user_id = $1) select * from t,u";
         break;
       default:
         id = req.userPayload.id;
         sqlQuery = "SELECT image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth FROM users WHERE id = $1";
     }
+
     const result = await db.query(sqlQuery, [id]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "User Not Found" });
@@ -36,7 +38,7 @@ const getUserById = async (req) => {
 const getUserHistory = async (id) => {
   try {
     let sqlQuery =
-      "SELECT t.id AS order_id,u.name AS user_name,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method AS delivery_method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at FROM users u JOIN transactions t ON u.id = t.user_id JOIN products p ON t.product_id = p.id JOIN delivery d ON t.delivery_id = d.id WHERE u.id = $1";
+      "select td.id as item_id,t.user_id,t.id as transaction_id,p.name as product_name,p.image as image,td.quantity,size,td.price,t.shipping_address as address,t.total_price as total,t.order_status as status,t.subtotal,t.shipping_price,t.tax_price,t.payment_method  from transaction_items td join transactions t on td.transaction_id = t.id join products p on td.product_id=p.id where transaction_id in(SELECT id FROM transactions WHERE user_id = $1) ";
     const result = await db.query(sqlQuery, [id]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "No History Found" });
@@ -157,11 +159,11 @@ const createUser = async (body) => {
 };
 
 const updateUserProfile = async (body, id, image) => {
-  const { name, email, phone_number, address, date_of_birth, gender } = body;
+  const { name, email, phone_number, address, date_of_birth, gender, first_name, last_name } = body;
   try {
     const query =
-      "UPDATE users SET name = COALESCE(NULLIF($1, ''), name),email = COALESCE(NULLIF($2, ''), email),phone_number = COALESCE(NULLIF($3, ''), phone_number),address = COALESCE(NULLIF($4, ''), address),date_of_birth = COALESCE(NULLIF($5, '')::date, date_of_birth),gender = COALESCE(NULLIF($6, ''), gender),image = COALESCE(NULLIF($8, ''), image), updated_at = now() WHERE id = $7 RETURNING name,email,phone_number,address,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at  ";
-    const result = await db.query(query, [name, email, phone_number, address, date_of_birth, gender, id, image]);
+      "UPDATE users SET name = COALESCE(NULLIF($1, ''), name),first_name = COALESCE(NULLIF($9, ''), first_name),last_name = COALESCE(NULLIF($10, ''), last_name), email = COALESCE(NULLIF($2, ''), email),phone_number = COALESCE(NULLIF($3, ''), phone_number),address = COALESCE(NULLIF($4, ''), address),date_of_birth = COALESCE(NULLIF($5, '')::date, date_of_birth),gender = COALESCE(NULLIF($6, ''), gender),image = COALESCE(NULLIF($8, ''), image), updated_at = now() WHERE id = $7 RETURNING name,first_name,last_name,email,phone_number,address,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at  ";
+    const result = await db.query(query, [name, email, phone_number, address, date_of_birth, gender, id, image, first_name, last_name]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "User Not Found" });
     }
@@ -171,11 +173,18 @@ const updateUserProfile = async (body, id, image) => {
   }
 };
 
-const updateUserPassword = async ({ password }, id) => {
+const updateUserPassword = async ({ oldPassword, newPassword }, id) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const oldQuery = "SELECT password from users WHERE id = $1";
+    const oldResult = await db.query(oldQuery, [id]);
+    const oldPass = oldResult.rows[0].password;
+    const checkPassword = await bcrypt.compare(oldPassword, oldPass);
+    if (!checkPassword) {
+      throw new ErrorHandler({ status: 400, message: "Wrong Old Password" });
+    }
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
     const query = "UPDATE users SET password = $1 , updated_at = now() WHERE id = $2 RETURNING id,name,email,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
-    const result = await db.query(query, [hashedPassword, id]);
+    const result = await db.query(query, [hashedNewPassword, id]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "User Not Found" });
     }
@@ -211,6 +220,42 @@ const deleteUser = async (req) => {
   }
 };
 
+const deleteAllUserHistory = async (id) => {
+  try {
+    const query = "DELETE FROM transactions WHERE user_id = $1 RETURNING *";
+    const result = await db.query(query, [id]);
+    if (!result.rowCount) {
+      throw new ErrorHandler({ status: 404, message: "Transaction Not Found" });
+    }
+    return { data: result.rows[0] };
+  } catch (err) {
+    throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
+  }
+};
+
+const deleteSingleUserHistory = async (itemId) => {
+  try {
+    let params = [];
+    let queryParams = [];
+    let query = "DELETE FROM transactions WHERE id IN ( ";
+    itemId.map((val) => {
+      queryParams.push(`$${params.length + 1}`, ",");
+      params.push(val);
+    });
+    queryParams.pop();
+    query += queryParams.join("");
+    query += ") RETURNING *";
+
+    const result = await db.query(query, params);
+    if (!result.rowCount) {
+      throw new ErrorHandler({ status: 404, message: "Transaction Not Found" });
+    }
+    return { data: result.rows[0] };
+  } catch (err) {
+    throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
+  }
+};
+
 module.exports = {
   getUserById,
   createUser,
@@ -219,4 +264,6 @@ module.exports = {
   updateUserPassword,
   getUsers,
   getUserHistory,
+  deleteAllUserHistory,
+  deleteSingleUserHistory,
 };

@@ -1,22 +1,18 @@
-import React, { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Footer from "../../Components/Footer";
 import Header from "../../Components/Header";
 import Shop from "../../Components/Product/Shop";
 
 const Product = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [keyword, setKeyword] = useState(null);
   useEffect(() => {
     document.title = "Juncoffee - Product";
-    searchParams.delete("keyword");
-    searchParams.delete("category");
-    setSearchParams(searchParams);
   }, []);
 
   return (
     <>
-      <Header setSearchParams={setSearchParams} />
-      <Shop searchParams={searchParams} setSearchParams={setSearchParams} />
+      <Header setKeyword={setKeyword} />
+      <Shop keyword={keyword} setKeyword={setKeyword} />
       <Footer />
     </>
   );

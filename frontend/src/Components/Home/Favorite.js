@@ -1,22 +1,18 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { productFavHome } from "../../Redux/Actions/ProductAction";
+import Loading from "../SubComponent/Loading";
 
 const Favorite = () => {
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
+  const { loading, data, error } = useSelector((state) => state.productHome);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/product/favourite?limit=3");
-        const data = response.data.data;
-        setProducts(data);
-      } catch (error) {
-        setError(error.response.data.message);
-      }
-    })();
+    dispatch(productFavHome());
   }, []);
+
   return (
     <>
       <section className="favorite">
@@ -27,15 +23,15 @@ const Favorite = () => {
               <p className="section-desc">Let's choose and have a bit taste of people's favorite. It might be yours too!</p>
             </div>
           </div>
-
+          {loading ? <Loading show={true} onHide={false} /> : <></>}
           {error ? (
-            <h2 className="text-center fw-bold fs-6">{error}</h2>
+            <h2 className="text-center fw-bold fs-6 ms-5 ps-3">{error}</h2>
           ) : (
             <div className="row card-rows">
-              {products.map((product, i) => (
+              {data.map((product, i) => (
                 <div className="col-md-4 card-cols" key={i}>
                   <div className="card card-layout" onClick={() => navigate(`/product/${product.id}`, { replace: true })}>
-                    <img src={`http://localhost:5000${product.image}`} className="card-img-top" id="card-img-top-res" alt="hazelnut-img" />
+                    <img src={`${process.env.REACT_APP_API}${product.image}`} className="card-img-top" id="card-img-top-res" alt="hazelnut-img" />
                     <div className="card-body">
                       <h3 className="card-title">{product.name}</h3>
                     </div>

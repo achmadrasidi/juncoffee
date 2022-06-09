@@ -1,54 +1,69 @@
-import React, { Component } from "react";
-import { Link, Navigate } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Loading from "../../Components/SubComponent/Loading";
+import Message from "../../Components/SubComponent/Message";
+import { useDispatch, useSelector } from "react-redux";
+import { userRegister } from "../../Redux/Actions/UserAction";
 
-class Register extends Component {
-  state = {
-    email: "",
-    password: "",
-    phone_number: "",
-    isError: false,
-    errorMsg: "",
-    isSuccess: false,
-  };
+export const Register = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [show, setShow] = useState("");
+  const [phoneError, setPhoneError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
 
-  componentDidMount() {
+  const { loading, errorRegister, registerMessage } = useSelector((state) => state.userRegist);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
     document.title = "Juncoffee - Register";
-  }
-  signUp(e) {
+  }, []);
+
+  const signUp = (e) => {
     e.preventDefault();
-    const { email, password, phone_number } = this.state;
+
+    setPhoneError(null);
+    setEmailError(null);
+
+    const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const phoneFormat = /^\d{12}$/;
+
+    if (!email.match(emailFormat)) {
+      if (!phone.match(phoneFormat)) {
+        setPhoneError("Invalid Phone Format");
+      }
+      setEmailError("Invalid Email Format");
+      return;
+    }
+
+    if (!phone.match(phoneFormat)) {
+      setPhoneError("Invalid Phone Format");
+      return;
+    }
+
     const body = {
       email,
       password,
-      phone_number,
+      phone_number: phone,
     };
-    axios
-      .post("http://localhost:5000/auth/register", body)
-      .then((result) => {
-        alert(result.data.message);
-        this.setState({
-          isSuccess: true,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          isError: true,
-          errorMsg: error.response.data.error,
-        });
-      });
-  }
-  render() {
-    if (this.state.isSuccess) {
-      return <Navigate to="/auth/login" />;
-    }
 
-    return (
+    dispatch(userRegister(body));
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    navigate("/auth/login");
+  };
+
+  return (
+    <>
       <div className="container-auth">
         <div className="column-image">
           <img src={require("../../assets/img/robert-bye-95vx5QVl9x4-unsplash.jpg")} className="side-image-register" alt="aside" />
         </div>
-
         <div className="column-main">
           <header className="side-title">
             <img src={require("../../assets/img/coffee-1.png")} className="logo" alt="logo-icon" />
@@ -56,18 +71,20 @@ class Register extends Component {
             <h1 className="page-title">Sign Up</h1>
           </header>
           <section className="register">
-            <div className="register-form">
+            <form className="register-form" onSubmit={signUp}>
               <label htmlFor="email">Email Address :</label>
               <input
                 type="text"
                 name="email"
                 placeholder="Enter Your Email Address"
                 onChange={(e) => {
-                  this.setState({
-                    email: e.target.value,
-                  });
+                  e.preventDefault();
+                  setEmailError(null);
+                  setEmail(e.target.value);
                 }}
+                required
               />
+              {emailError ? <p className="text-danger fw-bold fs-6">{emailError}</p> : <></>}
 
               <label htmlFor="password">Password :</label>
               <input
@@ -75,30 +92,33 @@ class Register extends Component {
                 name="password"
                 placeholder="Enter Your Password"
                 onChange={(e) => {
-                  this.setState({
-                    password: e.target.value,
-                  });
+                  e.preventDefault();
+                  setPassword(e.target.value);
                 }}
+                required
               />
+
               <label htmlFor="phone_number">Phone Number :</label>
               <input
                 type="text"
                 name="phone_number"
                 placeholder="Enter Your Phone Number"
                 onChange={(e) => {
-                  this.setState({
-                    phone_number: e.target.value,
-                  });
+                  e.preventDefault();
+                  setPhoneError(null);
+                  setPhone(e.target.value);
                 }}
+                required
               />
-              {this.state.isError ? <div className="text-danger fw-bold fs-6">{this.state.errorMsg}</div> : <></>}
-              <button className="register-button" onClick={this.signUp.bind(this)}>
-                Sign Up
-              </button>
+              {phoneError ? <p className="text-danger fw-bold fs-6">{phoneError}</p> : <></>}
+
+              {errorRegister ? <div className="text-danger fw-bold fs-6">{errorRegister}</div> : <></>}
+              <button className="register-button">Sign Up</button>
+
               <button className="google-button">
                 <img src={require("../../assets/img/google-logo-png-suite-everything-you-need-know-about-google-newest-0 2.png")} alt="google-icon" /> Sign up with Google
               </button>
-            </div>
+            </form>
             <section className="already-account">
               <div className="underline"></div>
               <p className="already-account-text">Already have an account?</p>
@@ -139,8 +159,9 @@ class Register extends Component {
           </footer>
         </div>
       </div>
-    );
-  }
-}
+      {loading ? <Loading show={show} onHide={false} /> : <Message show={show} onHide={handleClose} message={registerMessage} error={errorRegister} />}
+    </>
+  );
+};
 
 export default Register;

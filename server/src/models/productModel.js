@@ -22,7 +22,7 @@ const getProductByFav = async (query) => {
   try {
     let params = [];
     let sqlQuery =
-      "SELECT count(*) over() as total, id,name,price,description,stock,delivery_info,image,created_at,category from (select product_id AS id,p.name AS name,p.price AS price,p.description AS description,p.stock AS stock,p.delivery_info AS delivery_info,p.image,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, p.created_at AS date,c.name AS category from transactions t join products p on t.product_id = p.id join category c on p.category_id = c.id group by t.product_id,p.name,p.price,p.stock,p.description,p.delivery_info,p.image,p.created_at,c.name having count(*) > 1) AS fp";
+      "SELECT count(*) over() as total, id,name,price,description,stock,delivery_info,image,created_at,category from (select product_id AS id,p.name AS name,p.price AS price,p.description AS description,p.stock AS stock,p.delivery_info AS delivery_info,p.image,to_char(p.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at, p.created_at AS date,c.name AS category from transaction_items t join products p on t.product_id = p.id join category c on p.category_id = c.id group by t.product_id,p.name,p.price,p.stock,p.description,p.delivery_info,p.image,p.created_at,c.name having count(*) > 1) AS fp";
     if (category) {
       sqlQuery += " WHERE lower(category) = lower($1)";
       params.push(category);

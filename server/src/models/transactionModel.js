@@ -44,47 +44,35 @@ const findTransaction = async (query) => {
   }
 };
 
-const createTransaction = async (body, id) => {
-  const { user_id, product_id, delivery_id, shipping_address, coupon_code, quantity } = body;
+const createTransaction = async (body, u_id) => {
+  const { user_id, items } = body;
   try {
-    let userId = id;
-    if (!id) userId = user_id;
+    let userId = u_id;
+    let params = [];
+    let queryParams = [];
+    if (!u_id) userId = user_id;
     const client = await db.connect();
     await client.query("BEGIN");
-    const queryProduct = "SELECT price FROM products WHERE id = $1";
-    const product = await client.query(queryProduct, [product_id]);
 
-    const price = product.rows[0].price;
+    const queryOrder = "INSERT INTO transactions(user_id) VALUES($1) RETURNING id";
+    const order = await client.query(queryOrder, [userId]);
+    const orderId = order.rows[0].id;
 
-    let shipping_price;
-    let address;
-
-    const subtotal = price * quantity;
-    const tax_price = 0.05 * subtotal;
-
-    const delivery = Number(delivery_id);
-    switch (delivery) {
-      case 1:
-        shipping_price = 0;
-        address = null;
-        break;
-      case 2:
-        shipping_price = 15000;
-        address = shipping_address;
-        break;
-      default:
-        throw new ErrorHandler({ status: 400, message: "Wrong Input Value delivery_id" });
-    }
-
-    const total_price = subtotal + tax_price + shipping_price;
-
-    const updateQUery =
-      "WITH p AS (UPDATE products SET stock = stock - $7,updated_at = now() WHERE id = $2 RETURNING *), u AS (UPDATE users SET last_order = now() WHERE id = $1 RETURNING *),t AS (INSERT INTO transactions(user_id,product_id,delivery_id,shipping_address,shipping_price,tax_price,subtotal,total_price,coupon_code,quantity) values($1,$2,$9,$8,$4,$5,$3,$6,$10,$7) RETURNING *) SELECT t.id,u.name AS user_name,u.email AS user_email,p.name AS product_name,p.price AS product_price,t.shipping_address,t.quantity,t.subtotal,d.method,t.shipping_price,t.tax_price,t.total_price,t.order_status,to_char(t.created_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS created_at FROM p,u,t JOIN delivery d ON t.delivery_id = d.id";
-
-    const result = await client.query(updateQUery, [userId, product_id, subtotal, shipping_price, tax_price, total_price, quantity, address, delivery_id, coupon_code]);
+    let orderItemQuery = "INSERT INTO transaction_items(product_id,transaction_id,quantity,size,price) VALUES";
+    items.map((val) => {
+      return val.variant.map((cart) => {
+        queryParams.push(`($${params.length + 1},$${params.length + 2},$${params.length + 3},$${params.length + 4},$${params.length + 5})`, ",");
+        params.push(val.id, orderId, cart.quantity, cart.size, cart.prodPrice);
+      });
+    });
+    queryParams.pop();
+    orderItemQuery += queryParams.join("");
+    orderItemQuery += " RETURNING *";
+    const result = await client.query(orderItemQuery, params);
     await client.query("COMMIT");
     return { data: result.rows[0], message: "Transaction Successfully Created" };
   } catch (err) {
+    const client = await db.connect();
     await client.query("ROLLBACK");
     throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
   }

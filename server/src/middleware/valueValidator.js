@@ -22,6 +22,7 @@ const valueValidator = (req, _res, next) => {
   const queryLength = Object.keys(query).length;
   const bodyLength = Object.keys(body).length;
 
+  const method = req.method;
   if (queryLength) {
     obj = query;
   } else if (bodyLength) {
@@ -50,7 +51,7 @@ const valueValidator = (req, _res, next) => {
       }
     }
 
-    if (value === "") {
+    if (value === "" && method !== "PATCH") {
       valid = false;
       error = "Input cannot be empty";
     }

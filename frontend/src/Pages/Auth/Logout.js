@@ -1,22 +1,36 @@
-import axios from "axios";
 import { useEffect } from "react";
+import { Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../Components/SubComponent/Loading";
+import { userLogout } from "../../Redux/Actions/UserAction";
 
 const Logout = () => {
-  const user = JSON.parse(localStorage.getItem("userInfo"));
+  const { loading, errorLogout, logoutMessage } = useSelector((state) => state.userLogout);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    (async () => {
-      try {
-        await axios.delete("http://localhost:5000/auth/logout", { headers: { Authorization: `Bearer ${user.token}` } });
-        localStorage.removeItem("userInfo");
-        return navigate("/auth/login", { replace: true });
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+    dispatch(userLogout());
+
+    setTimeout(() => {
+      navigate("/auth/login", { replace: true });
+    }, 1500);
+  }, [dispatch]);
+  return (
+    <>
+      {loading ? (
+        <Loading show={true} backdrop="static" keyboard={true} />
+      ) : (
+        <Modal show={true} backdrop="static" keyboard={true}>
+          <Modal.Header>
+            <Modal.Title>{errorLogout ? errorLogout : logoutMessage}</Modal.Title>
+          </Modal.Header>
+        </Modal>
+      )}
+    </>
+  );
 };
 
 export default Logout;

@@ -1,9 +1,11 @@
-const { getPassByEmail, registerUser } = require("../models/authModel");
+const { getPassByEmail, registerUser, verifyEmail, verifyPayment } = require("../models/authModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { removeAccess } = require("../middleware/authValidator");
 const { userStorage } = require("../config/cache");
 const { client } = require("../config/redis");
+const { ErrorHandler } = require("../middleware/errorHandler");
+const { sendConfirmationEmail } = require("../config/nodemailer");
 
 const register = async (req, res) => {
   try {
@@ -15,12 +17,18 @@ const register = async (req, res) => {
       const imageCache = image.split("/")[3];
       userStorage.setItem(imageDirCache, imageCache);
     }
-    await registerUser(req.body, image);
+    const { data } = await registerUser(req.body, image);
+    const token = jwt.sign({ email: data.email }, process.env.JWT_SECRET_CONFIRM_KEY, { expiresIn: "1h" });
+    await client.set(`jwt${data.email}`, token);
+
+    await sendConfirmationEmail(data.email, data.email, token);
+
     res.status(201).json({
-      message: "Register Success",
+      message: "Register Success, Please check your email for verification.",
     });
   } catch (err) {
-    const { message, status } = err;
+    const { message } = err;
+    const status = err.status ? err.status : 500;
     res.status(status).json({
       error: message,
     });
@@ -34,10 +42,10 @@ const login = async (req, res) => {
     const result = await bcrypt.compare(password, data.password);
 
     if (!result) {
-      res.status(400).json({
-        error: "Invalid Email or Password",
-      });
-      return;
+      throw new ErrorHandler({ status: 400, message: "Invalid Email or Password" });
+    }
+    if (data.status !== "active") {
+      throw new ErrorHandler({ status: 403, message: "Pending Account. Please Verify Your Email" });
     }
 
     const payload = {
@@ -45,12 +53,16 @@ const login = async (req, res) => {
       email,
       role: data.role,
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { issuer: process.env.JWT_ISSUER, expiresIn: "12h" });
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { issuer: process.env.JWT_ISSUER, expiresIn: "30d" });
 
     await client.set(`jwt${data.id}`, token);
     res.status(200).json({
+      id: data.id,
       email,
       token,
+      image: data.image,
+      address: data.address,
+      phone_number: data.phone_number,
       message: "Login Successful",
     });
   } catch (err) {
@@ -77,4 +89,38 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout };
+const confirmEmail = async (req, res) => {
+  try {
+    const { email } = req.userPayload;
+    const data = await verifyEmail(email);
+    await client.del(`jwt${email}`);
+    res.json({
+      data,
+      message: "Your Email has been verified. Please Login",
+    });
+  } catch (err) {
+    const status = err.status ? err.status : 500;
+    res.status(status).json({
+      error: err.message,
+    });
+  }
+};
+
+const paymentConfirm = async (req, res) => {
+  try {
+    const data = await verifyPayment(req.transactionPayload);
+    const { t_id } = req.transactionPayload;
+    await client.del(`jwt${t_id}`);
+    res.json({
+      data,
+      message: "Your Payment has been confirmed, Thanks for shopping with Juncoffee !",
+    });
+  } catch (err) {
+    const status = err.status ? err.status : 500;
+    res.status(status).json({
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { register, login, logout, confirmEmail, paymentConfirm };

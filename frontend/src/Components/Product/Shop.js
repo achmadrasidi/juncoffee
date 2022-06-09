@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-import Items from "./Items";
+import Items from "./Sub/Items";
 
-const Shop = ({ searchParams, setSearchParams }) => {
+const Shop = ({ setKeyword, keyword }) => {
   const [favorite, setFavorite] = useState(false);
   const [category, setCategory] = useState(null);
-  const keyword = searchParams.get("keyword");
 
   return (
     <section className="product-section">
@@ -68,9 +67,7 @@ const Shop = ({ searchParams, setSearchParams }) => {
                   onClick={() => {
                     setFavorite(false);
                     setCategory("Add-on");
-                    searchParams.delete("keyword");
-                    searchParams.delete("category");
-                    setSearchParams(searchParams);
+                    setKeyword(null);
                   }}
                 >
                   All Products
@@ -81,11 +78,9 @@ const Shop = ({ searchParams, setSearchParams }) => {
                   className={favorite ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
+                    setKeyword(null);
                     setFavorite(true);
                     setCategory(null);
-                    searchParams.delete("keyword");
-                    searchParams.delete("category");
-                    setSearchParams(searchParams);
                   }}
                 >
                   Favorite Product
@@ -97,11 +92,9 @@ const Shop = ({ searchParams, setSearchParams }) => {
                   className={category === "coffee" ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
+                    setKeyword(null);
                     setCategory("coffee");
                     setFavorite(false);
-                    searchParams.delete("keyword");
-                    const params = { category: "coffee" };
-                    setSearchParams(params);
                   }}
                 >
                   Coffee
@@ -112,12 +105,9 @@ const Shop = ({ searchParams, setSearchParams }) => {
                   className={category === "non-coffee" ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
+                    setKeyword(null);
                     setFavorite(false);
                     setCategory("non-coffee");
-                    searchParams.delete("keyword");
-                    setSearchParams(searchParams);
-                    const params = { category: "non-coffee" };
-                    setSearchParams(params);
                   }}
                 >
                   Non-Coffee
@@ -128,12 +118,9 @@ const Shop = ({ searchParams, setSearchParams }) => {
                   className={category === "foods" ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
+                    setKeyword(null);
                     setFavorite(false);
                     setCategory("foods");
-                    searchParams.delete("keyword");
-                    setSearchParams(searchParams);
-                    const params = { category: "Foods" };
-                    setSearchParams(params);
                   }}
                 >
                   Foods

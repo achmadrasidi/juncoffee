@@ -4,6 +4,7 @@ const { ErrorHandler } = require("./errorHandler.js");
 
 const checkToken = (req, _res, next) => {
   const bearerToken = req.header("Authorization");
+
   if (!bearerToken) {
     next({ status: 401, message: "Please Login First" });
     return;
@@ -52,6 +53,58 @@ const checkRole = (role) => (req, _res, next) => {
   next({ status: 403, message: `You dont have access, for ${role} only` });
 };
 
+const emailToken = (req, _res, next) => {
+  const { token } = req.params;
+
+  jwt.verify(token, process.env.JWT_SECRET_CONFIRM_KEY, async (err, payload) => {
+    if (err) {
+      next({ status: 403, message: "Your link expired, please register again." });
+      return;
+    }
+    try {
+      const cachedToken = await client.get(`jwt${payload.email}`);
+      if (!cachedToken) {
+        throw new ErrorHandler({ status: 403, message: "Your link expired,please register again" });
+      }
+
+      if (cachedToken !== token) {
+        throw new ErrorHandler({ status: 403, message: "Token Unauthorize, please register again" });
+      }
+    } catch (error) {
+      const status = error.status ? error.status : 500;
+      next({ status, message: error.message });
+    }
+    req.userPayload = payload;
+    next();
+  });
+};
+
+const paymentToken = (req, _res, next) => {
+  const { token } = req.params;
+
+  jwt.verify(token, process.env.JWT_SECRET_PAYMENT_KEY, async (err, payload) => {
+    if (err) {
+      next({ status: 403, message: "Your link expired, please register again." });
+      return;
+    }
+    try {
+      const cachedToken = await client.get(`jwt${payload.t_id}`);
+      if (!cachedToken) {
+        throw new ErrorHandler({ status: 403, message: "Your link expired,please register again" });
+      }
+
+      if (cachedToken !== token) {
+        throw new ErrorHandler({ status: 403, message: "Token Unauthorize, please register again" });
+      }
+    } catch (error) {
+      const status = error.status ? error.status : 500;
+      next({ status, message: error.message });
+    }
+    req.transactionPayload = payload;
+    next();
+  });
+};
+
 const isLoggedIn = (req, __res, next) => {
   const bearerToken = req.header("Authorization");
   if (!bearerToken) {
@@ -86,15 +139,15 @@ const isLoggedIn = (req, __res, next) => {
 
 const removeAccess = async (id) => {
   try {
-    const cachedToken = await client.get(`jwt${id}`);
-    if (cachedToken) {
+    const cachedLogin = await client.get(`jwt${id}`);
+    if (cachedLogin) {
       await client.del(`jwt${id}`);
     }
   } catch (err) {
-    _res.status(500).json({
+    res.status(500).json({
       error: err.message,
     });
   }
 };
 
-module.exports = { checkToken, checkRole, removeAccess, isLoggedIn };
+module.exports = { checkToken, checkRole, removeAccess, isLoggedIn, emailToken, paymentToken };
