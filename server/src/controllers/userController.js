@@ -83,7 +83,7 @@ const createOrder = async (req, res) => {
     await sendConfirmationPayment(email, email, items, totalPrice, payMethod, token);
     res.status(201).json({
       data,
-      message: "Your order has been process,Please check your email to confirm your payment",
+      message: "Your order has been processed,Please check your email to confirm your payment",
     });
   } catch (err) {
     const { message } = err;

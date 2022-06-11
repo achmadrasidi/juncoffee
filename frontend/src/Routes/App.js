@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ProtectedRoutes, { IsLoggedInRoutes } from "../Auth/AuthRoutes";
+import ProtectedRoutes, { IsLoggedInRoutes, PrivateRoutes } from "../Auth/AuthRoutes";
 import EmailConfirm from "../Pages/Auth/EmailConfirm";
 import ForgotPass from "../Pages/Auth/ForgotPass";
 import Login from "../Pages/Auth/Login";
@@ -7,6 +7,7 @@ import Logout from "../Pages/Auth/Logout";
 import Payment from "../Pages/Auth/Payment";
 import Register from "../Pages/Auth/Register";
 import Cart from "../Pages/Cart";
+import Dashboard from "../Pages/Dashboard";
 import History from "../Pages/History";
 import Home from "../Pages/Home";
 import Product from "../Pages/Product";
@@ -18,6 +19,14 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoutes>
+              <Dashboard />
+            </PrivateRoutes>
+          }
+        />
 
         <Route path="product">
           <Route path="" element={<Product />} />

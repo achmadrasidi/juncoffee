@@ -13,15 +13,17 @@ const BotSection = ({ handleInputChange, setInputValue, error, setError, updateH
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data.gender) {
-      setGen(data.gender);
+    if (data) {
+      if (data.gender) {
+        setGen(data.gender);
+      }
+      if (data.date_of_birth) {
+        setInputValue((inputValue) => {
+          return { ...inputValue, date_of_birth: data.date_of_birth.replaceAll("/", "-") };
+        });
+      }
     }
-    if (data.date_of_birth) {
-      setInputValue((inputValue) => {
-        return { ...inputValue, date_of_birth: data.date_of_birth.replaceAll("/", "-") };
-      });
-    }
-  }, [data.gender, data.date_of_birth]);
+  }, [data]);
 
   const cancelHandler = (e) => {
     e.preventDefault();
@@ -48,18 +50,18 @@ const BotSection = ({ handleInputChange, setInputValue, error, setError, updateH
               <div className="row mt-4 ps-3 card-user-detail-row" id="card-user-detail-res">
                 <div className="col-md-7 d-flex flex-column gap-2">
                   <h2 className="user-contact-title">Display Name :</h2>
-                  <input type="text" className="user-contact-text" defaultValue={data.name} placeholder="Display Name" onChange={handleInputChange} name="name"></input>
+                  <input type="text" className="user-contact-text" defaultValue={data ? data.name : ""} placeholder="Display Name" onChange={handleInputChange} name="name"></input>
                   <h2 className="user-contact-title">First name :</h2>
-                  <input type="text" className="user-contact-text" defaultValue={data.first_name} placeholder="First Name" name="first_name" onChange={handleInputChange}></input>
+                  <input type="text" className="user-contact-text" defaultValue={data ? data.first_name : ""} placeholder="First Name" name="first_name" onChange={handleInputChange}></input>
                   <h2 className="user-contact-title">Last name :</h2>
-                  <input type="text" className="user-contact-text" defaultValue={data.last_name} placeholder="Last Name" name="last_name" onChange={handleInputChange}></input>
+                  <input type="text" className="user-contact-text" defaultValue={data ? data.last_name : ""} placeholder="Last Name" name="last_name" onChange={handleInputChange}></input>
                 </div>
                 <div className="col-md-4 d-flex flex-column date-gender-res gap-2">
                   <h2 className="user-contact-title">Date Of Birth</h2>
                   <input
                     type="date"
                     className="user-contact-text"
-                    value={dateValue ? dateValue : `${data.year}-${data.month}-${data.day}`}
+                    value={dateValue ? dateValue : `${data && data.year}-${data && data.month}-${data && data.day}`}
                     onChange={(e) => {
                       e.preventDefault();
                       const day = e.target.value.split("-")[2];

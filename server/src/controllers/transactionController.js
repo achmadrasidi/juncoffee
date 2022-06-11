@@ -1,4 +1,4 @@
-const { getOrderById, createTransaction, findTransaction, updateTransaction, deleteTransaction } = require("../models/transactionModel.js");
+const { getOrderById, createTransaction, findTransaction, updateTransaction, deleteTransaction, transactionSummary } = require("../models/transactionModel.js");
 
 const getDetailOrder = async (req, res) => {
   try {
@@ -25,6 +25,19 @@ const findOrderByQueries = async (req, res) => {
     const { message, status } = err;
     res.status(status).json({
       error: message,
+    });
+  }
+};
+
+const orderSummary = async (_req, res) => {
+  try {
+    const { data } = await transactionSummary();
+    res.status(200).json({
+      data,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
     });
   }
 };
@@ -77,4 +90,4 @@ const deleteOrderById = async (req, res) => {
   }
 };
 
-module.exports = { getDetailOrder, addTransaction, findOrderByQueries, editTransaction, deleteOrderById };
+module.exports = { getDetailOrder, addTransaction, findOrderByQueries, editTransaction, deleteOrderById, orderSummary };

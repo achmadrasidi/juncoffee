@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const TopSection = ({ handleInputChange, handleFoto, fileUrl, error }) => {
   const { data } = useSelector((state) => state.getProfile);
 
-  const profileImage = data.image ? `${process.env.REACT_APP_API}${data.image}` : require("../../../assets/img/default-img.webp");
+  const profileImage = data && data.image ? `${process.env.REACT_APP_API}${data.image}` : require("../../../assets/img/default-img.webp");
   return (
     <div className="row my-4" id="user-contact-res">
       <div className="col-md-3">
@@ -16,7 +16,7 @@ const TopSection = ({ handleInputChange, handleFoto, fileUrl, error }) => {
                 <>
                   <label htmlFor="foto" {...triggerHandler}>
                     {" "}
-                    {fileUrl ? <img src={fileUrl} ref={ref} className="user-profile-image" alt="preview" /> : <img src={profileImage} ref={ref} className="user-profile-image" alt="profile" />}
+                    {fileUrl && !error.file ? <img src={fileUrl} ref={ref} className="user-profile-image" alt="preview" /> : <img src={profileImage} ref={ref} className="user-profile-image" alt="profile" />}
                   </label>
                   <input type="file" className="foto-input" name="foto" onChange={handleFoto} id="foto" hidden></input>
                   {error.file ? <p className="text-danger fw-bold fs-6">{error.file}</p> : <></>}
@@ -24,8 +24,8 @@ const TopSection = ({ handleInputChange, handleFoto, fileUrl, error }) => {
               )}
             </OverlayTrigger>
 
-            <h2 className="card-title mt-3">{data.name}</h2>
-            <p className="text-center email-text">{data.email}</p>
+            <h2 className="card-title mt-3">{data && data.name}</h2>
+            <p className="text-center email-text">{data && data.email}</p>
             <p className="product-ordered text-center mt-4">Has been ordered {data.total_order} product(s)</p>
           </div>
         </div>
@@ -44,18 +44,18 @@ const TopSection = ({ handleInputChange, handleFoto, fileUrl, error }) => {
             <div className="row mt-4 ps-3 gap-5" id="row-email-phone-card">
               <div className="col-md-6">
                 <h2 className="user-contact-title">Email Address :</h2>
-                <input type="text" className="user-contact-text" defaultValue={data.email} name="email" placeholder="Email Address" disabled />
+                <input type="text" className="user-contact-text" defaultValue={data && data.email} name="email" placeholder="Email Address" disabled />
               </div>
               <div className="col-md-5">
                 <h2 className="user-contact-title">Mobile number :</h2>
-                <input type="text" className="user-contact-text" defaultValue={data.phone_number} onChange={handleInputChange} name="phone_number" placeholder="Phone Number" />
+                <input type="text" className="user-contact-text" defaultValue={data && data.phone_number} onChange={handleInputChange} name="phone_number" placeholder="Phone Number" />
                 {error && error.phone_number ? <p className="text-danger fw-bold fs-6">{error.phone_number}</p> : <></>}
               </div>
             </div>
             <div className="row mt-3 ps-3" id="delivery-res">
               <div className="col-md-6">
                 <h2 className="user-contact-title">Delivery Address :</h2>
-                <textarea className="user-contact-text" name="address" defaultValue={data.address} onChange={handleInputChange} placeholder="Delivery Address"></textarea>
+                <textarea className="user-contact-text" name="address" defaultValue={data && data.address} onChange={handleInputChange} placeholder="Delivery Address"></textarea>
               </div>
             </div>
           </div>

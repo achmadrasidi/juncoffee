@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../Redux/Actions/CartAction";
 import Message from "../SubComponent/Message";
+import { resetOrder } from "../../Redux/Actions/OrderActions";
 
 const ShopDetail = () => {
   const { loading, err, product } = useSelector((state) => state.productDetail);
@@ -14,6 +15,7 @@ const ShopDetail = () => {
   const [message, setMessage] = useState(null);
 
   const { cartItems } = useSelector((state) => state.persist.cartInfo);
+  const order = useSelector((state) => state.createOrder);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,6 +55,9 @@ const ShopDetail = () => {
 
   const checkoutHandler = (e) => {
     e.preventDefault();
+    if (order && order.message) {
+      dispatch(resetOrder());
+    }
 
     navigate("/cart", { replace: true });
   };

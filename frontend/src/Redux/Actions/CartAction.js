@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_CART_ITEM } from "../Constants/CartConstants";
+import { ADD_TO_CART, EMPTY_CART, REMOVE_CART_ITEM } from "../Constants/CartConstants";
 
 export const addToCart = (size, quantity, prodPrice) => (dispatch, getState) => {
   const { product } = getState().productDetail;
@@ -11,5 +11,12 @@ export const removeCart = (item) => (dispatch) => {
   dispatch({
     type: REMOVE_CART_ITEM,
     payload: item,
+  });
+};
+
+export const emptyCart = () => (dispatch) => {
+  dispatch({
+    type: EMPTY_CART,
+    payload: [],
   });
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { emptyCart } from "../../../Redux/Actions/CartAction";
 import { createOrder } from "../../../Redux/Actions/OrderActions";
 import Loading from "../../SubComponent/Loading";
 import Message from "../../SubComponent/Message";
@@ -15,9 +16,8 @@ const Payment = (props) => {
   useEffect(() => {
     if (err) setError(err);
     if (message) {
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+      setPayMethod(null);
+      dispatch(emptyCart());
     }
   }, [err, message]);
 
@@ -82,6 +82,7 @@ const Payment = (props) => {
                     onClick={(e) => {
                       setPayMethod(e.target.value);
                     }}
+                    checked={payMethod === "card"}
                   />
                   <label htmlFor="gender" className="male-icon-text ms-3 mb-0">
                     <img src={require("../../../assets/img/payment-icon.png")} alt="" />
@@ -100,6 +101,7 @@ const Payment = (props) => {
                     onClick={(e) => {
                       setPayMethod(e.target.value);
                     }}
+                    checked={payMethod === "bank account"}
                   />
                   <label htmlFor="gender" className="male-icon-text ms-3 mb-0">
                     <img src={require("../../../assets/img/bank-icon.png")} alt="" />
@@ -117,6 +119,7 @@ const Payment = (props) => {
                     onClick={(e) => {
                       setPayMethod(e.target.value);
                     }}
+                    checked={payMethod === "cash on delivery"}
                   />
                   <label htmlFor="gender" className="male-icon-text ms-3 mb-0 ">
                     <img src={require("../../../assets/img/delivery-icon.png")} alt="" />

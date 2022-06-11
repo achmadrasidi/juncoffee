@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { removeKeyword } from "../../Redux/Actions/SearchActions";
 
 import Items from "./Sub/Items";
 
-const Shop = ({ setKeyword, keyword }) => {
+const Shop = () => {
   const [favorite, setFavorite] = useState(false);
   const [category, setCategory] = useState(null);
+  const [pageUrl, setPageUrl] = useState(null);
+  const dispatch = useDispatch();
 
   return (
     <section className="product-section">
@@ -66,8 +70,9 @@ const Shop = ({ setKeyword, keyword }) => {
                   aria-current="page"
                   onClick={() => {
                     setFavorite(false);
+                    setPageUrl(null);
                     setCategory("Add-on");
-                    setKeyword(null);
+                    dispatch(removeKeyword());
                   }}
                 >
                   All Products
@@ -78,7 +83,8 @@ const Shop = ({ setKeyword, keyword }) => {
                   className={favorite ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
-                    setKeyword(null);
+                    dispatch(removeKeyword());
+                    setPageUrl(null);
                     setFavorite(true);
                     setCategory(null);
                   }}
@@ -92,7 +98,8 @@ const Shop = ({ setKeyword, keyword }) => {
                   className={category === "coffee" ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
-                    setKeyword(null);
+                    dispatch(removeKeyword());
+                    setPageUrl(null);
                     setCategory("coffee");
                     setFavorite(false);
                   }}
@@ -105,7 +112,8 @@ const Shop = ({ setKeyword, keyword }) => {
                   className={category === "non-coffee" ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
-                    setKeyword(null);
+                    dispatch(removeKeyword());
+                    setPageUrl(null);
                     setFavorite(false);
                     setCategory("non-coffee");
                   }}
@@ -118,7 +126,8 @@ const Shop = ({ setKeyword, keyword }) => {
                   className={category === "foods" ? "nav-link link-text-active" : "nav-link link-text"}
                   aria-current="page"
                   onClick={() => {
-                    setKeyword(null);
+                    dispatch(removeKeyword());
+                    setPageUrl(null);
                     setFavorite(false);
                     setCategory("foods");
                   }}
@@ -127,7 +136,7 @@ const Shop = ({ setKeyword, keyword }) => {
                 </button>
               </div>
             </div>
-            {<Items keyword={keyword} category={category} favorite={favorite} />}
+            {<Items category={category} favorite={favorite} pageUrl={pageUrl} setPageUrl={setPageUrl} />}
           </div>
         </div>
       </div>

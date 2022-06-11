@@ -63,6 +63,7 @@ const login = async (req, res) => {
       image: data.image,
       address: data.address,
       phone_number: data.phone_number,
+      role: data.role,
       message: "Login Successful",
     });
   } catch (err) {
@@ -93,7 +94,7 @@ const confirmEmail = async (req, res) => {
   try {
     const { email } = req.userPayload;
     const data = await verifyEmail(email);
-    await client.del(`jwt${email}`);
+
     res.json({
       data,
       message: "Your Email has been verified. Please Login",

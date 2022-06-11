@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { userConfirm, userLogin } from "../../Redux/Actions/UserAction";
+import { resetState, userConfirm, userLogin } from "../../Redux/Actions/UserAction";
 import Loading from "../../Components/SubComponent/Loading";
 import Message from "../../Components/SubComponent/Message";
 
@@ -10,29 +10,78 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const { state } = location;
-  const { loading, errorLogin } = useSelector((st) => st.userLogin);
+  const { loading, errorLogin, isLoggedIn } = useSelector((st) => st.userLogin);
   const { errorConfirm, confirmMessage } = useSelector((st) => st.userConfirm);
+  const { logoutMessage } = useSelector((st) => st.userLogout);
+  const { registerMessage } = useSelector((st) => st.userRegist);
+
   useEffect(() => {
     document.title = "Juncoffee - Login";
+
+    setErrorMsg(null);
+    setMessage(null);
     if (errorLogin) {
       setErrorMsg(errorLogin);
+      return;
     }
-    if (state && state.token) {
+    if (errorConfirm) {
+      setErrorMsg(errorConfirm);
       setShowMessage(true);
-      const { token } = state;
-      dispatch(userConfirm(token));
-      delete state.token;
+      return;
     }
-  }, [errorLogin, errorConfirm, state]);
+    if (confirmMessage) {
+      setMessage(confirmMessage);
+      setShowMessage(true);
+      return;
+    }
+    if (registerMessage) {
+      setMessage(registerMessage);
+      setShowMessage(true);
+      return;
+    }
+    if (logoutMessage) {
+      setMessage(logoutMessage);
+      setShowMessage(true);
+      return;
+    }
+    if (state) {
+      if (state.message) {
+        setMessage(null);
+        setErrorMsg(null);
+        setShowMessage(true);
+        setMessage(state.message);
+        delete state.message;
+        return;
+      }
+      (() => {
+        window.history.replaceState({}, { ...state });
+        delete state.token;
+      })();
+    }
+  }, [confirmMessage, logoutMessage, errorLogin, errorConfirm]);
+
+  if (state) {
+    if (state.token) {
+      dispatch(userConfirm(state.token));
+      return;
+    }
+  }
+
+  if (isLoggedIn) {
+    navigate("/", { replace: true });
+  }
 
   const buttonHandler = (e) => {
     e.preventDefault();
+    dispatch(resetState());
     const body = { email, password };
     dispatch(userLogin(body));
   };
@@ -48,7 +97,14 @@ const Login = () => {
   return (
     <>
       {loading ? <Loading show={true} onHide={false} /> : <></>}
-      {confirmMessage ? <Message show={showMessage} onHide={() => setShowMessage(false)} message={confirmMessage} error={errorConfirm} /> : <></>}
+      <Message
+        show={showMessage}
+        onHide={() => {
+          setShowMessage(false);
+        }}
+        message={message}
+        error={errorMsg}
+      />
       <div className="container-auth">
         <div className="column-image">
           <img src={require("../../assets/img/robert-bye-95vx5QVl9x4-unsplash.jpg")} className="side-image-login" alt="aside" />

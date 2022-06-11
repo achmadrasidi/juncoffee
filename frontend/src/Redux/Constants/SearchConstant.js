@@ -1,0 +1,2 @@
+export const GET_KEYWORD = "GET_KEYWORD";
+export const REMOVE_KEYWORD = "REMOVE_KEYWORD";

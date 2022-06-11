@@ -2275,3 +2275,138 @@ input[name="delete"] {
 
   color: #895537;
 }
+
+/* dashboard  */
+.dashboard {
+  background-color: #eeeeee;
+  border-bottom: 1px solid #9f9f9f;
+}
+.row-top-statistic {
+  margin-right: 15%;
+}
+.row-top-employ {
+  border-bottom: 1px solid #d6d9dc;
+}
+.sum-title {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 50px;
+
+  color: #6a4029;
+}
+.report-text {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 45px;
+
+  color: #000000;
+}
+.three-dots {
+  cursor: pointer;
+}
+.report-text-p {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+
+  color: #7c828a;
+}
+.chart-card {
+  border-radius: 20px;
+  filter: drop-shadow(0px 6px 20px rgba(0, 0, 0, 0.4));
+}
+.image-employ {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+.employ-title {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+}
+.employ-text {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 30px;
+}
+.text-achieve {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+
+  color: #7c828a;
+}
+.goals-title {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 30px;
+  text-align: center;
+}
+.goals-text {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+
+  text-align: center;
+
+  color: #7c828a;
+}
+.share-report {
+  background: #6a4029;
+  box-shadow: 0px 6px 20px rgba(106, 64, 41, 0.6);
+  border-radius: 20px;
+  border: none;
+  height: 80px;
+  max-height: fit-content;
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 41px;
+
+  text-align: center;
+
+  color: #ffffff;
+}
+.download-report {
+  background: #6a4029;
+  box-shadow: 0px 6px 20px rgba(106, 64, 41, 0.6);
+  border-radius: 20px;
+  border: none;
+  height: 80px;
+  max-height: fit-content;
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 41px;
+  width: 98%;
+  margin-left: 1%;
+  text-align: center;
+
+  color: #ffffff;
+}
+.share-report:hover {
+  background-color: #7c523c;
+}
+.download-report:hover {
+  background-color: #7c523c;
+}

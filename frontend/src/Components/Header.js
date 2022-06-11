@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { Navbar, Container, Nav, Modal, Button, OverlayTrigger, Popover } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getKeyword } from "../Redux/Actions/SearchActions";
 import Prompt from "./SubComponent/Prompt";
 
-const Header = ({ setKeyword }) => {
+const Header = () => {
   const [show, setShow] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { pathname } = useLocation();
-  const { token, email } = useSelector((state) => state.persist.userToken.info);
-  const { image } = useSelector((state) => state.persist.userDetail.info);
-  const handleClose = () => {
-    navigate("/product", { replace: true });
+  const { token, email, image, role } = useSelector((state) => state.persist.userInfo.info);
+  const handleClose = (e) => {
+    e.preventDefault();
     setShow(false);
     window.scrollTo({ behavior: "smooth", top: "0px" });
+    navigate("/product", { replace: true });
   };
 
   const handleShow = () => setShow(true);
@@ -28,15 +30,31 @@ const Header = ({ setKeyword }) => {
       <Popover.Body>
         {token ? (
           <>
-            <Nav.Link href="/profile" className="text-center">
-              Profile
-            </Nav.Link>
-            <Nav.Link href="/cart" className="text-center">
-              Cart
-            </Nav.Link>
-            <Nav.Link href="/history" className="text-center">
-              History
-            </Nav.Link>
+            {role === "admin" ? (
+              <>
+                <Nav.Link href="/dashboard" className="text-center">
+                  Dashboard
+                </Nav.Link>
+                <Nav.Link href="/profile" className="text-center">
+                  Profile
+                </Nav.Link>
+                <Nav.Link href="#" className="text-center">
+                  Orders
+                </Nav.Link>
+              </>
+            ) : (
+              <>
+                <Nav.Link href="/profile" className="text-center">
+                  Profile
+                </Nav.Link>
+                <Nav.Link href="/cart" className="text-center">
+                  Cart
+                </Nav.Link>
+                <Nav.Link href="/history" className="text-center">
+                  History
+                </Nav.Link>
+              </>
+            )}
           </>
         ) : (
           <></>
@@ -56,7 +74,7 @@ const Header = ({ setKeyword }) => {
 
   return (
     <>
-      <Modal show={show} onHide={handleClose} backdrop="static" keyboard={true}>
+      <Modal show={show} onHide={() => setShow(false)} backdrop="static" keyboard={true}>
         <Modal.Header closeButton>
           <Modal.Title>Search Products</Modal.Title>
         </Modal.Header>
@@ -67,19 +85,20 @@ const Header = ({ setKeyword }) => {
             placeholder="Type Keyword to Search"
             onChange={(e) => {
               e.preventDefault();
-              setKeyword(e.target.value);
+              const { value } = e.target;
+              dispatch(getKeyword(value));
             }}
             onKeyUp={(e) => {
               if (e.key === "Enter") {
                 setShow(false);
-                navigate("/product", { replace: true, state: e.target.value });
+                navigate("/product", { replace: true });
               }
             }}
             autoFocus
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => setShow(false)}>
             Close
           </Button>
           <Button variant="success" onClick={handleClose}>
@@ -88,7 +107,7 @@ const Header = ({ setKeyword }) => {
         </Modal.Footer>
       </Modal>
 
-      <Prompt show={showLogoutConfirm} confirm={() => navigate("/logout", { replace: true })} message={"Are You Sure"} cancel={() => setShowLogoutConfirm(false)} />
+      <Prompt show={showLogoutConfirm} confirm={() => navigate("/logout", { replace: true })} message={"Are You Sure ?"} cancel={() => setShowLogoutConfirm(false)} />
 
       <Navbar collapseOnSelect expand="lg" bg="white" variant="light" sticky="top" className="nav-product nav-coffee">
         <Container fluid>
@@ -106,12 +125,27 @@ const Header = ({ setKeyword }) => {
               <Nav.Link href="/product" active={pathname.includes("product")}>
                 Product
               </Nav.Link>
-              <Nav.Link href="/cart" active={pathname === "/cart"}>
-                Your Cart
-              </Nav.Link>
-              <Nav.Link href="/history" active={pathname === "/history"}>
-                History
-              </Nav.Link>
+              {role === "admin" ? (
+                <>
+                  {" "}
+                  <Nav.Link href="#" active={pathname === "/cart"}>
+                    Orders
+                  </Nav.Link>
+                  <Nav.Link href="/dashboard" active={pathname === "/dashboard"}>
+                    Dashboard
+                  </Nav.Link>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Nav.Link href="/cart" active={pathname === "/cart"}>
+                    Your Cart
+                  </Nav.Link>{" "}
+                  <Nav.Link href="/history" active={pathname === "/history"}>
+                    History
+                  </Nav.Link>
+                </>
+              )}
             </Nav>
             <div className="profile-right-nav">
               <button className="p-0 border-0 bg-white" onClick={handleShow}>
@@ -119,7 +153,7 @@ const Header = ({ setKeyword }) => {
               </button>
 
               {token ? (
-                <Link to="/cart">
+                <Link to="#">
                   <img src={require("../assets/img/chat (1) 1.png")} width="30" height="30" alt="" />
                 </Link>
               ) : (

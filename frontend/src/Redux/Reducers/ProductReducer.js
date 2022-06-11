@@ -39,12 +39,12 @@ export const productListReducer = (state = { list: { data: [], meta: {} } }, act
 export const productDetailReducer = (state = { product: [] }, action) => {
   switch (action.type) {
     case PRODUCT_DETAIL_REQUEST:
-      return { ...state, loading: true, product: [], error: null };
+      return { ...state, loading: true, product: [] };
     case PRODUCT_DETAIL_SUCCESS:
       const { price } = action.payload;
       const newPrice = Number(price.split("Rp")[1].split(".").join(""));
       const newData = { ...action.payload, price: newPrice };
-      return { ...state, loading: false, product: newData, error: null };
+      return { ...state, loading: false, product: newData };
     case PRODUCT_DETAIL_FAIL:
       return { ...state, loading: false, err: action.payload };
     default:

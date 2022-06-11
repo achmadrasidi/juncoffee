@@ -18,7 +18,7 @@ const History = () => {
   const [checkedAll, setCheckedAll] = useState(false);
   const [itemId, setItemId] = useState([]);
 
-  const user = useSelector((state) => state.persist.userToken.info);
+  const user = useSelector((state) => state.persist.userInfo.info);
   const formatter = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
 
   useEffect(() => {
@@ -151,11 +151,11 @@ const History = () => {
                   <div className="col-md-4 mt-3 " key={i}>
                     <div className="card card-history-layout">
                       <div className="card-body">
-                        <div class="row">
-                          <div class="col-md-6">
+                        <div className="row">
+                          <div className="col-md-6">
                             <h2 className="card-history-title fw-bolder ms-4">Order id {item[0]}</h2>
                           </div>
-                          <div class="col-md-6">
+                          <div className="col-md-6">
                             <p className="card-history-text card-history-text-pointer m-0 mt-1 text-end me-5" aria-controls="item-collapse" onClick={() => handleDetails(item[1].find((val) => val.transaction_id === item[0]).transaction_id)}>
                               View Details
                             </p>
@@ -182,7 +182,7 @@ const History = () => {
                           </div>
                           <div className="col-md-3 text-end ">
                             <span>
-                              <label for="delete"></label>
+                              <label htmlFor="delete"></label>
                               <input type="checkbox" checked={checkedAll ? checkedAll : showDelete[i]} value={item[0]} onClick={(e) => changeHandler(e)} name="delete" id="" className="check-col text-end me-3" />
                             </span>
                           </div>

@@ -11,7 +11,7 @@ const Favorite = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(productFavHome());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

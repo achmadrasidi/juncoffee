@@ -14,7 +14,7 @@ const EditPass = ({ show, setShow }) => {
   const [error, setError] = useState(null);
   const [showMessage, setShowMessage] = useState(null);
 
-  const { token } = useSelector((state) => state.persist.userToken.info);
+  const { token } = useSelector((state) => state.persist.userInfo.info);
   const { loading, message, err } = useSelector((state) => state.patchPassword);
   const dispatch = useDispatch();
 

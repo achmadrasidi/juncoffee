@@ -14,12 +14,19 @@ const CartSection = () => {
   const [shipping, setshipping] = useState(0);
 
   const item = useSelector((state) => state.persist.cartInfo.cartItems);
-  const userDetail = useSelector((state) => state.persist.userDetail.info);
-  const { email } = useSelector((state) => state.persist.userToken.info);
+  const userDetail = useSelector((state) => state.persist.userInfo.info);
+  const { message } = useSelector((state) => state.createOrder);
 
   useEffect(() => {
     setAddress(userDetail.address);
     setPhone(userDetail.phone_number);
+    if (message) {
+      setshipping(0);
+      setTax(0);
+      setTotalPrice(0);
+      setSubtotal(0);
+      return;
+    }
     if (item.length) {
       const sub = item.map((obj) => obj.variant.map((val) => val.prodPrice * val.quantity).reduce((b, a) => b + a)).reduce((b, a) => b + a);
 
@@ -32,7 +39,7 @@ const CartSection = () => {
       setTotalPrice(total);
       setSubtotal(sub);
     }
-  }, []);
+  }, [item, userDetail.address, userDetail.phone_number]);
 
   return (
     <>
@@ -58,7 +65,7 @@ const CartSection = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-4 ">
               <div className="row">
                 <div className="col-md-6">
                   <h2 className="cart-detail-title">Address details</h2>
@@ -82,7 +89,7 @@ const CartSection = () => {
                         <div className="col-md-12 ">
                           <p className="delivery-text border-bottom m-0">
                             <span className="fw-bold">Delivery</span> to
-                            <b> {email.split("@")[0]}</b> Address
+                            <b> {userDetail.email.split("@")[0]}</b> Address
                           </p>
                         </div>
                       </div>
@@ -139,7 +146,7 @@ const CartSection = () => {
                   </div>
                 </div>
               </div>
-              <Payment address={address} item={item} email={email} subtotal={subtotal} totalPrice={totalPrice} tax={tax} shipping={shipping} />
+              <Payment address={address} item={item} email={userDetail.email} subtotal={subtotal} totalPrice={totalPrice} tax={tax} shipping={shipping} />
             </div>
           </div>
         </div>

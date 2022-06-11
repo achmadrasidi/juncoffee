@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loading from "../SubComponent/Loading";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile, patchProfile } from "../../Redux/Actions/ProfileAction";
+import { getProfile, patchProfile, resetProfile } from "../../Redux/Actions/ProfileAction";
 import TopSection from "./Sub/TopSection";
 import BotSection from "./Sub/BotSection";
 import Message from "../SubComponent/Message";
@@ -13,7 +13,7 @@ const ProfileSection = () => {
   const [show, setShow] = useState(false);
   const [error, setError] = useState([]);
 
-  const { token } = useSelector((state) => state.persist.userToken.info);
+  const { token } = useSelector((state) => state.persist.userInfo.info);
   const { loading, err } = useSelector((state) => state.getProfile);
   const { load, message, er } = useSelector((state) => state.patchProfile);
 
@@ -31,13 +31,13 @@ const ProfileSection = () => {
       setError({ ...error, message: er });
       setShow(true);
     }
-  }, []);
+  }, [dispatch, err, er]);
 
   const handleFoto = (e) => {
     let reader = false;
 
     e.preventDefault();
-    setError({ ...error, message: null });
+    setError({ ...error, file: null });
     const files = e.target.files[0];
 
     setFile(files);
@@ -61,6 +61,7 @@ const ProfileSection = () => {
   };
 
   const updateHandler = (e) => {
+    dispatch(resetProfile());
     e.preventDefault();
     const body = { ...inputValue, photo: file };
     const phoneFormat = /^\d{12}$/;

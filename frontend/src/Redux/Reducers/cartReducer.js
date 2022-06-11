@@ -4,7 +4,7 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const { product, variant } = action.payload;
-      const prevItems = state.cartItems.slice();
+      const prevItems = [...state.cartItems];
       const cartItems = [{ id: product.id, name: product.name, variant, image: product.image }];
       let newItems;
       if (prevItems) {

@@ -7,7 +7,7 @@ const cors = require("cors");
 const mainRouter = require("./src/routes/index.js");
 const { dbConn } = require("./src/config/db.js");
 
-const { notFound, errorHandling } = require("./src/middleware/errorHandler.js");
+const { errorHandling } = require("./src/middleware/errorHandler.js");
 const { redisConn } = require("./src/config/redis");
 
 dbConn();
@@ -36,6 +36,5 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(mainRouter);
 
 app.use(errorHandling);
-app.use(notFound);
 
 app.listen(PORT, console.log(`Server is Running at port ${PORT}`));

@@ -55,7 +55,6 @@ const checkRole = (role) => (req, _res, next) => {
 
 const emailToken = (req, _res, next) => {
   const { token } = req.params;
-
   jwt.verify(token, process.env.JWT_SECRET_CONFIRM_KEY, async (err, payload) => {
     if (err) {
       next({ status: 403, message: "Your link expired, please register again." });

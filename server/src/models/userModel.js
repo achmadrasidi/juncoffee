@@ -38,7 +38,7 @@ const getUserById = async (req) => {
 const getUserHistory = async (id) => {
   try {
     let sqlQuery =
-      "select td.id as item_id,t.user_id,t.id as transaction_id,p.name as product_name,p.image as image,td.quantity,size,td.price,t.shipping_address as address,t.total_price as total,t.order_status as status,t.subtotal,t.shipping_price,t.tax_price,t.payment_method  from transaction_items td join transactions t on td.transaction_id = t.id join products p on td.product_id=p.id where transaction_id in(SELECT id FROM transactions WHERE user_id = $1) ";
+      "select td.id as item_id,t.user_id,t.id as transaction_id,p.name as product_name,p.image as image,td.quantity,size,td.price,t.shipping_address as address,t.total_price as total,t.order_status as status,t.subtotal,t.shipping_price,t.tax_price,t.payment_method from transaction_items td join transactions t on td.transaction_id = t.id join products p on td.product_id=p.id where transaction_id in(SELECT id FROM transactions WHERE user_id = $1 and on_delete=false)";
     const result = await db.query(sqlQuery, [id]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "No History Found" });
@@ -162,7 +162,7 @@ const updateUserProfile = async (body, id, image) => {
   const { name, email, phone_number, address, date_of_birth, gender, first_name, last_name } = body;
   try {
     const query =
-      "UPDATE users SET name = COALESCE(NULLIF($1, ''), name),first_name = COALESCE(NULLIF($9, ''), first_name),last_name = COALESCE(NULLIF($10, ''), last_name), email = COALESCE(NULLIF($2, ''), email),phone_number = COALESCE(NULLIF($3, ''), phone_number),address = COALESCE(NULLIF($4, ''), address),date_of_birth = COALESCE(NULLIF($5, '')::date, date_of_birth),gender = COALESCE(NULLIF($6, ''), gender),image = COALESCE(NULLIF($8, ''), image), updated_at = now() WHERE id = $7 RETURNING name,first_name,last_name,email,phone_number,address,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at  ";
+      "UPDATE users SET name = COALESCE(NULLIF($1, ''), name),first_name = COALESCE(NULLIF($9, ''), first_name),last_name = COALESCE(NULLIF($10, ''), last_name), email = COALESCE(NULLIF($2, ''), email),phone_number = COALESCE(NULLIF($3, ''), phone_number),address = COALESCE(NULLIF($4, ''), address),date_of_birth = COALESCE(NULLIF($5, '')::date, date_of_birth),gender = COALESCE(NULLIF($6, ''), gender),image = COALESCE(NULLIF($8, ''), image), updated_at = now() WHERE id = $7 RETURNING name,first_name,last_name,email,phone_number,address,role,image,to_char(date_of_birth,'dd-mm-yyyy') AS date_of_birth,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at  ";
     const result = await db.query(query, [name, email, phone_number, address, date_of_birth, gender, id, image, first_name, last_name]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "User Not Found" });
@@ -222,7 +222,7 @@ const deleteUser = async (req) => {
 
 const deleteAllUserHistory = async (id) => {
   try {
-    const query = "DELETE FROM transactions WHERE user_id = $1 RETURNING *";
+    const query = "UPDATE transactions set on_delete=true WHERE user_id = $1 RETURNING *";
     const result = await db.query(query, [id]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Transaction Not Found" });
@@ -237,7 +237,7 @@ const deleteSingleUserHistory = async (itemId) => {
   try {
     let params = [];
     let queryParams = [];
-    let query = "DELETE FROM transactions WHERE id IN ( ";
+    let query = "UPDATE transactions set on_delete=true WHERE id IN ( ";
     itemId.map((val) => {
       queryParams.push(`$${params.length + 1}`, ",");
       params.push(val);

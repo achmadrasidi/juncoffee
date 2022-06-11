@@ -6,14 +6,14 @@ import { productList } from "../../../Redux/Actions/ProductAction";
 import Loading from "../../SubComponent/Loading";
 import Pagination from "./Pagination";
 
-const Items = ({ keyword, category, favorite }) => {
+const Items = ({ category, favorite, pageUrl, setPageUrl }) => {
   const [sortValue, setSortValue] = useState("");
   const [_, setSearchParams] = useSearchParams();
-  const [pageUrl, setPageUrl] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { list, error, loading } = useSelector((state) => state.productList);
+  const { list, error, loading } = useSelector((st) => st.productList);
+  const { keyword } = useSelector((st) => st.searchKeyword);
   const { data } = list;
 
   let baseUrl = `${process.env.REACT_APP_API}/product?`;
@@ -24,6 +24,7 @@ const Items = ({ keyword, category, favorite }) => {
   if (!!keyword) {
     baseUrl += `keyword=${keyword}&`;
   }
+
   if (!!category && category !== "Add-on") {
     baseUrl += `category=${category}&`;
   }
@@ -54,7 +55,7 @@ const Items = ({ keyword, category, favorite }) => {
     if (error) {
       setPageUrl(null);
     }
-  }, [baseUrl, error]);
+  }, [baseUrl, pageUrl]);
 
   const handleSortDown = () => {
     setSortValue("asc");

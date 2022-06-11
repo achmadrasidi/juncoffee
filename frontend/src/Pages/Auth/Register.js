@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../Components/SubComponent/Loading";
-import Message from "../../Components/SubComponent/Message";
 import { useDispatch, useSelector } from "react-redux";
-import { userRegister } from "../../Redux/Actions/UserAction";
+import { resetState, userRegister } from "../../Redux/Actions/UserAction";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [show, setShow] = useState("");
   const [phoneError, setPhoneError] = useState(null);
   const [emailError, setEmailError] = useState(null);
 
@@ -20,12 +18,15 @@ export const Register = () => {
   useEffect(() => {
     document.title = "Juncoffee - Register";
   }, []);
-
+  if (registerMessage) {
+    navigate("/auth/login");
+  }
   const signUp = (e) => {
     e.preventDefault();
 
     setPhoneError(null);
     setEmailError(null);
+    dispatch(resetState());
 
     const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const phoneFormat = /^\d{12}$/;
@@ -50,12 +51,6 @@ export const Register = () => {
     };
 
     dispatch(userRegister(body));
-    setShow(true);
-  };
-
-  const handleClose = () => {
-    setShow(false);
-    navigate("/auth/login");
   };
 
   return (
@@ -125,7 +120,9 @@ export const Register = () => {
               <div className="underline"></div>
             </section>
             <Link to={"/auth/login"}>
-              <button className="login-here-button login-here-text">Login Here</button>
+              <button className="login-here-button login-here-text" onClick={() => dispatch(resetState())}>
+                Login Here
+              </button>
             </Link>
           </section>
           <footer className="login">
@@ -159,7 +156,7 @@ export const Register = () => {
           </footer>
         </div>
       </div>
-      {loading ? <Loading show={show} onHide={false} /> : <Message show={show} onHide={handleClose} message={registerMessage} error={errorRegister} />}
+      {loading && <Loading show={true} onHide={false} />}
     </>
   );
 };
