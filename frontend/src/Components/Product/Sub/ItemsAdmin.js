@@ -7,7 +7,7 @@ import { productList } from "../../../Redux/Actions/ProductAction";
 import Loading from "../../SubComponent/Loading";
 import Pagination from "./Pagination";
 
-const Items = ({ category, favorite, pageUrl, setPageUrl }) => {
+const ItemsAdmin = ({ category, favorite, pageUrl, setPageUrl }) => {
   const [sortValue, setSortValue] = useState("");
   const [order, setOrder] = useState("Order by");
   const [_, setSearchParams] = useSearchParams();
@@ -36,10 +36,10 @@ const Items = ({ category, favorite, pageUrl, setPageUrl }) => {
 
   switch (sortValue) {
     case "asc":
-      baseUrl += `order=asc&sort=${order === "Order by" ? "date" : order.toLowerCase()}&`;
+      baseUrl += "order=asc&sort=price&";
       break;
     case "desc":
-      baseUrl += `order=desc&sort=${order === "Order by" ? "date" : order.toLowerCase()}&`;
+      baseUrl += "order=desc&sort=price&";
       break;
     default:
       break;
@@ -69,7 +69,7 @@ const Items = ({ category, favorite, pageUrl, setPageUrl }) => {
   return (
     <>
       <div className="row mt-3">
-        <div className="col-md-4 p-0  d-flex gap-2">
+        <div className="col-md-2 p-0 d-flex gap-2">
           {sortValue === "desc" ? <SortDown className="sort-icon" size={40} onClick={handleSortDown}></SortDown> : <SortUp className="sort-icon" size={40} onClick={handleSortUp}></SortUp>}{" "}
           <DropdownButton variant={"secondary"} className="dropdown-sort" title={order}>
             <Dropdown.Item eventKey="1" onClick={() => setOrder("Date")}>
@@ -90,16 +90,19 @@ const Items = ({ category, favorite, pageUrl, setPageUrl }) => {
           <div className="row fav-product mt-0  p-0" id="fav-prod-mobile-res">
             {data.map((product, i) => (
               <div className="col-md-3 my-5" key={i}>
-                <div
-                  className="card card-fav-product-layout h-100"
-                  onClick={() => {
-                    navigate(`/product/${product.id}`, { replace: true });
-                  }}
-                >
+                <div className="card card-fav-product-admin-layout h-100">
                   <div className="card-body text-center d-grid" id="card-body-res">
                     <img src={`${process.env.REACT_APP_API}${product.image}`} className="product-card-image" alt="" />
-                    <h2 className="fav-product-title">{product.name}</h2>
-                    <p className="fav-product-price">IDR {product.price.split("Rp")[1]}</p>
+                    <h2
+                      className="fav-product-title"
+                      onClick={() => {
+                        navigate(`/product/${product.id}`, { replace: true });
+                      }}
+                    >
+                      {product.name}
+                    </h2>
+                    <p className="fav-product-price-admin">IDR {product.price.split("Rp")[1]}</p>
+                    <img src={require("../../../assets/img/pencil.png")} className="pencil-style" width={25} height={25} />
                   </div>
                 </div>
               </div>
@@ -107,10 +110,17 @@ const Items = ({ category, favorite, pageUrl, setPageUrl }) => {
           </div>
 
           <Pagination setPageUrl={setPageUrl} />
+          <div class="row my-5">
+            <div class="col-md-12">
+              <button className="add-new-prod" onClick={() => navigate("/product/add-product")}>
+                Add new product
+              </button>
+            </div>
+          </div>
         </>
       )}
     </>
   );
 };
 
-export default Items;
+export default ItemsAdmin;

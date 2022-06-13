@@ -14,7 +14,10 @@ const Payment = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (err) setError(err);
+    if (err) {
+      setError(err);
+      return;
+    }
     if (message) {
       setPayMethod(null);
       dispatch(emptyCart());

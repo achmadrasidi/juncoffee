@@ -22,7 +22,7 @@ Router.delete("/delete/", checkToken, checkRole("user"), deleteUserById);
 // delete all user history
 Router.delete("/history/", checkToken, checkRole("user"), deleteAllHistory);
 // delete single user history
-Router.delete("/history-order/", checkToken, checkRole("user"), deleteSingleHistory);
+Router.delete("/history/:id", checkToken, checkRole("user"), deleteSingleHistory);
 
 // ADMIN
 // get all users, search users

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Prompt from "../../SubComponent/Prompt";
 import EditPass from "./EditPass";
+import { userLogout } from "../../../Redux/Actions/UserAction";
 
 const BotSection = ({ handleInputChange, setInputValue, error, setError, updateHandler }) => {
   const [dateValue, setDateValue] = useState("");
@@ -11,6 +12,7 @@ const BotSection = ({ handleInputChange, setInputValue, error, setError, updateH
   const [showLogout, setShowLogout] = useState(false);
   const { data } = useSelector((state) => state.getProfile);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (data) {
@@ -32,7 +34,15 @@ const BotSection = ({ handleInputChange, setInputValue, error, setError, updateH
 
   return (
     <>
-      <Prompt show={showLogout} message={"Are You Sure ?"} confirm={() => navigate("/logout")} cancel={() => setShowLogout(!showLogout)} />
+      <Prompt
+        show={showLogout}
+        message={"Are You Sure ?"}
+        confirm={() => {
+          dispatch(userLogout());
+          navigate("/logout");
+        }}
+        cancel={() => setShowLogout(!showLogout)}
+      />
       <EditPass show={showEditPass} setShow={setShowEditPass} />
 
       <div className="row mt-lg-5 pt-5 " id="user-detail-row-res">
@@ -135,7 +145,12 @@ const BotSection = ({ handleInputChange, setInputValue, error, setError, updateH
             >
               <span>Edit Password</span> <img src="assets/img/right-icon.png" alt="" />
             </button>
-            <button className="logout-button mt-3" onClick={() => setShowLogout(!showLogout)}>
+            <button
+              className="logout-button mt-3"
+              onClick={() => {
+                setShowLogout(!showLogout);
+              }}
+            >
               <span>Log out</span> <img src="assets/img/right-icon.png" alt="" />
             </button>
           </div>

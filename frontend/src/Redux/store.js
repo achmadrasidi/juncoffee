@@ -1,4 +1,4 @@
-import { userConfirmReducer, userInfoReducer, userLoginReducer, userLogoutReducer, userPaymentReducer, userRegisterReducer } from "./Reducers/UserReducer";
+import { userConfirmReducer, userHistoryReducer, userInfoReducer, userLoginReducer, userLogoutReducer, userPaymentReducer, userRegisterReducer } from "./Reducers/UserReducer";
 import { combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
@@ -10,6 +10,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import { createOrderReducer, getTransaction } from "./Reducers/OrderReducer";
 import { searchReducer } from "./Reducers/SearchReducer";
+import { deleteAllHistoryReducer, deleteHistoryReducer } from "./Reducers/HistoryReducer";
 
 const persistConfig = {
   key: "user",
@@ -41,6 +42,9 @@ export const store = configureStore({
     userPayment: userPaymentReducer,
     searchKeyword: searchReducer,
     transactionSum: getTransaction,
+    deleteHistory: deleteHistoryReducer,
+    deleteAllHistory: deleteAllHistoryReducer,
+    userHistory: userHistoryReducer,
   },
   middleware,
   devTools: true,

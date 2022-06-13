@@ -17,6 +17,7 @@ export const IsLoggedInRoutes = ({ children }) => {
   if (token) {
     return <Navigate to="/" replace />;
   }
+
   return children;
 };
 

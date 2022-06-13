@@ -27,20 +27,23 @@ const Cart = () => {
       setShow(true);
       return;
     }
+
     if (error) {
       setErrorMessage(error);
       setShow(true);
       return;
     }
-    if (state && state.token) {
-      const { token } = state;
-      dispatch(userPayment(token));
-      return;
+
+    if (state) {
+      if (state.token) {
+        dispatch(userPayment(state.token));
+      }
+      (() => {
+        window.history.replaceState({}, { ...state });
+        delete state.token;
+      })();
     }
-    (() => {
-      window.history.replaceState({}, { ...state });
-    })();
-  }, [errorMessage, modalMessage, state]);
+  }, [errorMessage, modalMessage, message]);
 
   return (
     <>

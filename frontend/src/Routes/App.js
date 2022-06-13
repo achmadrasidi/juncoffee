@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoutes, { IsLoggedInRoutes, PrivateRoutes } from "../Auth/AuthRoutes";
+import AddProduct from "../Components/Product/AddProduct";
 import EmailConfirm from "../Pages/Auth/EmailConfirm";
 import ForgotPass from "../Pages/Auth/ForgotPass";
 import Login from "../Pages/Auth/Login";
@@ -31,6 +32,14 @@ const App = () => {
         <Route path="product">
           <Route path="" element={<Product />} />
           <Route path=":id" element={<Detail />} />
+          <Route
+            path="add-product"
+            element={
+              <PrivateRoutes>
+                <AddProduct />
+              </PrivateRoutes>
+            }
+          />
         </Route>
 
         <Route

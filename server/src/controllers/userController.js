@@ -225,7 +225,7 @@ const deleteAllHistory = async (req, res) => {
 
 const deleteSingleHistory = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const { data } = await deleteSingleUserHistory(id);
 
     res.status(200).json({

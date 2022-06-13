@@ -5,6 +5,9 @@ import {
   USER_CONFIRMATION_FAIL,
   USER_CONFIRMATION_REQUEST,
   USER_CONFIRMATION_SUCCESS,
+  USER_HISTORY_FAIL,
+  USER_HISTORY_REQUEST,
+  USER_HISTORY_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -104,6 +107,19 @@ export const userPaymentReducer = (state = { message: "", error: null, loading: 
       return { ...state, loading: false, error: action.payload };
     case RESET_STATE:
       return { ...state, message: "", error: null, loading: false };
+    default:
+      return state;
+  }
+};
+
+export const userHistoryReducer = (state = { data: [] }, action) => {
+  switch (action.type) {
+    case USER_HISTORY_REQUEST:
+      return { ...state, loading: true };
+    case USER_HISTORY_SUCCESS:
+      return { ...state, loading: false, data: action.payload };
+    case USER_HISTORY_FAIL:
+      return { ...state, loading: false, err: action.payload };
     default:
       return state;
   }

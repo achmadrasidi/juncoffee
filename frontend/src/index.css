@@ -1405,6 +1405,162 @@ span.navbar-text {
 /* End Profile  */
 
 /* Product CSS  */
+.cancel-add-product {
+  background: rgba(186, 186, 186, 0.35);
+  border-radius: 20px;
+  height: 85px;
+  width: 100%;
+  border: none;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 138.84%;
+  /* identical to box height, or 35px */
+
+  letter-spacing: 0.03em;
+
+  color: #4f5665;
+}
+.cancel-add-product:hover {
+  background: rgba(228, 228, 228, 0.35);
+}
+.take-pic-button {
+  background: #0b132a;
+  border-radius: 20px;
+  height: 88px;
+  border: none;
+  width: 100%;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+  /* identical to box height */
+
+  color: #ffffff;
+}
+.add-prod-top {
+  margin-top: 12%;
+}
+.modal-loading {
+  background-color: none;
+  background: none;
+}
+.label-add-prod {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+  /* identical to box height */
+
+  color: #6a4029;
+}
+.gallery-button {
+  background: #ffba33;
+  border-radius: 20px;
+  height: 88px;
+  width: 100%;
+  border: none;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+  /* identical to box height */
+
+  color: #6a4029;
+}
+.product-size-add {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #9f9f9f;
+}
+.size-add-prod-active {
+  background: #ffba33;
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 50%;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 45px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #000000;
+}
+.size-add-prod {
+  background: rgba(186, 186, 186, 0.35);
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 50%;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22px;
+  text-align: center;
+
+  color: #4f5665;
+}
+.size-add-prod:hover {
+  background: #ffba33;
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 50%;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 45px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #000000;
+}
+.pencil-style {
+  background-color: #6a4029;
+  border-radius: 50%;
+  justify-self: end;
+  margin: -10px;
+  cursor: pointer;
+}
+.add-new-prod {
+  background: #6a4029;
+  border-radius: 20px;
+  border: none;
+  width: 95%;
+  height: 80px;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+
+  color: #ffffff;
+}
+.add-new-prod:hover {
+  background-color: #7c523c;
+}
 .product-section {
   background-color: #f5f5f5;
 }
@@ -1454,6 +1610,27 @@ span.navbar-text {
   font-size: 17px;
   line-height: 26px;
   color: white;
+}
+.add-new-promo {
+  background: #ffba33;
+  border-radius: 20px;
+  width: 50% !important;
+  height: 80px;
+  border: none;
+  margin-top: 24%;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+
+  text-align: center;
+
+  color: #6a4029;
+}
+.add-new-promo:hover {
+  background-color: #ffc654;
 }
 .apply-coupon-button:hover {
   background-color: #895537;
@@ -1512,8 +1689,18 @@ span.navbar-text {
   line-height: 18px;
   text-align: center;
 }
+.btn-secondary {
+  background-color: #6a4029 !important;
+}
 .tnc {
   margin-top: 20% !important;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 14px;
+  color: white;
 }
 .tnc-title {
   font-family: "Rubik";
@@ -1539,8 +1726,18 @@ span.navbar-text {
   margin: auto;
   cursor: pointer;
 }
+.card-fav-product-admin-layout {
+  box-shadow: 0px 30px 60px rgba(57, 57, 57, 0.1);
+  border-radius: 30px !important;
+  width: 100%;
+  max-width: fit-content;
+  margin: auto;
+}
 .card-fav-product-layout:hover {
   border-color: #7c523c;
+}
+.fav-product-title {
+  cursor: pointer;
 }
 .product-card-image {
   width: 100%;
@@ -1565,8 +1762,24 @@ span.navbar-text {
   line-height: 26px;
   text-align: center;
   color: #6a4029;
-  margin-top: 28%;
+  margin-top: 21%;
 }
+.product-image-add {
+  border-radius: 50%;
+  background-color: rgba(186, 186, 186, 0.35);
+  cursor: pointer;
+}
+.fav-product-price-admin {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+  text-align: center;
+  color: #6a4029;
+  margin-top: 18%;
+}
+
 .link-text-active {
   font-family: "Rubik";
   font-style: normal;
@@ -1851,7 +2064,6 @@ input[name="delete"] {
   gap: 10rem;
 }
 .time-input {
-  width: 256px;
   height: 47px;
 
   background: #f4f4f8;
@@ -1882,6 +2094,48 @@ input[name="delete"] {
   font-weight: 400;
   font-size: 25px;
   margin: auto;
+  color: #6a4029;
+}
+.top-product-desc-add {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+  /* identical to box height */
+
+  color: #6a4029;
+}
+.product-add-cat {
+  background: rgba(186, 186, 186, 0.35);
+  border-radius: 20px;
+  height: 72px;
+  width: 25%;
+  border: none;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  /* identical to box height */
+
+  color: #4f5665;
+}
+.product-add-cat:hover {
+  background: #ffba33;
+  border-radius: 20px;
+  height: 72px;
+  width: 25%;
+  border: none;
+
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  /* identical to box height */
+
   color: #6a4029;
 }
 .day {

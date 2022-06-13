@@ -222,7 +222,7 @@ const deleteUser = async (req) => {
 
 const deleteAllUserHistory = async (id) => {
   try {
-    const query = "UPDATE transactions set on_delete=true WHERE user_id = $1 RETURNING *";
+    const query = "UPDATE transactions set on_delete=true,deleted_at=now() WHERE user_id = $1 RETURNING *";
     const result = await db.query(query, [id]);
     if (!result.rowCount) {
       throw new ErrorHandler({ status: 404, message: "Transaction Not Found" });
@@ -237,8 +237,8 @@ const deleteSingleUserHistory = async (itemId) => {
   try {
     let params = [];
     let queryParams = [];
-    let query = "UPDATE transactions set on_delete=true WHERE id IN ( ";
-    itemId.map((val) => {
+    let query = "UPDATE transactions set on_delete=true,deleted_at=now() WHERE id IN ( ";
+    itemId.split(",").map((val) => {
       queryParams.push(`$${params.length + 1}`, ",");
       params.push(val);
     });

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { groupByTransaction } from "../../helper/groupByTransaction";
 import {
   ADD_USER_INFO,
   REMOVE_USER_INFO,
@@ -6,6 +7,9 @@ import {
   USER_CONFIRMATION_FAIL,
   USER_CONFIRMATION_REQUEST,
   USER_CONFIRMATION_SUCCESS,
+  USER_HISTORY_FAIL,
+  USER_HISTORY_REQUEST,
+  USER_HISTORY_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -91,6 +95,19 @@ export const userPayment = (payToken) => async (dispatch, getState) => {
     dispatch({ type: USER_PAYMENT_SUCCESS, payload: result.data.message });
   } catch (error) {
     dispatch({ type: USER_PAYMENT_FAIL, payload: error.response ? error.response.data.error : error.message });
+  }
+};
+
+export const userHistory = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_HISTORY_REQUEST });
+    const { token } = getState().persist.userInfo.info;
+    const result = await axios.get(`${process.env.REACT_APP_API}/user/history/`, { headers: { Authorization: `Bearer ${token}` } });
+    const group = groupByTransaction(result.data.data, "transaction_id");
+
+    dispatch({ type: USER_HISTORY_SUCCESS, payload: Object.entries(group) });
+  } catch (error) {
+    dispatch({ type: USER_HISTORY_FAIL, payload: error.response ? error.response.data.error : error.message });
   }
 };
 

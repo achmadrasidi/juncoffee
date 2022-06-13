@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getKeyword } from "../Redux/Actions/SearchActions";
 import Prompt from "./SubComponent/Prompt";
+import { userLogout } from "../Redux/Actions/UserAction";
 
 const Header = () => {
   const [show, setShow] = useState(false);
@@ -16,6 +17,8 @@ const Header = () => {
   const handleClose = (e) => {
     e.preventDefault();
     setShow(false);
+    const { value } = e.target;
+    dispatch(getKeyword(value));
     window.scrollTo({ behavior: "smooth", top: "0px" });
     navigate("/product", { replace: true });
   };
@@ -83,14 +86,12 @@ const Header = () => {
             type="text"
             className="w-100"
             placeholder="Type Keyword to Search"
-            onChange={(e) => {
-              e.preventDefault();
-              const { value } = e.target;
-              dispatch(getKeyword(value));
-            }}
             onKeyUp={(e) => {
+              e.preventDefault();
               if (e.key === "Enter") {
                 setShow(false);
+                const { value } = e.target;
+                dispatch(getKeyword(value));
                 navigate("/product", { replace: true });
               }
             }}
@@ -107,7 +108,15 @@ const Header = () => {
         </Modal.Footer>
       </Modal>
 
-      <Prompt show={showLogoutConfirm} confirm={() => navigate("/logout", { replace: true })} message={"Are You Sure ?"} cancel={() => setShowLogoutConfirm(false)} />
+      <Prompt
+        show={showLogoutConfirm}
+        confirm={() => {
+          dispatch(userLogout());
+          navigate("/logout", { replace: true });
+        }}
+        message={"Are You Sure ?"}
+        cancel={() => setShowLogoutConfirm(false)}
+      />
 
       <Navbar collapseOnSelect expand="lg" bg="white" variant="light" sticky="top" className="nav-product nav-coffee">
         <Container fluid>

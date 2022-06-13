@@ -6,7 +6,7 @@ import { addToCart } from "../../Redux/Actions/CartAction";
 import Message from "../SubComponent/Message";
 import { resetOrder } from "../../Redux/Actions/OrderActions";
 
-const ShopDetail = () => {
+const ShopDetailAdmin = () => {
   const { loading, err, product } = useSelector((state) => state.productDetail);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -141,7 +141,7 @@ const ShopDetail = () => {
                 </div>
                 <div className="row mt-5 p-0">
                   <div className="col-md-12  ">
-                    <button className=" staff-button">Ask a Staff</button>
+                    <button className=" staff-button">Edit Product</button>
                   </div>
                 </div>
               </div>
@@ -244,4 +244,4 @@ const ShopDetail = () => {
   );
 };
 
-export default ShopDetail;
+export default ShopDetailAdmin;
