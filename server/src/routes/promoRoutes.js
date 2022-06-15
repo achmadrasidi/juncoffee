@@ -11,7 +11,8 @@ const uploadFile = require("../middleware/fileUpload");
 // get promo details
 Router.get("/detail/:id", checkToken, checkRole("user"), valueValidator, getDetailPromo);
 // view all promo,search promo
-Router.get("/", checkToken, checkRole("user"), valueValidator, promoValidator, searchPromos);
+// Router.get("/", checkToken, checkRole("user"), valueValidator, promoValidator, searchPromos);
+Router.get("/", valueValidator, promoValidator, searchPromos);
 
 // ADMIN
 // add new promo

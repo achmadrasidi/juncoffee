@@ -194,6 +194,20 @@ const updateUserPassword = async ({ oldPassword, newPassword }, id) => {
   }
 };
 
+const updateForgotPass = async ({ newPassword, email }) => {
+  try {
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+    const query = "UPDATE users SET password = $1 , updated_at = now() WHERE email = $2 RETURNING id,name,email,to_char(updated_at::timestamp,'Dy DD Mon YYYY HH24:MI') AS updated_at ";
+    const result = await db.query(query, [hashedNewPassword, email]);
+    if (!result.rowCount) {
+      throw new ErrorHandler({ status: 404, message: "User Not Found" });
+    }
+    return { data: result.rows[0], message: "Your Password Successfully Recovered" };
+  } catch (err) {
+    throw new ErrorHandler({ status: err.status ? err.status : 500, message: err.message });
+  }
+};
+
 const deleteUser = async (req) => {
   try {
     const route = req.path;
@@ -266,4 +280,5 @@ module.exports = {
   getUserHistory,
   deleteAllUserHistory,
   deleteSingleUserHistory,
+  updateForgotPass,
 };

@@ -36,10 +36,10 @@ const ItemsAdmin = ({ category, favorite, pageUrl, setPageUrl }) => {
 
   switch (sortValue) {
     case "asc":
-      baseUrl += "order=asc&sort=price&";
+      baseUrl += `order=asc&sort=${order === "Order by" ? "name" : order.toLowerCase()}&`;
       break;
     case "desc":
-      baseUrl += "order=desc&sort=price&";
+      baseUrl += `order=desc&sort=${order === "Order by" ? "name" : order.toLowerCase()}&`;
       break;
     default:
       break;
@@ -102,7 +102,7 @@ const ItemsAdmin = ({ category, favorite, pageUrl, setPageUrl }) => {
                       {product.name}
                     </h2>
                     <p className="fav-product-price-admin">IDR {product.price.split("Rp")[1]}</p>
-                    <img src={require("../../../assets/img/pencil.png")} className="pencil-style" width={25} height={25} />
+                    <img src={require("../../../assets/img/pencil.png")} className="pencil-style" onClick={() => navigate(`/product/edit-product/${product.id}`)} width={25} height={25} />
                   </div>
                 </div>
               </div>

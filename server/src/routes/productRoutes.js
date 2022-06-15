@@ -16,7 +16,8 @@ Router.get("/favourite", valueValidator, productValidator, favProduct);
 
 // ADMIN
 // add new product
-Router.post("/", checkToken, checkRole("admin"), valueValidator, uploadFile, productValidator, addProduct);
+// Router.post("/", checkToken, checkRole("admin"), valueValidator, uploadFile, productValidator, addProduct);
+Router.post("/", checkToken, valueValidator, uploadFile, productValidator, addProduct);
 // edit product detail
 Router.patch("/:id", checkToken, checkRole("admin"), valueValidator, uploadFile, productValidator, editProduct);
 // delete product

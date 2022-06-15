@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Loading from "../SubComponent/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile, patchProfile, resetProfile } from "../../Redux/Actions/ProfileAction";

@@ -88,6 +88,16 @@ body {
 }
 
 @media (max-width: 767px) {
+  .share-report {
+    margin: 5% 0 !important;
+  }
+  .card-statistic {
+    margin-top: 5% !important;
+  }
+  .row-top-statistic {
+    text-align: center !important;
+    margin: auto !important;
+  }
   .card-cart-payment {
     margin-top: 1.5rem;
   }
@@ -1405,6 +1415,12 @@ span.navbar-text {
 /* End Profile  */
 
 /* Product CSS  */
+.delete-icon-back {
+  background-color: #6a4029;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: -18%;
+}
 .cancel-add-product {
   background: rgba(186, 186, 186, 0.35);
   border-radius: 20px;
@@ -1443,7 +1459,10 @@ span.navbar-text {
   color: #ffffff;
 }
 .add-prod-top {
-  margin-top: 12%;
+  margin-top: 8%;
+}
+.add-prod-top-edit {
+  margin-top: 15%;
 }
 .modal-loading {
   background-color: none;
@@ -1465,15 +1484,6 @@ span.navbar-text {
   height: 88px;
   width: 100%;
   border: none;
-
-  font-family: "Rubik";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 25px;
-  line-height: 30px;
-  /* identical to box height */
-
-  color: #6a4029;
 }
 .product-size-add {
   font-family: "Rubik";
@@ -1535,6 +1545,15 @@ span.navbar-text {
   text-align: center;
 
   color: #000000;
+}
+.pencil-style-promo {
+  background-color: #6a4029;
+  border-radius: 50%;
+  justify-self: end;
+  margin-left: 97%;
+
+  margin-top: -7%;
+  cursor: pointer;
 }
 .pencil-style {
   background-color: #6a4029;
@@ -1641,6 +1660,12 @@ span.navbar-text {
 .promo-food-img {
   width: 70% !important;
 }
+.promo-food-img-edit {
+  /* width: 70% !important; */
+  cursor: pointer;
+  margin-left: 20%;
+}
+
 .product-promo-card-title {
   margin-top: -20% !important;
   font-family: "Poppins";
@@ -1766,8 +1791,25 @@ span.navbar-text {
 }
 .product-image-add {
   border-radius: 50%;
-  background-color: rgba(186, 186, 186, 0.35);
+  /* background-color: rgba(186, 186, 186, 0.35); */
   cursor: pointer;
+}
+
+.text-gallery {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  /* identical to box height */
+
+  color: #6a4029;
+}
+.option-prod {
+  height: 72px;
+  border-radius: 20px;
 }
 .fav-product-price-admin {
   font-family: "Poppins";
@@ -2122,7 +2164,7 @@ input[name="delete"] {
 
   color: #4f5665;
 }
-.product-add-cat:hover {
+.product-add-cat-active {
   background: #ffba33;
   border-radius: 20px;
   height: 72px;
@@ -2153,6 +2195,28 @@ input[name="delete"] {
   justify-content: space-between;
   width: 100%;
 }
+.add-to-cart-edit {
+  height: 83px;
+  background: #ffba33;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 38px;
+  text-align: center;
+
+  color: #6a4029;
+}
+.count-edit-prod {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 5%;
+}
 .countButton {
   display: flex;
   align-items: center;
@@ -2164,6 +2228,34 @@ input[name="delete"] {
   font-size: 25px;
   font-weight: 700;
   gap: 3rem;
+}
+.countButton-edit {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 83px;
+  border: 1px solid #9f9f9f;
+  border-radius: 10px;
+  padding: 5px 18px;
+  font-size: 25px;
+  font-weight: 700;
+  gap: 3rem;
+}
+.save-edit-prod {
+  background: #6a4029;
+  border-radius: 10px;
+  height: 85px;
+  border: none;
+  margin-top: 7%;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 38px;
+
+  color: #ffffff;
 }
 .minus {
   font-family: "Poppins";
@@ -2203,6 +2295,38 @@ input[name="delete"] {
   height: 85px;
   width: 100%;
   border: none;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 38px;
+
+  color: #ffffff;
+}
+.cart-button-promo {
+  background: #6a4029;
+  border-radius: 20px;
+  height: 85px;
+  width: 100%;
+  border: none;
+  margin-top: 15%;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 38px;
+
+  color: #ffffff;
+}
+.cart-button-promo-edit {
+  background: #6a4029;
+  border-radius: 20px;
+  height: 85px;
+  width: 100%;
+  border: none;
+  margin-top: 5%;
 
   font-family: "Poppins";
   font-style: normal;
@@ -2331,6 +2455,9 @@ input[name="delete"] {
   background-color: #f5ce82;
 }
 .cart-button:hover {
+  background-color: #7c523c;
+}
+.cart-button-promo:hover {
   background-color: #7c523c;
 }
 .staff-button:hover {
@@ -2663,4 +2790,33 @@ input[name="delete"] {
 }
 .download-report:hover {
   background-color: #7c523c;
+}
+/* Order  */
+.text-order-for {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 52px;
+  text-align: center;
+
+  color: #362115;
+}
+.upcoming-button {
+  background: #ffba33;
+  border-radius: 20px;
+  height: 74px;
+  width: 100%;
+  border: none;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #6a4029;
 }

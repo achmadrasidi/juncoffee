@@ -76,6 +76,7 @@ const ShopDetailAdmin = () => {
                   Favorite &amp; Promo <span className="product-text-left">&#8594; {product.name}</span>{" "}
                 </p>
                 <img src={`${process.env.REACT_APP_API}${product.image}`} alt="" className=" my-3 justify-content-center" width={"60%"} />
+                <img src={require("../../assets/img/delete-icon.png")} className="delete-icon-back" alt="" />
                 <div className="card text-start delivery-time-card">
                   <div className="card-body mx-3 delivery-time-card-res">
                     <div className="card-title-delivery">
@@ -141,7 +142,9 @@ const ShopDetailAdmin = () => {
                 </div>
                 <div className="row mt-5 p-0">
                   <div className="col-md-12  ">
-                    <button className=" staff-button">Edit Product</button>
+                    <button className=" staff-button" onClick={() => navigate(`/product/edit-product/${product.id}`)}>
+                      Edit Product
+                    </button>
                   </div>
                 </div>
               </div>

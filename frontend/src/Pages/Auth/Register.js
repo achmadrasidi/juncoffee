@@ -3,11 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "../../Components/SubComponent/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { resetState, userRegister } from "../../Redux/Actions/UserAction";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [phoneError, setPhoneError] = useState(null);
   const [emailError, setEmailError] = useState(null);
 
@@ -16,6 +18,7 @@ export const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(resetState());
     document.title = "Juncoffee - Register";
   }, []);
   if (registerMessage) {
@@ -83,7 +86,7 @@ export const Register = () => {
 
               <label htmlFor="password">Password :</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter Your Password"
                 onChange={(e) => {
@@ -92,7 +95,7 @@ export const Register = () => {
                 }}
                 required
               />
-
+              <span>{showPassword ? <EyeSlash size={30} className="eye-icon" onClick={() => setShowPassword(false)}></EyeSlash> : <Eye size={30} className="eye-icon" onClick={() => setShowPassword(true)}></Eye>}</span>
               <label htmlFor="phone_number">Phone Number :</label>
               <input
                 type="text"

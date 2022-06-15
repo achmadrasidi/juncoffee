@@ -1,9 +1,9 @@
-const { getUserById, getUsers, createUser, deleteUser, updateUserProfile, updateUserPassword, getUserHistory, deleteAllUserHistory, deleteSingleUserHistory } = require("../models/userModel.js");
+const { getUserById, getUsers, createUser, deleteUser, updateUserProfile, updateUserPassword, getUserHistory, deleteAllUserHistory, deleteSingleUserHistory, updateForgotPass } = require("../models/userModel.js");
 const { createTransaction } = require("../models/transactionModel");
 const { removeAccess } = require("../middleware/authValidator");
 const { userStorage } = require("../config/cache");
 const fs = require("fs");
-const { sendConfirmationPayment } = require("../config/nodemailer.js");
+const { sendConfirmationPayment, sendPasswordConfirmation } = require("../config/nodemailer.js");
 const jwt = require("jsonwebtoken");
 const { client } = require("../config/redis.js");
 
@@ -165,6 +165,7 @@ const editUser = async (req, res) => {
 const editUserPassword = async (req, res) => {
   try {
     const { data, message } = await updateUserPassword(req.body, req.userPayload.id);
+
     res.status(200).json({
       data,
       message,
@@ -172,6 +173,37 @@ const editUserPassword = async (req, res) => {
   } catch (err) {
     const { message, status } = err;
     res.status(status).json({
+      error: message,
+    });
+  }
+};
+
+const editForgotPassword = async (req, res) => {
+  try {
+    const { data, message } = await updateForgotPass(req.body);
+
+    res.status(200).json({
+      data,
+      message,
+    });
+  } catch (err) {
+    const { message, status } = err;
+    res.status(status).json({
+      error: message,
+    });
+  }
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.params;
+    await sendPasswordConfirmation(email, email);
+    res.status(200).json({
+      message: "Please check your email for password confirmation",
+    });
+  } catch (err) {
+    const { message } = err;
+    res.status(500).json({
       error: message,
     });
   }
@@ -252,4 +284,6 @@ module.exports = {
   editUserPassword,
   deleteAllHistory,
   deleteSingleHistory,
+  forgotPassword,
+  editForgotPassword,
 };

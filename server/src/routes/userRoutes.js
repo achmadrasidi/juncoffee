@@ -1,6 +1,6 @@
 const Router = require("express").Router();
 
-const { getUserDetail, userHistory, editUser, editUserPassword, deleteUserById, searchUsers, addUser, createOrder, deleteAllHistory, deleteSingleHistory } = require("../controllers/userController.js");
+const { getUserDetail, userHistory, editUser, editUserPassword, deleteUserById, searchUsers, addUser, createOrder, deleteAllHistory, deleteSingleHistory, forgotPassword, editForgotPassword } = require("../controllers/userController.js");
 const { userValidator, orderValidator } = require("../middleware/fieldValidator.js");
 const { valueValidator } = require("../middleware/valueValidator.js");
 const { checkToken, checkRole } = require("../middleware/authValidator.js");
@@ -11,12 +11,17 @@ const uploadFile = require("../middleware/fileUpload.js");
 Router.get("/history/", checkToken, checkRole("user"), userHistory);
 // get user profile
 Router.get("/profile/", checkToken, checkRole("user"), getUserDetail);
+// user forgot password
+Router.get("/forgot-password/:email", forgotPassword);
+//edit user forgot password
+Router.patch("/forgot-password/", editForgotPassword);
 // post create new order user
 Router.post("/new-order/", checkToken, checkRole("user"), valueValidator, orderValidator, createOrder);
 // edit user detail
 Router.patch("/edit-profile/", checkToken, checkRole("user"), valueValidator, uploadFile, userValidator, editUser);
 // edit user password
 Router.patch("/edit-password/", checkToken, checkRole("user"), valueValidator, userValidator, editUserPassword);
+
 // delete user account
 Router.delete("/delete/", checkToken, checkRole("user"), deleteUserById);
 // delete all user history

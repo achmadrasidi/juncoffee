@@ -14,6 +14,8 @@ const ShopDetail = () => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
 
+  const formatter = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
+
   const { cartItems } = useSelector((state) => state.persist.cartInfo);
   const order = useSelector((state) => state.createOrder);
 
@@ -58,7 +60,6 @@ const ShopDetail = () => {
     if (order && order.message) {
       dispatch(resetOrder());
     }
-
     navigate("/cart", { replace: true });
   };
   return (
@@ -130,7 +131,7 @@ const ShopDetail = () => {
                       +{" "}
                     </div>
                   </div>
-                  <div className="priceDetail">IDR {prodPrice}</div>
+                  <div className="priceDetail">IDR {formatter.format(prodPrice).split("Rp")[1]}</div>
                 </div>
                 <div className="row mt-5 p-0">
                   <div className="col-md-12  ">

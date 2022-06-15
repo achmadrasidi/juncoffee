@@ -119,6 +119,7 @@ const addProduct = async (req, res) => {
       message,
     });
   } catch (err) {
+    console.log(err);
     const { message } = err;
     const status = err.status ? err.status : 500;
     res.status(status).json({

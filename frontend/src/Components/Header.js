@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Container, Nav, Modal, Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -8,20 +8,17 @@ import { userLogout } from "../Redux/Actions/UserAction";
 
 const Header = () => {
   const [show, setShow] = useState(false);
+  const [keywords, setKeywords] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setKeywords(null);
+  }, []);
+
   const { pathname } = useLocation();
   const { token, email, image, role } = useSelector((state) => state.persist.userInfo.info);
-  const handleClose = (e) => {
-    e.preventDefault();
-    setShow(false);
-    const { value } = e.target;
-    dispatch(getKeyword(value));
-    window.scrollTo({ behavior: "smooth", top: "0px" });
-    navigate("/product", { replace: true });
-  };
 
   const handleShow = () => setShow(true);
 
@@ -41,7 +38,7 @@ const Header = () => {
                 <Nav.Link href="/profile" className="text-center">
                   Profile
                 </Nav.Link>
-                <Nav.Link href="#" className="text-center">
+                <Nav.Link href="/order" className="text-center">
                   Orders
                 </Nav.Link>
               </>
@@ -86,6 +83,7 @@ const Header = () => {
             type="text"
             className="w-100"
             placeholder="Type Keyword to Search"
+            onChange={(e) => setKeywords(e.target.value)}
             onKeyUp={(e) => {
               e.preventDefault();
               if (e.key === "Enter") {
@@ -99,10 +97,17 @@ const Header = () => {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
+          <Button variant="danger" onClick={() => setShow(false)}>
             Close
           </Button>
-          <Button variant="success" onClick={handleClose}>
+          <Button
+            variant="success"
+            onClick={() => {
+              setShow(false);
+              dispatch(getKeyword(keywords));
+              navigate("/product", { replace: true });
+            }}
+          >
             Search
           </Button>
         </Modal.Footer>
@@ -137,7 +142,7 @@ const Header = () => {
               {role === "admin" ? (
                 <>
                   {" "}
-                  <Nav.Link href="#" active={pathname === "/cart"}>
+                  <Nav.Link href="/order" active={pathname === "/order"}>
                     Orders
                   </Nav.Link>
                   <Nav.Link href="/dashboard" active={pathname === "/dashboard"}>

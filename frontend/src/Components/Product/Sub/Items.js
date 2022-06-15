@@ -36,10 +36,10 @@ const Items = ({ category, favorite, pageUrl, setPageUrl }) => {
 
   switch (sortValue) {
     case "asc":
-      baseUrl += `order=asc&sort=${order === "Order by" ? "date" : order.toLowerCase()}&`;
+      baseUrl += `order=asc&sort=${order === "Order by" ? "name" : order.toLowerCase()}&`;
       break;
     case "desc":
-      baseUrl += `order=desc&sort=${order === "Order by" ? "date" : order.toLowerCase()}&`;
+      baseUrl += `order=desc&sort=${order === "Order by" ? "name" : order.toLowerCase()}&`;
       break;
     default:
       break;

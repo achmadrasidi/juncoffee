@@ -138,7 +138,7 @@ const DoughChart = () => {
         <RWebShare
           data={{
             text: "Share this report",
-            url: "https://drive.google.com/file/d/1cbiACy2BrBor8Wn4GK2ywQU66ObhXxKZ/view?usp=sharing",
+            url: "https://drive.google.com/file/d/17klHL0OsMmhjekBHv73cGipvOckTFwXR/view?usp=sharing",
             title: "Share this report",
           }}
           sites={["facebook", "twitter", "whatsapp", "telegram", "linkedin", "mail", "copy", "vk"]}

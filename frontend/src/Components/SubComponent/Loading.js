@@ -5,9 +5,9 @@ const Loading = ({ show, onHide }) => {
   return (
     <Modal show={show} onHide={onHide} backdrop="static" keyboard={true}>
       <Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="text-center">
           Please Wait...
-          <img src={require("../../assets/gif/Loading_icon.gif")} width={100} height={100} alt="" />
+          <img src={require("../../assets/gif/Loading_icon.gif")} width={50} height={50} alt="" />
         </Modal.Body>
       </Modal.Header>
     </Modal>

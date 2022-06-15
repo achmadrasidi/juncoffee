@@ -25,7 +25,7 @@ const getPromos = async (query) => {
     let filterQuery = [];
     let params = [];
     let sqlQuery =
-      "SELECT count(*) over() as total,id,name,product_name,price,description,discount,coupon_code,expired_date,image,category FROM (SELECT p.id,p.name,prod.name as product_name ,prod.price AS price,p.description,p.discount,p.image,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,expired_date AS expired,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id) promo";
+      "SELECT count(*) over() as total,id,product_id,name,product_name,price,description,discount,coupon_code,expired_date,image,category FROM (SELECT p.id,p.product_id,p.name,prod.name as product_name ,prod.price AS price,p.description,p.discount,p.image,to_char(p.expired_date,'Dy DD Mon YYYY') AS expired_date,expired_date AS expired,p.created_at,p.coupon_code,c.name AS category FROM promos p JOIN products prod on p.product_id = prod.id JOIN category c on p.category_id = c.id) promo order by promo.created_at desc";
 
     const queryList = ["keyword", "coupon_code", "category", "product_name"];
     const queryFilter = queryProperty.filter((val) => queryList.includes(val));
